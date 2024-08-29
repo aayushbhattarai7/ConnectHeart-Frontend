@@ -9,6 +9,7 @@ import { authLabel } from '../../../localization/auth';
 import axiosInstance from '../../../service/instance';
 import { MdOutlineArrowOutward } from 'react-icons/md';
 import axios from 'axios';
+import PopupMessage from '../../common/atoms/PopupMessage';
 
 interface FormData {
   first_name: string;
@@ -30,7 +31,7 @@ const Signup: React.FC = () => {
     handleSubmit,
     formState: { isSubmitting },
   } = useForm<FormData>();
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
@@ -51,7 +52,7 @@ const Signup: React.FC = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      setError(response?.data?.message || 'Success');
+      setError(null);
       navigate('/login');
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -67,7 +68,7 @@ const Signup: React.FC = () => {
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
         <h1 className="text-2xl font-semibold mb-4">Signup</h1>
         <p className="mb-6">Hi, Welcome to ConnectHeart👋</p>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
+        {error && <PopupMessage message={error} setMessage={setError} />}
 
         <form onSubmit={handleSubmit(onSubmit)} noValidate encType="multipart/form-data">
           <div className="mb-4">

@@ -7,7 +7,7 @@ import Button from '../../common/atoms/Button';
 import axiosInstance from '../../../service/instance';
 import { useState } from 'react';
 import axios from 'axios';
-import PopupMessage from '../../common/atoms/'
+import PopupMessage from '../../common/atoms/PopupMessage';
 interface FormData {
   oldPassword: string;
   password: string;
@@ -28,24 +28,23 @@ const UpdatePasswords = () => {
       const res = await axiosInstance.patch('user/updatePassword', data);
       e?.preventDefault();
       setSuccess(res?.data?.message);
-      setError('')
+      setError('');
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setError(error.response?.data?.message || 'An error occurred');
-        setSuccess('')
+        setSuccess('');
       } else {
         setError('Email or password is incorrect');
       }
     }
-    
   };
 
   return (
     <div>
       {' '}
       <div className="flex-1 2xl:w-[76rem] h-screen  bg-white p-4 lg:p-12 shadow-lg">
-        {success && <p className='text-green-500'>{success}</p>}
-        {error && <Popup}
+        {success && <p className="text-green-500">{success}</p>}
+        {error && <PopupMessage message={error} setMessage={setError} />}
         <form action="" onSubmit={handleSubmit(onSubmit)}>
           <h2 className="text-2xl lg:text-3xl font-bold mb-8 text-gray-800">Update Password</h2>
           <div className="grid grid-cols-1 gap-6">
