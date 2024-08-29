@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axiosInstance from '../../../service/instance';
 import { jwtDecode } from 'jwt-decode';
 import { useForm } from 'react-hook-form';
@@ -83,6 +83,7 @@ const MessageUser = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [sideMenu, setSideMenu] = useState(false);
   const [messageBox, setMessageBox] = useState(false);
+  const chatEndRef = useRef<HTMLDivElement | null>(null);
   const sockets = useSocket();
   const {
     register,
@@ -303,12 +304,20 @@ const MessageUser = () => {
       }
     };
 
+  
+
     handleResize();
 
     window.addEventListener('resize', handleResize);
 
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+    useEffect(() => {
+      if (chatEndRef.current) {
+        chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, [chats]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -500,6 +509,7 @@ const MessageUser = () => {
                         <p>{chat.message}</p>
                       </div>
                     </div>
+                    <div ref={chatEndRef} />
                   </div>
                 ))}
                 <div className="w-full justify-start items-start flex">

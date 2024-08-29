@@ -1,17 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-<<<<<<< HEAD
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}"
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}
-
-=======
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
@@ -40,11 +28,10 @@ export default {
       scrollbar: ['rounded'],
 
       screens: {
-        xs: '200px', 
+        xs: '200px',
       },
     },
     safelist: ['hide-scrollbar'],
   },
   plugins: [],
 };
->>>>>>> 1a4bf23 (Initial commit)
