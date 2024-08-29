@@ -53,6 +53,7 @@ const Login: React.FC = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-[#f3f4f6] font-poppins px-4">
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
+        {error && <p className='text-red-500'>{ error}</p>}
         <h1 className="text-2xl font-semibold mb-4">Login</h1>
         <p className="mb-6">Hi, Welcome Back👋</p>
 

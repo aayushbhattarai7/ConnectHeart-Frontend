@@ -46,6 +46,10 @@ export const authLabel: LabelTypes = {
     en: 'Confirm your password',
     ne: 'पासवर्ड पुष्टि गर्नुहोस्',
   },
+  updatePassword: {
+    en: 'Update Password',
+    ne:'पासवर्ड अपडेट गर्नुहोस्'
+  },
   rememberMe: {
     en: 'Remember Me',
     ne: 'पासवर्ड सम्झनुहोस्',

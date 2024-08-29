@@ -84,7 +84,7 @@ const ShowPost = () => {
   const [commentForm, setCommentForm] = useState<string | null>(null);
   const [sideMenu, setSideMenu] = useState(false);
   const [displayPost, setDisplayPost] = useState(false);
-const socket = useSocket()
+  const socket = useSocket();
   const getPost = async () => {
     try {
       const response = await axiosInstance.get('/post/', {
@@ -106,8 +106,6 @@ const socket = useSocket()
     }
   };
 
-  
-
   useEffect(() => {
     const token = sessionStorage.getItem('accessToken');
 
@@ -125,12 +123,11 @@ const socket = useSocket()
 
   const toggleComments = (postId: string) => {
     setVisibleCommentsPostId((prevPostId) => (prevPostId === postId ? null : postId));
+        setCommentForm((prevPostId) => (prevPostId === postId ? null : postId));
+
   };
 
-  const toggleCommentForm = (postId: string) => {
-    setCommentForm((prevPostId) => (prevPostId === postId ? null : postId));
-  };
-
+ 
   const toggleReplyForm = (comment: string) => {
     setReplyCommentId((prevCmtId) => (prevCmtId === comment ? null : comment));
   };
@@ -218,7 +215,9 @@ const socket = useSocket()
           const isVideo = path?.match(/\.(mp4|webm|ogg)$/);
           return (
             <div className="" key={id}>
-              {isImage && <img className="rounded-lg border-black" src={path} />}
+              {isImage && (
+                <img className="rounded-lg 2xl:w-[55rem] h-[27rem] border-black" src={path} />
+              )}
               {isVideo && (
                 <video className="rounded-lg" controls>
                   <source
@@ -357,10 +356,10 @@ const socket = useSocket()
                       <div className="flex flex-col gap-5">
                         <div className="flex flex-col font-poppins">
                           <button
-                            className="rounded-xl bg-blue-700 h-7 ml-2 pl-5 text-white w-14"
-                            onClick={() => toggleCommentForm(post.id)}
+                            className="rounded-xl bg-blue-700 h-7 pl-5 ml-6 text-white w-14"
+                            onClick={() => toggleComments(post.id)}
                           >
-                            {commentForm === post.id ? <FaComment /> : <FaComment />}
+                            {visibleCommentsPostId === post.id ? <FaComment /> : <FaComment />}
                           </button>
                           <p>Comment</p>
                         </div>
@@ -382,11 +381,18 @@ const socket = useSocket()
                       ))}
 
                     <div className="w-full">
-                      {commentForm === post.id && (
+                      {visibleCommentsPostId === post.id && (
                         <div className="flex  gap-7">
                           <Comments postId={post?.id || ''} refresh={getPost} />
                         </div>
                       )}
+
+                       {visibleCommentsPostId === post.id &&
+                      (post.comment && post.comment.length > 0 ? (
+                        <div className="mb-3">{renderComments(post.comment)}</div>
+                      ) : (
+                        <p className="mb-3">No comments yet</p>
+                      ))}
                     </div>
                   </div>
 
@@ -405,10 +411,7 @@ const socket = useSocket()
           ))}
         </div>
       ) : (
-        <div
-          className="flex flex-col justify-start items-center overflow-y-auto h-fit  mt-30 2xl:w-[52rem] xl:w-[52rem]  lg:w-[45rem] md:w-[40rem] sm:w-[35rem] mx-auto   mb-16 bg-gray-100"
-         
-        >
+        <div className="flex flex-col justify-start items-center overflow-y-auto h-fit  mt-30 2xl:w-[52rem] xl:w-[52rem]  lg:w-[45rem] md:w-[40rem] sm:w-[35rem] mx-auto   mb-16 bg-gray-100">
           <Post postId={posts[0]?.id || ''} refresh={getPost} />
           {error && <p>{error}</p>}
           {posts.map((post) => (
@@ -477,7 +480,7 @@ const socket = useSocket()
                   <div className="flex flex-col font-poppins">
                     <button
                       className="rounded-xl bg-blue-700 h-7 pl-5 ml-6 text-white w-14"
-                      onClick={() => toggleComments(post.id)}
+                      // onClick={() => toggleComments(post.id)}
                     >
                       {visibleCommentsPostId === post.id ? <FaComment /> : <FaComment />}
                     </button>
@@ -496,7 +499,7 @@ const socket = useSocket()
                     <div className="flex flex-col font-poppins">
                       <button
                         className="rounded-xl bg-blue-700 h-7 ml-2 pl-5 text-white w-14"
-                        onClick={() => toggleCommentForm(post.id)}
+                        onClick={() => toggleComments(post.id)}
                       >
                         {commentForm === post.id ? <FaComment /> : <FaComment />}
                       </button>
@@ -576,4 +579,3 @@ const socket = useSocket()
 };
 
 export default ShowPost;
-
