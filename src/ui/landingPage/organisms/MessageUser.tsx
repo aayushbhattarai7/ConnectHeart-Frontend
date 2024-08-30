@@ -288,12 +288,7 @@ const MessageUser = () => {
   useEffect(() => {
     showConnection();
   }, []);
-  // useEffect(() => {
-  //   if (connects.length > 0) {
-  //     const firstUser = connects[0];
-  //     handleChatClick(firstUser.id);
-  //   }
-  // }, [connects]);
+ 
 
   useEffect(() => {
     const handleResize = () => {

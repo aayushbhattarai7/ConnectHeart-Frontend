@@ -119,4 +119,17 @@ export const authLabel: LabelTypes = {
     en: 'Profile',
     ne: 'प्रोफाइल',
   },
+
+  verify: {
+    en: 'Verify',
+    np:'प्रमाणित गर्नुहोस्'
+  },
+  sendOTP: {
+    en: 'Send OTP',
+    ne:'ओटीपी पठाउनुहोस्'
+  },
+  EnterOTP: {
+    en: 'Enter otp',
+    ne:'ओटीपी हाल्नुस्'
+  }
 };

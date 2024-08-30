@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axiosInstance from '../../../service/instance';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useSocket } from '../../../contexts/OnlineStatus';
 interface Request {
   id: string;
   sender: {
@@ -23,6 +24,8 @@ interface Request {
 const Notification = () => {
   const [requests, setRequests] = useState<Request[]>([]);
   const navigate = useNavigate();
+  const socket = useSocket();
+
   const request = async () => {
     try {
       const response = await axiosInstance.get('/connect/requests', {
@@ -39,6 +42,11 @@ const Notification = () => {
     }
   };
 
+  useEffect(() => {
+    socket?.on('request-notification', ({ senderId }) => {
+      setRequests((prevRequests) => prevRequests.filter((request) => request.sender.id !== senderId));
+    });
+  });
   const getRequest = () => {
     navigate('/requests');
   };
