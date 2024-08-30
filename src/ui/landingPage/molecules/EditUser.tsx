@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 import { FaImage } from 'react-icons/fa';
 import Button from '../../common/atoms/Button';
 import { RxCross2 } from 'react-icons/rx';
+import PopupMessage from '../../common/atoms/PopupMessage';
+import axios from 'axios';
 
 interface UserProps {
   email?: string;
@@ -45,6 +47,8 @@ const EditUser: React.FC<UserProps> = ({
     reset,
     formState: { isSubmitting },
   } = useForm<FormData>();
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   useEffect(() => {
     setFormdata((prevData) => ({
@@ -67,7 +71,7 @@ const EditUser: React.FC<UserProps> = ({
       data.append('type', 'PROFILE');
       if (formData.files) data.append('profile', formData.files);
 
-      await axiosInstance.patch('/user/update', data, {
+      const response = await axiosInstance.patch('/user/update', data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -75,7 +79,15 @@ const EditUser: React.FC<UserProps> = ({
       refresh(id);
       reset();
       onClose();
-    } catch (error) {}
+      setSuccess(response?.data?.message);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.message || 'An error occurred');
+        setSuccess('');
+      } else {
+        setError('Email or password is incorrect');
+      }
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -106,82 +118,83 @@ const EditUser: React.FC<UserProps> = ({
   };
 
   return (
-    <div className='flex'>
-    <div className="  flex flex-col  w-full justify-center  mt-10 px-5 sm:px-10 lg:px-20  ">
-      <form onSubmit={handleSubmit} noValidate encType="multipart/form-data">
-        <div className="flex w-96 flex-col pl-5 justify-center  gap-10 items-start mb-4 bg-white">
-          <div className="flex justify-center pl-7 flex-col mt-3 gap-8 ">
-            <input
-              placeholder="First Name"
-              name="first_name"
-              value={formData.first_name}
-              onChange={handleChange}
-              className="w-[20rem] p-2 pl-6 border bg-gray-100 border-gray-300 rounded-lg focus:outline-none resize-none"
-            />
-            <input
-              placeholder="Last Name"
-              name="last_name"
-              value={formData.last_name}
-              onChange={handleChange}
-              className="w-[20rem] p-2 pl-6 border bg-gray-100 border-gray-300 rounded-lg focus:outline-none resize-none"
-            />
-
-            <input
-              placeholder="Email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-[20rem] p-2 pl-6 border bg-gray-100 border-gray-300 rounded-lg focus:outline-none resize-none"
-            />
-
-            <input
-              placeholder="Phone"
-              name="phone_number"
-              value={formData.phone_number}
-              onChange={handleChange}
-              className="w-[20rem] p-2 pl-6 border bg-gray-100 border-gray-300 rounded-lg focus:outline-none resize-none"
-            />
-
-            <div className="flex gap-10  justify-center">
-              <label className="cursor-pointer flex items-center gap-1 text-green-500">
-                <FaImage className="text-2xl" />
-                <input
-                  type="file"
-                  name="profile"
-                  multiple
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-                <span className="text-sm text-gray-600">Media</span>
-              </label>
-            </div>
-            <div className="flex flex-col items-center justify-between">
-              <Button
-                buttonText="update"
-                name=""
-                type="submit"
-                disabled={isSubmitting}
-                className="p-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 disabled:bg-blue-300"
+    <div className="flex">
+      {success && <PopupMessage message={success} setMessage={setSuccess} type="success" />}
+      {error && <PopupMessage message={error} setMessage={setError} type="error" />}
+      <div className="  flex flex-col  w-full justify-center  mt-10 px-5 sm:px-10 lg:px-20  ">
+        <form onSubmit={handleSubmit} noValidate encType="multipart/form-data">
+          <div className="flex w-96 flex-col pl-5 justify-center  gap-10 items-start mb-4 bg-white">
+            <div className="flex justify-center pl-7 flex-col mt-3 gap-8 ">
+              <input
+                placeholder="First Name"
+                name="first_name"
+                value={formData.first_name}
+                onChange={handleChange}
+                className="w-[20rem] p-2 pl-6 border bg-gray-100 border-gray-300 rounded-lg focus:outline-none resize-none"
               />
+              <input
+                placeholder="Last Name"
+                name="last_name"
+                value={formData.last_name}
+                onChange={handleChange}
+                className="w-[20rem] p-2 pl-6 border bg-gray-100 border-gray-300 rounded-lg focus:outline-none resize-none"
+              />
+
+              <input
+                placeholder="Email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-[20rem] p-2 pl-6 border bg-gray-100 border-gray-300 rounded-lg focus:outline-none resize-none"
+              />
+
+              <input
+                placeholder="Phone"
+                name="phone_number"
+                value={formData.phone_number}
+                onChange={handleChange}
+                className="w-[20rem] p-2 pl-6 border bg-gray-100 border-gray-300 rounded-lg focus:outline-none resize-none"
+              />
+
+              <div className="flex gap-10  justify-center">
+                <label className="cursor-pointer flex items-center gap-1 text-green-500">
+                  <FaImage className="text-2xl" />
+                  <input
+                    type="file"
+                    name="profile"
+                    multiple
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                  <span className="text-sm text-gray-600">Media</span>
+                </label>
+              </div>
+              <div className="flex flex-col items-center justify-between">
+                <Button
+                  buttonText="update"
+                  name=""
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="p-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 disabled:bg-blue-300"
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="flex gap-2 mt-2">
-          {imagePreviews.map((src, index) => (
-            <img
-              key={index}
-              src={src}
-              alt="Selected"
-              className="w-20 h-20 rounded-md object-cover"
-            />
-          ))}
-        </div>
-      </form>
-      
-    </div>
-    <p onClick={onClose}>
-        <RxCross2 className='text-red-500' />
+          <div className="flex gap-2 mt-2">
+            {imagePreviews.map((src, index) => (
+              <img
+                key={index}
+                src={src}
+                alt="Selected"
+                className="w-20 h-20 rounded-md object-cover"
+              />
+            ))}
+          </div>
+        </form>
+      </div>
+      <p onClick={onClose}>
+        <RxCross2 className="text-red-500" />
       </p>
     </div>
   );

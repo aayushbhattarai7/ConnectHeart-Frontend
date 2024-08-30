@@ -26,6 +26,7 @@ const Login: React.FC = () => {
     formState: { isSubmitting },
   } = useForm<FormData>();
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const onSubmit: SubmitHandler<FormData> = async (data, e) => {
     try {
@@ -36,7 +37,7 @@ const Login: React.FC = () => {
         },
       });
       e?.preventDefault();
-      setError(response?.data?.message);
+      setSuccess(response?.data?.message);
       const token = response?.data?.data?.tokens?.accessToken;
       if (token) {
         sessionStorage.setItem('accessToken', token);
@@ -53,7 +54,9 @@ const Login: React.FC = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-[#f3f4f6] font-poppins px-4">
-      {error && <PopupMessage message={error} setMessage={setError} />}
+      {error && <PopupMessage message={error} setMessage={setError} type="error" />}
+      {success && <PopupMessage message={success} setMessage={setSuccess} type="success" />}
+
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
         <h1 className="text-2xl font-semibold mb-4">Login</h1>
         <p className="mb-6">Hi, Welcome Back👋</p>

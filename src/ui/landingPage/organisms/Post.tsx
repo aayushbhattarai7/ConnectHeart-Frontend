@@ -6,6 +6,8 @@ import axiosInstance from '../../../service/instance';
 import Button from '../../common/atoms/Button';
 import { authLabel } from '../../../localization/auth';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import PopupMessage from '../../common/atoms/PopupMessage';
 
 interface FormData {
   thought: string;
@@ -44,6 +46,8 @@ const Post: React.FC<PostProps> = ({ postId, refresh }) => {
   const [user, setUser] = useState<User | null>(null);
   const [formData, setformData] = useState<FormData>({ thought: '', feeling: '', files: [] });
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const getUserDetails = async () => {
     try {
@@ -66,14 +70,21 @@ const Post: React.FC<PostProps> = ({ postId, refresh }) => {
       data.append('feeling', formData.feeling);
       data.append('type', 'POST');
       formData.files?.forEach((file) => data.append('files', file));
-      await axiosInstance.post('/post', data, {
+      const res = await axiosInstance.post('/post', data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       reset();
       refresh(postId);
+      setformData({ thought: '', feeling: '', files: [] });
       setImagePreviews([]);
+      setSuccess(res?.data?.message);
     } catch (err) {
-      console.error('Error while submitting:', err);
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.message || 'An error occurred');
+        setSuccess('');
+      } else {
+        setError('Email or password is incorrect');
+      }
     }
   };
 
@@ -138,6 +149,9 @@ const Post: React.FC<PostProps> = ({ postId, refresh }) => {
         </div>
 
         <div className="flex justify-around  mt-2 border-t border-gray-300 pt-2">
+          {error && <PopupMessage message={error} setMessage={setError} type='error'/>}
+          {success && <PopupMessage message={success} setMessage={setSuccess} type='success'/>}
+
           <div className="flex gap-20 font-poppins font-medium">
             <label className="cursor-pointer flex items-center gap-1 text-green-500">
               <FaImage className="text-2xl" />

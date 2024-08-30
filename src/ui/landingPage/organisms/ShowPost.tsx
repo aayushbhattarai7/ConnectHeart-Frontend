@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axiosInstance from '../../../service/instance';
 import Comments from '../molecules/Comment';
 import ReplyComment from '../molecules/ReplyComment';
-import { FaComment, FaShare } from 'react-icons/fa';
+import {  FaShare } from 'react-icons/fa';
 import axios from 'axios';
 import Post from './Post';
 import Like from './Like';
@@ -13,7 +13,7 @@ import User from './User';
 import { FaHeart } from 'react-icons/fa';
 import CommentOptions from '../molecules/CommentOption';
 import { FaCircleArrowLeft, FaCircleArrowRight } from 'react-icons/fa6';
-import { useSocket } from '../../../contexts/OnlineStatus';
+import { FaRegCommentDots } from 'react-icons/fa';
 
 interface Post {
   id: string;
@@ -47,6 +47,22 @@ interface likes {
 
 interface Auth {
   id: string;
+}
+
+interface Connection {
+  id: string;
+  email?: string;
+  username?: string;
+  details: {
+    first_name?: string;
+    last_name?: string;
+    phone_number?: string;
+    gender: string;
+  };
+  profile: {
+    id?: string;
+    path?: string;
+  };
 }
 
 interface Comment {
@@ -84,7 +100,8 @@ const ShowPost = () => {
   const [commentForm, setCommentForm] = useState<string | null>(null);
   const [sideMenu, setSideMenu] = useState(false);
   const [displayPost, setDisplayPost] = useState(false);
-  const socket = useSocket();
+  const [connects, setConnects] = useState<Connection[]>([]);
+
   const getPost = async () => {
     try {
       const response = await axiosInstance.get('/post/', {
@@ -121,13 +138,29 @@ const ShowPost = () => {
     }
   }, []);
 
-  const toggleComments = (postId: string) => {
-    setVisibleCommentsPostId((prevPostId) => (prevPostId === postId ? null : postId));
-        setCommentForm((prevPostId) => (prevPostId === postId ? null : postId));
-
+  const getConnection = async () => {
+    try {
+      const response = await axiosInstance.get('/connect/friends', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      setConnects(response?.data?.friends);
+      console.log(response?.data?.friends);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.message || 'Error while fetching connection');
+      } else {
+        setError('Error while fetching connection');
+      }
+    }
   };
 
- 
+  const toggleComments = (postId: string) => {
+    setVisibleCommentsPostId((prevPostId) => (prevPostId === postId ? null : postId));
+    setCommentForm((prevPostId) => (prevPostId === postId ? null : postId));
+  };
+
   const toggleReplyForm = (comment: string) => {
     setReplyCommentId((prevCmtId) => (prevCmtId === comment ? null : comment));
   };
@@ -236,6 +269,7 @@ const ShowPost = () => {
 
   useEffect(() => {
     getPost();
+    getConnection();
   }, []);
 
   useEffect(() => {
@@ -340,7 +374,11 @@ const ShowPost = () => {
                           className="rounded-xl bg-blue-700 h-7 pl-5 ml-6 text-white w-14"
                           onClick={() => toggleComments(post.id)}
                         >
-                          {visibleCommentsPostId === post.id ? <FaComment /> : <FaComment />}
+                          {visibleCommentsPostId === post.id ? (
+                            <FaRegCommentDots />
+                          ) : (
+                            <FaRegCommentDots />
+                          )}
                         </button>
                         <p>view comments</p>
                       </div>
@@ -359,7 +397,11 @@ const ShowPost = () => {
                             className="rounded-xl bg-blue-700 h-7 pl-5 ml-6 text-white w-14"
                             onClick={() => toggleComments(post.id)}
                           >
-                            {visibleCommentsPostId === post.id ? <FaComment /> : <FaComment />}
+                            {visibleCommentsPostId === post.id ? (
+                              <FaRegCommentDots />
+                            ) : (
+                              <FaRegCommentDots />
+                            )}
                           </button>
                           <p>Comment</p>
                         </div>
@@ -387,12 +429,12 @@ const ShowPost = () => {
                         </div>
                       )}
 
-                       {visibleCommentsPostId === post.id &&
-                      (post.comment && post.comment.length > 0 ? (
-                        <div className="mb-3">{renderComments(post.comment)}</div>
-                      ) : (
-                        <p className="mb-3">No comments yet</p>
-                      ))}
+                      {visibleCommentsPostId === post.id &&
+                        (post.comment && post.comment.length > 0 ? (
+                          <div className="mb-3">{renderComments(post.comment)}</div>
+                        ) : (
+                          <p className="mb-3">No comments yet</p>
+                        ))}
                     </div>
                   </div>
 
@@ -479,10 +521,14 @@ const ShowPost = () => {
                   </div>
                   <div className="flex flex-col font-poppins">
                     <button
-                      className="rounded-xl bg-blue-700 h-7 pl-5 ml-6 text-white w-14"
+                      className="rounded-xl text-black text-2xl h-7 pl-5 ml-6  w-14"
                       // onClick={() => toggleComments(post.id)}
                     >
-                      {visibleCommentsPostId === post.id ? <FaComment /> : <FaComment />}
+                      {visibleCommentsPostId === post.id ? (
+                        <FaRegCommentDots />
+                      ) : (
+                        <FaRegCommentDots />
+                      )}
                     </button>
                     <p>view comments</p>
                   </div>
@@ -498,10 +544,14 @@ const ShowPost = () => {
                   <div className="flex flex-col gap-5">
                     <div className="flex flex-col font-poppins">
                       <button
-                        className="rounded-xl bg-blue-700 h-7 ml-2 pl-5 text-white w-14"
+                        className="rounded-xlh-7 ml-2 pl-5 text-2xl w-14"
                         onClick={() => toggleComments(post.id)}
                       >
-                        {commentForm === post.id ? <FaComment /> : <FaComment />}
+                        {commentForm === post.id ? (
+                          <FaRegCommentDots className="text-black" />
+                        ) : (
+                          <FaRegCommentDots />
+                        )}
                       </button>
                       <p>Comment</p>
                     </div>
@@ -547,12 +597,54 @@ const ShowPost = () => {
 
       <div className="mt-10 mb-1 flex-col hidden xl:block ">
         <Notification />
-        <div className="fixed top-[38rem] 2xl:w[40rem]  right-1 bg-white shadow-lg rounded-lg">
-          <div className="overflow-y-auto overflow-hidden max-h-[21rem] w-full  break-words">
-            <User />
+        <div className="fixed  2xl:top-[39rem] 2xl:w[46rem]  right-1 bg-white shadow-lg rounded-lg">
+          <div className="overflow-y-auto overflow-hidden max-h-[21rem] w-full ">
+            {connects?.map((connect) => {
+              return (
+                <div className="flex flex-col items-start mt-4 mx-auto overflow-y-auto lg:w-[23rem] xs:w-[30rem] ">
+                  <div className="flex justify-start mb-4">
+                    <h1 className="text-xl font-poppins font-medium text-gray-800">Connection</h1>
+                  </div>
+                  <div className="w-full min-w-[22rem] bg-white shadow-md rounded-lg overflow-hidden 2xl:w-[40rem] xl:w-[32rem] lg:w-[27rem] md:w-[30rem] sm:w-[40rem] ">
+                    <ul className="divide-y divide-gray-200">
+                      <li
+                        key={connect?.id}
+                        className="flex flex-col sm:flex-row  xs:gap-2 lg:justify-between p-2 hover:bg-gray-50"
+                      >
+                        <div
+                          className="flex items-center space-x-4 cursor-pointer"
+                          // onClick={() => handleUserClick(user.id)}
+                        >
+                          {connect?.profile?.path ? (
+                            <img
+                              className="h-16 w-16 rounded-full object-cover"
+                              src={connect?.profile?.path}
+                              alt="Profile"
+                            />
+                          ) : (
+                            <img
+                              className="h-16 w-16 rounded-full object-cover"
+                              src="/profilenull.jpg"
+                              alt="Default Profile"
+                            />
+                          )}
+                          <div className="text-center sm:text-left mt-2 sm:mt-0">
+                            <p className="font-semibold text-lg text-gray-700">
+                              {connect?.details?.first_name} {connect?.details?.last_name}
+                            </p>
+                            {connect?.email && (
+                              <p className="text-gray-500 text-sm">{connect?.email}</p>
+                            )}
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
-        <div></div>
       </div>
       {sideMenu && (
         <div className=" mb-5 xs:mb-10 flex-col ">

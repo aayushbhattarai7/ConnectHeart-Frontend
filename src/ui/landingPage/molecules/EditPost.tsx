@@ -4,6 +4,8 @@ import { FaImage } from 'react-icons/fa6';
 import Button from '../../common/atoms/Button';
 import { useForm } from 'react-hook-form';
 import { RxCross2 } from 'react-icons/rx';
+import axios from 'axios';
+import PopupMessage from '../../common/atoms/PopupMessage';
 
 interface PostProps {
   postId: string;
@@ -27,7 +29,8 @@ const EditPost: React.FC<PostProps> = ({ postId, refresh, onClose, thought, feel
     reset,
     formState: { isSubmitting },
   } = useForm<FormData>();
-
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   useEffect(() => {
     setformData((prevData) => ({
       ...prevData,
@@ -43,16 +46,19 @@ const EditPost: React.FC<PostProps> = ({ postId, refresh, onClose, thought, feel
       if (formData.feeling) data.append('feeling', formData?.feeling);
       data.append('type', 'POST');
       if (formData.files) formData.files?.forEach((file) => data.append('files', file));
-      await axiosInstance.patch(`/post/${postId}`, data, {
+      const response = await axiosInstance.patch(`/post/${postId}`, data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-
+      setSuccess(response?.data.message);
       reset();
       refresh(postId);
       onClose();
-    } catch (err) {
-      console.error('Error while submitting:', err);
-    }
+    } catch (error) {
+ if (axios.isAxiosError(error)) {
+   setError(error.response?.data?.message || 'An error occurred');
+ } else {
+   setError('Required fields should not be empty');
+ }    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -83,6 +89,8 @@ const EditPost: React.FC<PostProps> = ({ postId, refresh, onClose, thought, feel
   return (
     <div className="flex">
       <div>
+        {success && <PopupMessage message={success} setMessage={setSuccess} type="success" />}
+        {error && <PopupMessage message={error} setMessage={setError} type="error" />}
         <form onSubmit={handleSubmit} noValidate encType="multipart/form-data">
           <div className="flex w-96 flex-col pl-5 justify-center  gap-10 items-start mb-4 bg-white">
             <div className="flex justify-center pl-7 flex-col mt-3 gap-8 ">
@@ -151,7 +159,7 @@ const EditPost: React.FC<PostProps> = ({ postId, refresh, onClose, thought, feel
         </form>
       </div>
       <p onClick={onClose}>
-        <RxCross2 className='text-red-500' />
+        <RxCross2 className="text-red-500" />
       </p>
     </div>
   );

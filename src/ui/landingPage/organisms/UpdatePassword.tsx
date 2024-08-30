@@ -43,8 +43,8 @@ const UpdatePasswords = () => {
     <div>
       {' '}
       <div className="flex-1 2xl:w-[76rem] h-screen  bg-white p-4 lg:p-12 shadow-lg">
-        {success && <p className="text-green-500">{success}</p>}
-        {error && <PopupMessage message={error} setMessage={setError} />}
+        {success && <PopupMessage message={success} setMessage={setSuccess} type="success" />}
+        {error && <PopupMessage message={error} setMessage={setError} type="error" />}
         <form action="" onSubmit={handleSubmit(onSubmit)}>
           <h2 className="text-2xl lg:text-3xl font-bold mb-8 text-gray-800">Update Password</h2>
           <div className="grid grid-cols-1 gap-6">
