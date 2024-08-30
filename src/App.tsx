@@ -15,6 +15,7 @@ import UserProfile from './ui/landingPage/organisms/UserProfile';
 import MessageUser from './ui/landingPage/organisms/MessageUser';
 import './App.css';
 import { SocketProvider } from './contexts/OnlineStatus';
+import LanguageProvider from './contexts/LanguageContext';
 
 const router = createBrowserRouter([
   {
@@ -74,9 +75,11 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-      <SocketProvider>
-        <RouterProvider router={router} />
-      </SocketProvider>
+      <LanguageProvider>
+        <SocketProvider>
+          <RouterProvider router={router} />
+        </SocketProvider>
+      </LanguageProvider>
     </>
   );
 }

@@ -14,6 +14,9 @@ import { FaHeart } from 'react-icons/fa';
 import CommentOptions from '../molecules/CommentOption';
 import { FaCircleArrowLeft, FaCircleArrowRight } from 'react-icons/fa6';
 import { FaRegCommentDots } from 'react-icons/fa';
+import Label from '../../common/atoms/Label';
+import { authLabel } from '../../../localization/auth';
+import { useLang } from '../../../hooks/useLang';
 
 interface Post {
   id: string;
@@ -102,7 +105,7 @@ const ShowPost = () => {
   const [sideMenu, setSideMenu] = useState(false);
   const [displayPost, setDisplayPost] = useState(false);
   const [connects, setConnects] = useState<Connection[]>([]);
-
+const {lang} = useLang()
   const getPost = async () => {
     try {
       const response = await axiosInstance.get('/post/', {
@@ -221,8 +224,8 @@ const ShowPost = () => {
                 <p className="mt-1 font-medium">
                   {cmt?.commentAuth?.details?.first_name} {cmt?.commentAuth?.details?.last_name}{' '}
                 </p>
-                <div className="flex gap-4">
-                  <p>{cmt?.comment}</p>
+                <div className="flex gap-4 w-[20rem] flex-wrap">
+                  <p className="flex-wrap break-words w-fit flex ">{cmt?.comment}</p>
                   {(decodedToken?.id === cmt?.commentAuth.id ||
                     posts.some((post) => post.postIt.id === decodedToken?.id)) && (
                     <CommentOptions
@@ -481,7 +484,7 @@ const ShowPost = () => {
             >
               <div className="items-start sm:mr-20 sm:flex-row w-full p-10">
                 <div key={post.postIt?.id} className="bg-white  mb-5">
-                  <div className="flex flex-col bg-white relative p-4">
+                  <div className="flex flex-col bg-white relative z-0 p-4">
                     <div className="flex gap-1">
                       {post?.postIt?.profile?.path ? (
                         <img
@@ -511,7 +514,9 @@ const ShowPost = () => {
                         )}
                       </div>
                     </div>
-                    <p className="text-black absolute top-10 left-[5.2rem]">{getTimeDifference(post?.createdAt)}</p>
+                    <p className="text-black absolute top-10 left-[5.2rem]">
+                      {getTimeDifference(post?.createdAt)}
+                    </p>
                   </div>
 
                   <div className=" mb-3  rounded-2xl break-words">
@@ -619,7 +624,11 @@ const ShowPost = () => {
         <div className="fixed  2xl:top-[39rem] 2xl:w-[24rem] h-80 right-1 bg-white shadow-lg rounded-lg">
           <div className="flex flex-col items-center mt-4 mx-auto overflow-y-auto lg:w-[23rem] xs:w-[30rem] ">
             <div className="flex justify-center  mb-4">
-              <h1 className="text-xl font-poppins font-medium text-gray-800">Connection</h1>
+              <Label
+                name="connection"
+                className={`text-xl font-poppins font-medium text-gray-800`}
+                label={authLabel.connection[lang]}
+              />
             </div>
             {connects?.map((connect) => {
               return (

@@ -117,12 +117,12 @@ export const authLabel: LabelTypes = {
   },
   profile: {
     en: 'Profile',
-    ne: 'प्रोफाइल',
+    ne: 'खाता',
   },
 
   verify: {
     en: 'Verify',
-    np:'प्रमाणित गर्नुहोस्'
+    ne:'प्रमाणित गर्नुहोस्'
   },
   sendOTP: {
     en: 'Send OTP',
@@ -131,5 +131,49 @@ export const authLabel: LabelTypes = {
   EnterOTP: {
     en: 'Enter 5 digits otp',
     ne:'ओटीपी हाल्नुस्'
+  },
+  feed: {
+    en: 'Date Feed',
+    ne:'डेट फीड'
+  },
+  connection: {
+    en: 'connection',
+    ne:'कनेक्शन'
+  },
+  requests: {
+    en: 'Requests',
+    ne:'अनुरोध'
+  }, 
+  message:{
+    en: 'Messages',
+    ne:'मेसेजेस'
+  }, 
+  settings: {
+    en: 'Settings',
+    ne:'सेटिंग्स'
+  }, notification: {
+    en: 'Notification',
+    ne:'सूचना'
+  }, 
+  noNotification: {
+    en: 'No Notification Yet',
+    ne:'अहिलेसम्म कुनै सूचना छैन'
+  },
+  noRequest: {
+    en: 'No Connect Request Received Yet',
+    ne:'अहिलेसम्म कुनै अनुरोध प्राप्त भएको छैन'
+  }, 
+  noRequestP: {
+    en: "You're all set! We'll notify you once a connect request comes in.",
+    ne:'जब कुनै अनुरोध आउँछ, हामी तपाईंलाई सूचित गर्नेछौँ।'
+  },
+  noConnection: {
+    en: 'No Connections Yet',
+    ne:'अहिलेसम्म कुनै साथी छैन।'
+  },
+
+  noConnectionP: {
+    en: "You haven't connected with anyone yet.",
+    ne:'तपाईंले अहिलेसम्म कुनै साथी बनाउनुभएको छैन।'
   }
 };

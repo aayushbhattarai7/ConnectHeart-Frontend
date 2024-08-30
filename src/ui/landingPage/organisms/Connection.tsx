@@ -3,6 +3,9 @@ import axiosInstance from '../../../service/instance';
 import { useEffect, useState } from 'react';
 import User from './User';
 import { useNavigate } from 'react-router-dom';
+import Label from '../../common/atoms/Label';
+import { authLabel } from '../../../localization/auth';
+import { useLang } from '../../../hooks/useLang';
 
 interface Connection {
   id: string;
@@ -24,6 +27,7 @@ const Connection = () => {
   const [connects, setConnects] = useState<Connection[]>([]);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const {lang} = useLang()
 
   const showConnection = async () => {
     try {
@@ -70,21 +74,27 @@ const Connection = () => {
   }, []);
 
   return (
-    <div className="p-4 sm:p-8 h-screen bg-gray-100 flex flex-col">
+    <div className="p-4 sm:p-8  bg-gray-100 overflow-y-auto flex flex-col">
       <div className="bg-gray-100 ">
         <div className="justify-center items-center flex p-5 bg-gray-100">
-          <h1 className="sm:ml-12 2xl:ml-20 xl:ml-20 mt-20 font-poppins font-medium">Connections</h1>
         </div>
         <div className=" justify-start lg:mx-96 xs:ml-[2rem] h-auto pl-16 items-start bg-gray-100">
           <div className="justify-start flex mx-auto flex-wrap gap-8 mb-10 overflow-hidden">
             {error && <p>{error}</p>}
             {connects.length === 0 ? (
               <div className="flex flex-col mt-14 items-center justify-center w-full h-[75vh] bg-gray-100">
-                <div className="shadow-lg rounded-lg p-6 max-w-md text-center">
-                  <div className="text-4xl text-gray-500 mb-4">
-                  </div>
-                  <h2 className="text-2xl font-semibold text-gray-700">No Connections Yet</h2>
-                  <p className="text-gray-600 mt-2">You haven't connected with anyone yet.</p>
+                <div className="shadow-lg rounded-lg p-6 max-w-md text-center flex flex-col">
+                  <div className="text-4xl text-gray-500 mb-4"></div>
+                  <Label
+                    name="requests"
+                    className={`text-2xl font-semibold text-gray-700`}
+                    label={authLabel.noConnection[lang]}
+                  />
+                  <Label
+                    name="requests"
+                    className={` text-gray-500`}
+                    label={authLabel.noConnectionP[lang]}
+                  />{' '}
                 </div>
               </div>
             ) : (
@@ -105,7 +115,7 @@ const Connection = () => {
                       <p>
                         {connect.details.first_name} {connect.details.last_name}
                       </p>
-                      <p className='font-normal'>{connect.details.gender}</p>
+                      <p className="font-normal">{connect.details.gender}</p>
                     </div>
                   </div>
                   <button

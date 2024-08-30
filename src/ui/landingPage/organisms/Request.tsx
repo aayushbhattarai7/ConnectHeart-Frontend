@@ -3,6 +3,9 @@ import axiosInstance from '../../../service/instance';
 import { FaHeartCirclePlus, FaHeartCircleXmark } from 'react-icons/fa6';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Label from '../../common/atoms/Label';
+import { authLabel } from '../../../localization/auth';
+import { useLang } from '../../../hooks/useLang';
 
 interface Request {
   id: string;
@@ -27,6 +30,7 @@ const Request = () => {
   const [requests, setRequests] = useState<Request[]>([]);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const {lang} = useLang()
   const showRequest = async () => {
     try {
       const response = await axiosInstance.get('/connect/requests', {
@@ -90,18 +94,21 @@ const Request = () => {
   }, []);
   return (
     <div className="h-screen mt-20 justify-start flex flex-col  items-start 2xl:ml-72 xs:pl-20 bg-gray-100">
-      <h1 className="2xl:ml-96 xs:ml-16  py-5 font-poppins font-medium">Connect Requests</h1>
       <div className=" flex flex-wrap">
         {error && <p>{error}</p>}
         {requests.length === 0 ? (
           <div className="flex flex-col 2xl:ml-[30rem] mt-32 items-center justify-center w-full h-[40rem] bg-gray-100">
-            <div className=" shadow-lg rounded-lg p-6 max-w-md text-center">
-              <h2 className="text-2xl font-semibold text-gray-700">
-                No Connect Request Received Yet
-              </h2>
-              <p className="text-gray-600 mt-2">
-                You're all set! We'll notify you once a connect request comes in.
-              </p>
+            <div className=" shadow-lg rounded-lg p-6 max-w-md text-center flex flex-col">
+              <Label
+                name="requests"
+                className={`text-2xl font-semibold text-gray-700`}
+                label={authLabel.noRequest[lang]}
+              />
+                <Label
+                  name="requests"
+                  className={`text-gray-600 mt-2`}
+                  label={authLabel.noRequestP[lang]}
+                />{' '}
             </div>
           </div>
         ) : (

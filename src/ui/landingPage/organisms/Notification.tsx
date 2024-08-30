@@ -3,6 +3,9 @@ import axiosInstance from '../../../service/instance';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSocket } from '../../../contexts/OnlineStatus';
+import Label from '../../common/atoms/Label';
+import { authLabel } from '../../../localization/auth';
+import { useLang } from '../../../hooks/useLang';
 interface Request {
   id: string;
   sender: {
@@ -25,6 +28,7 @@ const Notification = () => {
   const [requests, setRequests] = useState<Request[]>([]);
   const navigate = useNavigate();
   const socket = useSocket();
+  const {lang} = useLang()
 
   const request = async () => {
     try {
@@ -57,10 +61,18 @@ const Notification = () => {
   return (
     <div className=" fixed lg:top-[7.5rem] xs:top-[6rem] rounded-lg right-2 lg:h-[50vh] xs:h-[45vh] shadow-lg w-96 xl:w-96 lg:w-72 xs:w-[31rem] lg:p-0 bg-white flex justify-center items-start ">
       <div className="w-[30rem] flex flex-col justify-center items-center overflow-y-auto">
-        <h1 className="mt-6 text-xl font-poppins font-medium">Connect Request Alert</h1>
+        <Label
+          name="notification"
+          className={`mt-6 text-xl font-poppins font-medium`}
+          label={authLabel.notification[lang]}
+        />
         {requests.length === 0 ? (
           <div className="h-[40vh] flex justify-center items-center">
-            <p>No Notification Yet</p>
+            <Label
+              name="noNotification"
+              className={`mt-6 text-xl font-poppins font-medium`}
+              label={authLabel.noNotification[lang]}
+            />{' '}
           </div>
         ) : (
           <div>

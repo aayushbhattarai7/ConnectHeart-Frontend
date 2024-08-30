@@ -1,15 +1,17 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import SideBarDetails from './SideBarDetails';
 import { IoMenu } from 'react-icons/io5';
-import { useState } from 'react';
-import { IoNotificationsSharp } from "react-icons/io5";
-
+import { useContext, useState } from 'react';
+import { IoNotificationsSharp } from 'react-icons/io5';
+import { LanguageContext } from '../../../contexts/LanguageContext';
+import { useLang } from '../../../hooks/useLang';
+import { LanguageEnum } from '../../../types/global.types';
 
 const Header = () => {
-
+  const { lang, setLang } = useLang();
   const [sideBar, setSidebar] = useState(false);
-  const handleClick = () => {
-    setSidebar(true);
+  const toggleLanguage = () => {
+    setLang(lang === LanguageEnum.en ? LanguageEnum.ne : LanguageEnum.en);
   };
   const location = useLocation();
 
@@ -17,7 +19,6 @@ const Header = () => {
     location.pathname !== '/login' && location.pathname !== '/signup' ? '/' : '/login';
   return (
     <div className="relative">
-      
       <header className="fixed top-0 left-0 w-full h-[11vh] bg-white shadow-md z-50">
         <div
           className="font-poppins font-medium flex items-center justify-between 
@@ -32,10 +33,13 @@ const Header = () => {
           </div>
 
           <div className="flex justify-end gap-7 pr-10">
+            <button onClick={toggleLanguage}>
+              {lang === 'en' ? <p>English</p> : <p>नेपाली</p>}
+            </button>
             {location.pathname !== '/login' && location.pathname !== '/signup' && (
               <>
                 <NavLink to={'/support'}>
-                  <IoNotificationsSharp className='text-2xl'/>
+                  <IoNotificationsSharp className="text-2xl" />
                 </NavLink>
               </>
             )}
@@ -67,7 +71,7 @@ const Header = () => {
         </div>
       </header>
       <div className="">
-        <div className=" hidden 2xl:block ">
+        <div className=" hidden 2xl:block z-50">
           <SideBarDetails />
         </div>
         {sideBar && <SideBarDetails />}

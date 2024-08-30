@@ -64,10 +64,7 @@ const Settings = () => {
             <FaAdjust className="text-gray-600 mr-4" size={20} />
             <span className="text-lg font-medium text-gray-800">Theme Toggle</span>
           </li>
-          <li className="flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 hover:bg-gray-200">
-            <FaLanguage className="text-gray-600 mr-4" size={20} />
-            <span className="text-lg font-medium text-gray-800">Language Toggle</span>
-          </li>
+          
         </ul>
       </div>
       {updatePass && <UpdatePasswords />}
