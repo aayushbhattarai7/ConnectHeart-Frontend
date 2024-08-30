@@ -129,7 +129,7 @@ export const authLabel: LabelTypes = {
     ne:'ओटीपी पठाउनुहोस्'
   },
   EnterOTP: {
-    en: 'Enter otp',
+    en: 'Enter 5 digits otp',
     ne:'ओटीपी हाल्नुस्'
   }
 };

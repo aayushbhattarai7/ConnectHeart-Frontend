@@ -9,28 +9,23 @@ import {
 } from 'react-icons/fa';
 import UpdatePasswords from './UpdatePassword';
 import EmailVerify from '../molecules/EmailVerify';
-import OtpVerify from '../molecules/OtpVerify';
 
 const Settings = () => {
   const [updatePass, setUpdatePass] = useState(false);
   const [resetpass, setResetPass] = useState(false);
-  const [otpverifyPage, setOtpVerifyPage] = useState(false);
 
   const showUpdatePassword = () => {
     setUpdatePass(true);
     setResetPass(false);
-    setOtpVerifyPage(false);
   };
 
   const showResetPage = () => {
     setResetPass(true);
-    setOtpVerifyPage(false);
         setUpdatePass(false);
 
   };
 
   const showOtpverifyPage = () => {
-    setOtpVerifyPage(true);
     setResetPass(false);
     setUpdatePass(false);
   };

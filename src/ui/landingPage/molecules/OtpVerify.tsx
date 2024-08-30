@@ -56,34 +56,36 @@ const OtpVerify: React.FC<OtpVerifyProps> = ({ email }) => {
   };
 
   return (
-    <div className="flex-1 2xl:w-[76rem] h-screen bg-white p-4 lg:p-12 shadow-lg">
-      {error && <PopupMessage message={error} setMessage={setError} type="error" />}
-      {success && <PopupMessage message={success} setMessage={setSuccess} type="success" />}
-      {!verify && (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid grid-cols-1 gap-6">
-            <Label name="otp" label={authLabel.EnterOTP[lang]} />
-            <input
-              {...register('otp', { required: true })}
-              placeholder={authLabel.EnterOTP[lang]}
-              type="number"
-              className="w-fit"
-            />
-          </div>
+      <div className="w-full max-w-md  p-6 rounded-lg ">
+        {error && <PopupMessage message={error} setMessage={setError} type="error" />}
+        {success && <PopupMessage message={success} setMessage={setSuccess} type="success" />}
 
-          <div className="flex justify-end mt-6">
-            <Button
-              buttonText={authLabel.verify[lang]}
-              type="submit"
-              name=""
-              disabled={isSubmitting}
-              className="w-full lg:w-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-        </form>
-          )}
-          {verify && <ResetPassword email={ email} />}
-    </div>
+        {!verify && (
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div className="grid grid-cols-1 gap-4">
+              <Label name="otp" label={authLabel.EnterOTP[lang]} />
+              <input
+                {...register('otp', { required: true })}
+                placeholder={authLabel.EnterOTP[lang]}
+                type="number"
+                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <div className="flex justify-end mt-4">
+              <Button
+                buttonText={authLabel.verify[lang]}
+                type="submit"
+                name=""
+                disabled={isSubmitting}
+                className="w-full lg:w-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </form>
+        )}
+
+        {verify && <ResetPassword email={email} />}
+      </div>
   );
 };
 

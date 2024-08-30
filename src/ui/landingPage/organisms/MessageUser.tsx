@@ -12,7 +12,6 @@ import { image } from '../../../config/constant/image';
 import { PiPhoneCallFill } from 'react-icons/pi';
 import { FaCircleArrowLeft, FaCircleArrowRight, FaVideo } from 'react-icons/fa6';
 import { IoMdMail } from 'react-icons/io';
-import { useSocket } from '../../../contexts/OnlineStatus';
 
 interface Connection {
   id: string;
@@ -84,7 +83,6 @@ const MessageUser = () => {
   const [sideMenu, setSideMenu] = useState(false);
   const [messageBox, setMessageBox] = useState(false);
   const chatEndRef = useRef<HTMLDivElement | null>(null);
-  const sockets = useSocket();
   const {
     register,
     handleSubmit,

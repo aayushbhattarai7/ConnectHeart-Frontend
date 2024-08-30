@@ -11,6 +11,7 @@ import axiosInstance from '../../../service/instance';
 import axios from 'axios';
 import GoogleAuth from '../molecules/GoogleLogin';
 import PopupMessage from '../../common/atoms/PopupMessage';
+import EmailVerify from '../molecules/EmailVerify';
 
 interface FormData {
   email: string;
@@ -27,6 +28,7 @@ const Login: React.FC = () => {
   } = useForm<FormData>();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [resetpass, setResetPass] = useState(false);
 
   const onSubmit: SubmitHandler<FormData> = async (data, e) => {
     try {
@@ -52,80 +54,87 @@ const Login: React.FC = () => {
     }
   };
 
+  const showResetPage = () => {
+    setResetPass(true);
+  };
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-[#f3f4f6] font-poppins px-4">
       {error && <PopupMessage message={error} setMessage={setError} type="error" />}
       {success && <PopupMessage message={success} setMessage={setSuccess} type="success" />}
+      {!resetpass && (
+        <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
+          <h1 className="text-2xl font-semibold mb-4">Login</h1>
+          <p className="mb-6">Hi, Welcome Back👋</p>
 
-      <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
-        <h1 className="text-2xl font-semibold mb-4">Login</h1>
-        <p className="mb-6">Hi, Welcome Back👋</p>
-
-        <div className="flex items-center justify-center gap-3  rounded-lg pl-20 p-2 mb-6">
-          {/* <img className="w-7 h-7" src="/google.png" alt="Google Logo" />
+          <div className="flex items-center justify-center gap-3  rounded-lg pl-20 p-2 mb-6">
+            {/* <img className="w-7 h-7" src="/google.png" alt="Google Logo" />
           <button type="button" className="text-blue-500">
             Continue With Google
           </button> */}
-          <GoogleAuth />
-        </div>
-
-        <div className="relative mb-6">
-          <div className="absolute inset-x-0 top-1/2 border-t border-gray-300" />
-          <p className="absolute inset-x-0 top-1/2 text-center bg-white px-2 text-gray-400">
-            or login with email
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          {error && <p className="text-red-500 mb-4">{error}</p>}
-
-          <div className="mb-4">
-            <Label name="email" label={authLabel.email[lang]} />
-            <InputField
-              placeholder={authLabel.enterYourEmail[lang]}
-              type="email"
-              name="email"
-              register={register}
-              className="w-full"
-            />
+            <GoogleAuth />
           </div>
 
-          <div className="mb-4">
-            <Label name="password" label={authLabel.password[lang]} />
-            <InputField
-              placeholder={authLabel.enterYourPassword[lang]}
-              type="password"
-              name="password"
-              register={register}
-              className="w-full"
-            />
+          <div className="relative mb-6">
+            <div className="absolute inset-x-0 top-1/2 border-t border-gray-300" />
+            <p className="absolute inset-x-0 top-1/2 text-center bg-white px-2 text-gray-400">
+              or login with email
+            </p>
           </div>
 
-          <div className="flex justify-between items-center mb-6">
-            <div className="flex items-center gap-2">
-              <input type="checkbox" id="rememberMe" />
-              <label htmlFor="rememberMe">Remember Me</label>
+          <form onSubmit={handleSubmit(onSubmit)} noValidate>
+            {error && <p className="text-red-500 mb-4">{error}</p>}
+
+            <div className="mb-4">
+              <Label name="email" label={authLabel.email[lang]} />
+              <InputField
+                placeholder={authLabel.enterYourEmail[lang]}
+                type="email"
+                name="email"
+                register={register}
+                className="w-full"
+              />
             </div>
-            <Link className="text-blue-800" to="">
-              Forgot Password?
-            </Link>
-          </div>
 
-          <Button
-            buttonText={authLabel.login[lang]}
-            name=""
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full mb-5 hover:bg-blue-900"
-          />
+            <div className="mb-4">
+              <Label name="password" label={authLabel.password[lang]} />
+              <InputField
+                placeholder={authLabel.enterYourPassword[lang]}
+                type="password"
+                name="password"
+                register={register}
+                className="w-full"
+              />
+            </div>
 
-          <div className="text-center">
-            <Link className="text-blue-800 flex justify-center items-center" to="/signup">
-              Not registered yet? <MdOutlineArrowOutward className="ml-1" />
-            </Link>
-          </div>
-        </form>
-      </div>
+            <div className="flex justify-between items-center mb-6">
+              <div className="flex items-center gap-2">
+                <input type="checkbox" id="rememberMe" />
+                <label htmlFor="rememberMe">Remember Me</label>
+              </div>
+              <Link className="text-blue-800" to="" onClick={showResetPage}>
+                Forgot Password?
+              </Link>
+            </div>
+
+            <Button
+              buttonText={authLabel.login[lang]}
+              name=""
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full mb-5 hover:bg-blue-900"
+            />
+
+            <div className="text-center">
+              <Link className="text-blue-800 flex justify-center items-center" to="/signup">
+                Not registered yet? <MdOutlineArrowOutward className="ml-1" />
+              </Link>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {resetpass && <EmailVerify />}
     </div>
   );
 };
