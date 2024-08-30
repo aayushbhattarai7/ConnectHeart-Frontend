@@ -62,12 +62,12 @@ const Notification = () => {
                 <div className=" ">
                   {request?.sender?.profile?.path ? (
                     <img
-                      className="rounded-full w-14 h-14"
+                      className="rounded-full w-20 h-14"
                       src={request.sender.profile.path}
                       alt=""
                     />
                   ) : (
-                    <img className="rounded-full w-14 h-14" src="/profilenull.jpg" alt="" />
+                    <img className="rounded-full w-20 h-14" src="/profilenull.jpg" alt="" />
                   )}
                 </div>
                 <p className=" font-poppins font-bold" onClick={getRequest}>

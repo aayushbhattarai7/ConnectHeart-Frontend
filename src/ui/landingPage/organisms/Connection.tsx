@@ -70,7 +70,7 @@ const Connection = () => {
   }, []);
 
   return (
-    <div className="p-4 sm:p-8  bg-gray-100 flex flex-col">
+    <div className="p-4 sm:p-8 h-screen bg-gray-100 flex flex-col">
       <div className="bg-gray-100 ">
         <div className="justify-center items-center flex p-5 bg-gray-100">
           <h1 className="sm:ml-12 2xl:ml-20 xl:ml-20 mt-20 font-poppins font-medium">Connections</h1>

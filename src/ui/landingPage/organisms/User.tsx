@@ -64,17 +64,17 @@ const User = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-start mt-4 mx-auto overflow-y-auto lg:w-[23rem] xs:w-[30rem] ">
-      <div className="flex justify-start mb-4">
-        <h1 className="text-xl font-poppins font-medium text-gray-800">People You May Know</h1>
+    <div className="flex flex-col items-center mt-4 mx-auto overflow-y-auto lg:w-[40rem] xs:w-[30rem] ">
+      <div className="flex justify-center mb-4 2xl:ml-[20rem">
+        <h1 className="text-xl  font-poppins font-medium text-gray-800">People You May Know</h1>
       </div>
-      <div className="w-full min-w-[22rem] bg-white shadow-md rounded-lg overflow-hidden 2xl:w-[40rem] xl:w-[32rem] lg:w-[27rem] md:w-[30rem] sm:w-[40rem] ">
+      <div className="w-full  bg-white shadow-md rounded-lg overflow-hidden 2xl:w-[40rem] xl:w-[32rem] lg:w-[27rem] md:w-[30rem] sm:w-[40rem] ">
         {error && <p className="text-red-500 p-4">{error}</p>}
         <ul className="divide-y divide-gray-200">
           {users?.map((user) => (
             <li
               key={user?.id}
-              className="flex flex-col sm:flex-row  xs:gap-2 lg:justify-between p-2 hover:bg-gray-50"
+              className="flex flex-col sm:flex-row items-center xs:gap-2 lg:justify-between p-2 hover:bg-gray-50"
             >
               <div
                 className="flex items-center space-x-4 cursor-pointer"
@@ -93,7 +93,7 @@ const User = () => {
                     alt="Default Profile"
                   />
                 )}
-                <div className="text-center sm:text-left mt-2 sm:mt-0">
+            <div className="text-center sm:text-left mt-2 sm:mt-0">
                   <p className="font-semibold text-lg text-gray-700">
                     {user?.details?.first_name} {user?.details?.last_name}
                   </p>
@@ -101,7 +101,7 @@ const User = () => {
                 </div>
               </div>
               <button
-                className="mt-4 sm:mt-0 px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700"
+                className="mt-0 sm:mt-0 w-32 px-4 h-12 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700"
                 onClick={() => sendRequest(user?.id)}
               >
                 Send

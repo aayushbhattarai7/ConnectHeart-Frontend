@@ -54,19 +54,28 @@ const EditComment: React.FC<CommentProps> = ({ commentId, refresh, comment, onCl
   };
 
   return (
-    <div className='flex justify-between'>
+    <div className="flex justify-between">
       <form onSubmit={handleSubmit}>
-        <input type="text" name="comment" value={formData.comment} onChange={handleChange} />
-        <div>
-          <div className="mb-3">
-            <button
-              name="Comment"
-              type="submit"
-              disabled={isSubmitting}
-              className="h-8 p-0 w-8  rounded-lg rounded-r-md text-blue-600 rounded-l-none"
-            >
-              <BsFillSendFill className="text-xl" />
-            </button>
+        <h1 className="ml-16 mb-2">Edit Comment</h1>
+        <div className="flex relative">
+          <input
+            type="text"
+            className="border border-gray-200 rounded p-2"
+            name="comment"
+            value={formData.comment}
+            onChange={handleChange}
+          />
+          <div>
+            <div className="mb-3 absolute right-0 top-1">
+              <button
+                name="Comment"
+                type="submit"
+                disabled={isSubmitting}
+                className="h-8 p-0 w-8  rounded-lg  rounded-r-md text-blue-600 rounded-l-none"
+              >
+                <BsFillSendFill className="text-xl" />
+              </button>
+            </div>
           </div>
         </div>
       </form>

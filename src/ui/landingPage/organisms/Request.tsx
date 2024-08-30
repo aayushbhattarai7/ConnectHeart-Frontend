@@ -94,7 +94,7 @@ const Request = () => {
       <div className=" flex flex-wrap">
         {error && <p>{error}</p>}
         {requests.length === 0 ? (
-          <div className="flex flex-col mt-14 items-center justify-center w-full h-[40rem] bg-gray-100">
+          <div className="flex flex-col 2xl:ml-[30rem] mt-32 items-center justify-center w-full h-[40rem] bg-gray-100">
             <div className=" shadow-lg rounded-lg p-6 max-w-md text-center">
               <h2 className="text-2xl font-semibold text-gray-700">
                 No Connect Request Received Yet

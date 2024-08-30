@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axiosInstance from '../../../service/instance';
 import Comments from '../molecules/Comment';
 import ReplyComment from '../molecules/ReplyComment';
-import {  FaShare } from 'react-icons/fa';
+import { FaShare } from 'react-icons/fa';
 import axios from 'axios';
 import Post from './Post';
 import Like from './Like';
@@ -22,6 +22,7 @@ interface Post {
   postImage?: PostMedia[];
   comment?: Comment[];
   likes: likes[];
+  createdAt: string;
   postIt: {
     id: string;
     details: {
@@ -155,6 +156,23 @@ const ShowPost = () => {
       }
     }
   };
+  function getTimeDifference(createdAt: string) {
+    const noteDate = new Date(createdAt);
+    const now = new Date();
+    const diffMs = now.getTime() - noteDate.getTime();
+
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+    if (diffDays > 0) {
+      return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+    } else if (diffHours > 0) {
+      return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+    } else {
+      return `${diffMinutes} minute${diffMinutes > 1 ? 's' : ''} ago`;
+    }
+  }
 
   const toggleComments = (postId: string) => {
     setVisibleCommentsPostId((prevPostId) => (prevPostId === postId ? null : postId));
@@ -453,7 +471,7 @@ const ShowPost = () => {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col justify-start items-center overflow-y-auto h-fit  mt-30 2xl:w-[52rem] xl:w-[52rem]  lg:w-[45rem] md:w-[40rem] sm:w-[35rem] mx-auto   mb-16 bg-gray-100">
+        <div className="flex flex-col justify-start items-center overflow-y-auto h-fit w-full  mt-30 2xl:w-[52rem] xl:w-[50rem]  lg:w-[45rem] md:w-[40rem] sm:w-[35rem] mx-auto   mb-16 bg-gray-100">
           <Post postId={posts[0]?.id || ''} refresh={getPost} />
           {error && <p>{error}</p>}
           {posts.map((post) => (
@@ -463,7 +481,7 @@ const ShowPost = () => {
             >
               <div className="items-start sm:mr-20 sm:flex-row w-full p-10">
                 <div key={post.postIt?.id} className="bg-white  mb-5">
-                  <div className="flex bg-white  p-4">
+                  <div className="flex flex-col bg-white relative p-4">
                     <div className="flex gap-1">
                       {post?.postIt?.profile?.path ? (
                         <img
@@ -475,7 +493,7 @@ const ShowPost = () => {
                         <img className="w-14 h-14  rounded-full " src="/profilenull.jpg" alt="" />
                       )}
 
-                      <div className="flex gap-1 mb-3 text-nowrap py-3 px-2">
+                      <div className="flex gap-1 mb-3 text-nowrap  px-2">
                         <p className="font-medium font-poppins text-lg ">
                           {post.postIt?.details?.first_name}
                         </p>
@@ -493,6 +511,7 @@ const ShowPost = () => {
                         )}
                       </div>
                     </div>
+                    <p className="text-black absolute top-10 left-[5.2rem]">{getTimeDifference(post?.createdAt)}</p>
                   </div>
 
                   <div className=" mb-3  rounded-2xl break-words">
@@ -567,7 +586,7 @@ const ShowPost = () => {
                 </div>
                 {visibleCommentsPostId === post.id &&
                   (post.comment && post.comment.length > 0 ? (
-                    <div className="mb-3">{renderComments(post.comment)}</div>
+                    <div className="mb-7 2xl:ml-20">{renderComments(post.comment)}</div>
                   ) : (
                     <p className="ml-10 mb-3">No comments yet</p>
                   ))}
@@ -597,15 +616,15 @@ const ShowPost = () => {
 
       <div className="mt-10 mb-1 flex-col hidden xl:block ">
         <Notification />
-        <div className="fixed  2xl:top-[39rem] 2xl:w[46rem]  right-1 bg-white shadow-lg rounded-lg">
-          <div className="overflow-y-auto overflow-hidden max-h-[21rem] w-full ">
+        <div className="fixed  2xl:top-[39rem] 2xl:w-[24rem] h-80 right-1 bg-white shadow-lg rounded-lg">
+          <div className="flex flex-col items-center mt-4 mx-auto overflow-y-auto lg:w-[23rem] xs:w-[30rem] ">
+            <div className="flex justify-center  mb-4">
+              <h1 className="text-xl font-poppins font-medium text-gray-800">Connection</h1>
+            </div>
             {connects?.map((connect) => {
               return (
-                <div className="flex flex-col items-start mt-4 mx-auto overflow-y-auto lg:w-[23rem] xs:w-[30rem] ">
-                  <div className="flex justify-start mb-4">
-                    <h1 className="text-xl font-poppins font-medium text-gray-800">Connection</h1>
-                  </div>
-                  <div className="w-full min-w-[22rem] bg-white shadow-md rounded-lg overflow-hidden 2xl:w-[40rem] xl:w-[32rem] lg:w-[27rem] md:w-[30rem] sm:w-[40rem] ">
+                <div>
+                  <div className="2xl:w-[23rem]  bg-white shadow-md rounded-lg overflow-hidden ">
                     <ul className="divide-y divide-gray-200">
                       <li
                         key={connect?.id}
