@@ -1,11 +1,10 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import SideBarDetails from './SideBarDetails';
 import { IoMenu } from 'react-icons/io5';
-import { useContext, useState } from 'react';
-import { IoNotificationsSharp } from 'react-icons/io5';
-import { LanguageContext } from '../../../contexts/LanguageContext';
+import {  useState } from 'react';
 import { useLang } from '../../../hooks/useLang';
 import { LanguageEnum } from '../../../types/global.types';
+import { LuSunMedium } from 'react-icons/lu';
 
 const Header = () => {
   const { lang, setLang } = useLang();
@@ -32,17 +31,20 @@ const Header = () => {
             </h2>
           </div>
 
-          <div className="flex justify-end gap-7 pr-10">
+          <div className="flex justify-center items-center gap-7">
             <button onClick={toggleLanguage}>
               {lang === 'en' ? <p>English</p> : <p>नेपाली</p>}
             </button>
-            {location.pathname !== '/login' && location.pathname !== '/signup' && (
+            <button>
+              <LuSunMedium size={25} />
+            </button>
+            {/* {location.pathname !== '/login' && location.pathname !== '/signup' && (
               <>
                 <NavLink to={'/support'}>
                   <IoNotificationsSharp className="text-2xl" />
                 </NavLink>
               </>
-            )}
+            )} */}
 
             {location.pathname === '/login' && (
               <div className="justify-end flex items-end w-full">

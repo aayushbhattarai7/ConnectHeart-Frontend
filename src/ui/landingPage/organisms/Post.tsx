@@ -83,7 +83,7 @@ const Post: React.FC<PostProps> = ({ postId, refresh }) => {
         setError(error.response?.data?.message || 'An error occurred');
         setSuccess('');
       } else {
-        setError('Email or password is incorrect');
+        setError('Post should not be empty');
       }
     }
   };

@@ -5,7 +5,6 @@ import {
   FaUserCircle,
   FaSignOutAlt,
   FaAdjust,
-  FaLanguage,
 } from 'react-icons/fa';
 import UpdatePasswords from './UpdatePassword';
 import EmailVerify from '../molecules/EmailVerify';
@@ -31,7 +30,6 @@ const Settings = () => {
   };
   return (
     <div className="flex flex-col mt-20 2xl:ml-72 lg:ml-0 lg:flex-row bg-gray-100 min-h-screen">
-      {/* Sidebar */}
       <div className="w-full lg:w-1/4 bg-white p-4 lg:p-8 shadow-lg">
         <h2 className="text-xl lg:text-2xl font-semibold text-gray-800 mb-6">Settings</h2>
         <ul className="space-y-4">

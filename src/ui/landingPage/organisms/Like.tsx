@@ -1,73 +1,78 @@
 import { useEffect, useState } from 'react';
 import axiosInstance from '../../../service/instance';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';
+import {jwtDecode} from 'jwt-decode';
 
 interface LikeProps {
   postId: string;
-  userId: string; // ID of the currently logged-in user
+  userId: string;
 }
 
-interface Auth {
+interface DecodedToken {
   id: string;
 }
 
 interface Like {
   id: string;
-  auth: Auth;
-  isLiked: boolean;
+  auth: {
+    id: string;
+    email: string;
+    details: {
+      first_name: string;
+    };
+  };
 }
 
-interface GetLike {
-  postId: string;
-  likes: Like[];
-}
-
-const Like: React.FC<LikeProps> = ({ postId, userId }) => {
+const Like: React.FC<LikeProps> = ({ postId }) => {
   const [like, setLike] = useState<boolean>(false);
-  const [allLikes, setAllLikes] = useState<GetLike | null>(null);
+  const [decodedToken, setDecodedToken] = useState<DecodedToken | null>(null);
 
   const toggleLike = async () => {
     try {
-      const token = sessionStorage.getItem('accessToken');
 
-      const response = await axiosInstance.post(
+      await axiosInstance.post(
         `/like/${postId}`,
-        {},
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        },
+    
       );
 
       setLike((prev) => !prev);
-      // Fetch the latest like status
-      getLike(postId);
-      console.log(response);
     } catch (error) {
       console.error('Error toggling like:', error);
     }
   };
 
+  useEffect(() => {
+    const token = sessionStorage.getItem('accessToken');
+
+    if (token) {
+      try {
+        const decoded = jwtDecode<DecodedToken>(token);
+        setDecodedToken(decoded);
+      } catch (error) {
+        console.error('Failed to decode token', error);
+      }
+    } else {
+      console.error('No token found in sessionStorage');
+    }
+  }, []);
+
   const getLike = async (postId: string) => {
     try {
-      const response = await axiosInstance.get(`/like/${postId}`);
+      const response = await axiosInstance.get(`/like/like/${postId}`);
       const likes = response.data.likes;
-      setAllLikes(response.data);
 
-      const userLiked = likes.some((like: Like) => like.auth.id === userId);
+      const userLiked = likes.some((like: Like) => like.auth.id === decodedToken?.id);
       setLike(userLiked);
-
-      console.log(response.data.likes);
     } catch (error) {
       console.error('Error fetching likes:', error);
     }
   };
 
   useEffect(() => {
-    getLike(postId);
-  }, [postId]);
+    if (decodedToken) {
+      getLike(postId);
+    }
+  }, [postId, decodedToken]); 
 
   return (
     <div>
