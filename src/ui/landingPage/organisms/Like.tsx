@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import axiosInstance from '../../../service/instance';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 interface LikeProps {
   postId: string;
   userId: string;
+  refresh: (postId: string) => void;
 }
 
 interface DecodedToken {
@@ -23,18 +24,14 @@ interface Like {
   };
 }
 
-const Like: React.FC<LikeProps> = ({ postId }) => {
+const Like: React.FC<LikeProps> = ({ postId, refresh }) => {
   const [like, setLike] = useState<boolean>(false);
   const [decodedToken, setDecodedToken] = useState<DecodedToken | null>(null);
 
   const toggleLike = async () => {
     try {
-
-      await axiosInstance.post(
-        `/like/${postId}`,
-    
-      );
-
+      await axiosInstance.post(`/like/${postId}`);
+      refresh(postId);
       setLike((prev) => !prev);
     } catch (error) {
       console.error('Error toggling like:', error);
@@ -72,7 +69,7 @@ const Like: React.FC<LikeProps> = ({ postId }) => {
     if (decodedToken) {
       getLike(postId);
     }
-  }, [postId, decodedToken]); 
+  }, [postId, decodedToken]);
 
   return (
     <div>

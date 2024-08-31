@@ -10,7 +10,6 @@ import Dropdown from '../molecules/DropDownMenu';
 import { jwtDecode } from 'jwt-decode';
 import Notification from './Notification';
 import { FaHeart } from 'react-icons/fa';
-import CommentOptions from '../molecules/CommentOption';
 import { FaCircleArrowLeft, FaCircleArrowRight } from 'react-icons/fa6';
 import { FaRegCommentDots } from 'react-icons/fa';
 import Label from '../../common/atoms/Label';
@@ -70,9 +69,11 @@ interface Connection {
 
 interface Comment {
   id?: string;
+  createdAt: string;
   comment?: string;
   parentComment?: Comment | null;
   childComment?: Comment[];
+  topLevelComment: string;
   commentAuth: {
     id: string;
     details: {
@@ -102,7 +103,6 @@ const ShowPost = () => {
   const [visibleCommentsPostId, setVisibleCommentsPostId] = useState<string | null>(null);
   const [commentForm, setCommentForm] = useState<string | null>(null);
   const [sideMenu, setSideMenu] = useState(false);
-  const [displayPost, setDisplayPost] = useState(false);
   const [connects, setConnects] = useState<Connection[]>([]);
   const { lang } = useLang();
   const getPost = async () => {
@@ -112,7 +112,7 @@ const ShowPost = () => {
           'Content-Type': 'application/json',
         },
       });
-      console.log('🚀 ~ getPost ~ response:', response);
+      console.log('🚀 ~ getPost ~ response:', response.data.posts);
 
       setPosts(response.data?.posts);
       const userId = sessionStorage.getItem('accessToken');
@@ -187,73 +187,55 @@ const ShowPost = () => {
 
   const handleSideClick = () => {
     setSideMenu(!sideMenu);
-    setDisplayPost(false);
   };
+
+ 
 
   const renderComments = (comments: Comment[], isChild: boolean = false) => {
     if (!visibleCommentsPostId) return null;
 
     return comments.map((cmt) => (
-      <div key={cmt?.id} className="flex  bg-gray-100 justify-start ">
-        <div
-          key={cmt.id}
-          className={`relative mb-4 ${isChild ? 'ml-6' : 'ml-1'}
-                 p-4 rounded-md  shadow-sm `}
-        >
-          {isChild && (
-            <div className="absolute top-0 left-0 w-1 border-l-2 border-gray-300 h-full"></div>
-          )}
+      <div key={cmt?.id} className="flex bg-white p-3 mb-2">
+        <img
+          className="w-8 h-8 rounded-full mr-3"
+          src={cmt?.commentAuth?.profile?.path || '/profilenull.jpg'}
+          alt="Profile"
+        />
+        <div className="w-full">
+          <div className="flex items-center">
+            <p className="text-sm font-semibold text-gray-900">
+              {cmt?.commentAuth?.details?.first_name} {cmt?.commentAuth?.details?.last_name} <span className='font-extralight'>{getTimeDifference(cmt?.createdAt)}</span>
+            </p>
+         
+          </div>
 
-          <div className="">
-            <div className="flex gap-2 p-2">
-              {cmt?.commentAuth?.profile?.path ? (
-                <img
-                  className="w-8 h-8  rounded-full"
-                  src={cmt?.commentAuth?.profile?.path}
-                  alt="Profile"
-                />
-              ) : (
-                <img
-                  className="w-8 h-8  rounded-full"
-                  src="/profilenull.jpg"
-                  alt="Default Profile"
-                />
-              )}
-              <div className="flex flex-col">
-                <p className="mt-1 font-medium">
-                  {cmt?.commentAuth?.details?.first_name} {cmt?.commentAuth?.details?.last_name}{' '}
-                </p>
-                <div className="flex gap-4 w-[20rem] flex-wrap">
-                  <p className="flex-wrap break-words w-fit flex ">{cmt?.comment}</p>
-                  {(decodedToken?.id === cmt?.commentAuth.id ||
-                    posts.some((post) => post.postIt.id === decodedToken?.id)) && (
-                    <CommentOptions
-                      commentId={cmt?.id!}
-                      refresh={getPost}
-                      commentUser={cmt?.commentAuth.id}
-                      comment={cmt.comment!}
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
-            {replyCommentId === cmt.id && (
-              <div className=" p-4 rounded-md">
-                <ReplyComment
-                  postId={posts[0]?.id || ''}
-                  commentId={cmt.id || ''}
-                  refresh={getPost}
-                />
-              </div>
-            )}
+          <p className="mt-1 text-sm text-gray-800">{cmt?.comment}</p>
+
+          <div className="flex items-center gap-3 mt-1">
+            <button className="text-blue-600 text-xs font-medium hover:underline">Like</button>
             <button
               onClick={() => toggleReplyForm(cmt.id!)}
-              className=" text-black hover:bg-blue-700 p-1 hover:text-white rounded-md"
+              className="text-blue-600 text-xs font-medium hover:underline"
             >
               Reply
             </button>
           </div>
-          {cmt.childComment && renderComments(cmt.childComment, true)}
+
+          {isChild && replyCommentId === cmt.id && (
+            <div className="p-2 mt-2">
+              <ReplyComment
+                postId={posts[0]?.id || ''}
+                commentId={cmt.id || ''}
+                refresh={getPost}
+              />
+            </div>
+          )}
+
+          {cmt.childComment && (
+            <div className="ml-2 mt-3 pl-3 border-l border-gray-300">
+              {renderComments(cmt.childComment, true)}
+            </div>
+          )}
         </div>
       </div>
     ));
@@ -373,7 +355,7 @@ const ShowPost = () => {
               <div className="  flex justify-between pl-[5rem] mx-auto mb-1">
                 <div>
                   {post.likes.length === 0 ? (
-                    <div className='mt-8'>
+                    <div className="mt-8">
                       <p>No Likes</p>
                     </div>
                   ) : (
@@ -381,7 +363,7 @@ const ShowPost = () => {
                       <p className="pl-3 text-xl text-red-500">
                         <FaHeart />
                       </p>
-                      {post.likes.length <= 2 ? (
+                      {post.likes.length < 2 ? (
                         <span>{post.likes.length} Like</span>
                       ) : (
                         <span>{post.likes.length} Likes</span>
@@ -400,7 +382,13 @@ const ShowPost = () => {
                       <FaRegCommentDots />
                     )}
                   </button>
-                  <p>view comments</p>
+                  {post.comment?.length === 0 ? (
+                    <p>No comments</p>
+                  ) : (
+                    <div>
+                        {post.comment && post?.comment.length < 2 ? <span>{post.comment.length} comment</span> : <span>{post.comment?.length} comments</span>}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -408,7 +396,7 @@ const ShowPost = () => {
 
               <div className="flex gap-20 justify-around ml-10">
                 <div className="flex flex-col font-poppins">
-                  <Like postId={post?.id} userId={currentUserId!} />
+                  <Like postId={post?.id} userId={currentUserId!} refresh={getPost}/>
                   <p>Like</p>
                 </div>
                 <div className="flex flex-col gap-5">
