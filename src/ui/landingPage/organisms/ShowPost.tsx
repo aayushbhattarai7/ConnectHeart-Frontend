@@ -15,6 +15,7 @@ import { FaRegCommentDots } from 'react-icons/fa';
 import Label from '../../common/atoms/Label';
 import { authLabel } from '../../../localization/auth';
 import { useLang } from '../../../hooks/useLang';
+import CommentOptions from '../molecules/CommentOption';
 
 interface Post {
   id: string;
@@ -204,9 +205,20 @@ const ShowPost = () => {
         <div className="w-full">
           <div className="flex items-center">
             <p className="text-sm font-semibold text-gray-900">
-              {cmt?.commentAuth?.details?.first_name} {cmt?.commentAuth?.details?.last_name} <span className='font-extralight'>{getTimeDifference(cmt?.createdAt)}</span>
+              {cmt?.commentAuth?.details?.first_name} {cmt?.commentAuth?.details?.last_name}{' '}
+              <span className="font-extralight">{getTimeDifference(cmt?.createdAt)}</span>
             </p>
-         
+            <div className="flex gap-4 w-[20rem] ">
+              {(decodedToken?.id === cmt?.commentAuth.id ||
+                posts.some((post) => post.postIt.id === decodedToken?.id)) && (
+                <CommentOptions
+                  commentId={cmt?.id!}
+                  refresh={getPost}
+                  commentUser={cmt?.commentAuth.id}
+                  comment={cmt.comment!}
+                />
+              )}
+            </div>
           </div>
 
           <p className="mt-1 text-sm text-gray-800">{cmt?.comment}</p>
