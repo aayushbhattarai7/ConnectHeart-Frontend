@@ -9,7 +9,6 @@ import axiosInstance from '../../../service/instance';
 import { authLabel } from '../../../localization/auth';
 import Label from '../../common/atoms/Label';
 import { useLang } from '../../../hooks/useLang';
-import { LanguageEnum } from '../../../types/global.types';
 
 interface User {
   id?: string;
@@ -25,6 +24,9 @@ interface User {
     path?: string;
   };
 }
+interface Like{
+  id?:string
+}
 
 interface Count {
   counts?: string;
@@ -33,6 +35,8 @@ interface Count {
 const SideBarDetails = () => {
   const [user, setUser] = useState<User | null>(null);
   const [count, setCount] = useState<Count | null>(null);
+    const [like, setLike] = useState<Like[] | null>(null);
+
   const location = useLocation();
   const {lang} = useLang()
   const isActive = (path: string) => location.pathname === path;
@@ -63,9 +67,20 @@ const SideBarDetails = () => {
     }
   };
 
+  const getUserLike = async() => {
+    try {
+      const response = await axiosInstance.get('/like')
+      setLike(response.data.likes)
+      console.log(response.data.likes,'likes')
+    } catch (error) {
+      
+    }
+  }
+
   useEffect(() => {
     getUserDetails();
     getFriendCount();
+    getUserLike()
   }, []);
 
   return (
@@ -120,8 +135,9 @@ const SideBarDetails = () => {
                   </h1>
                 </div>
               </Link>
-              <div className="w-fit flex flex-col items-center">
-                <h1>100</h1>
+            <div className="w-fit flex flex-col items-center">
+             
+              <h1 className='font-medium font-poppins'>{like?.length}</h1>
                 <h1 className="pr-1 text-red-600">
                   <FaHeart />
                 </h1>
