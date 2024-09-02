@@ -364,26 +364,30 @@ const ShowPost = () => {
                   </div>
                 </div>
               </div>
-              <div className="  flex justify-between pl-[5rem] mx-auto mb-1">
-                <div>
+              <div className="  flex justify-between pl-[3rem] mx-auto mb-1">
+                <div className="flex">
                   {post.likes.length === 0 ? (
-                    <div className="mt-8">
+                    <div className="mt-8 flex">
                       <p>No Likes</p>
                     </div>
                   ) : (
-                    <p>
+                    <div className="flex gap-2 mt-5">
                       <p className="pl-3 text-xl text-red-500">
                         <FaHeart />
                       </p>
                       {post.likes.length < 2 ? (
-                        <span>{post.likes.length} Like</span>
+                        <span>
+                          {post.likes.length} {authLabel.like[lang]}
+                        </span>
                       ) : (
-                        <span>{post.likes.length} Likes</span>
+                        <span>
+                          {post.likes.length} {authLabel.likes[lang]}
+                        </span>
                       )}
-                    </p>
+                    </div>
                   )}
                 </div>
-                <div className="flex flex-col font-poppins">
+                <div className="flex mt-4 font-poppins">
                   <button
                     className="rounded-xl text-black text-2xl h-7 pl-5 ml-6  w-14"
                     // onClick={() => toggleComments(post.id)}
@@ -398,7 +402,15 @@ const ShowPost = () => {
                     <p>No comments</p>
                   ) : (
                     <div>
-                        {post.comment && post?.comment.length < 2 ? <span>{post.comment.length} comment</span> : <span>{post.comment?.length} comments</span>}
+                      {post.comment && post?.comment.length < 2 ? (
+                        <span>
+                          {post.comment.length} {authLabel.comment[lang]}
+                        </span>
+                      ) : (
+                        <span>
+                          {post.comment?.length} {authLabel.comments[lang]}
+                        </span>
+                      )}
                     </div>
                   )}
                 </div>
@@ -407,9 +419,11 @@ const ShowPost = () => {
               <div className="flex  ml-10 mb-4 w-full border "></div>
 
               <div className="flex gap-20 justify-around ml-10">
-                <div className="flex flex-col font-poppins">
-                  <Like postId={post?.id} userId={currentUserId!} refresh={getPost}/>
-                  <p>Like</p>
+                <div className="flex flex-col  font-poppins">
+                  <div className="ml-1">
+                    <Like postId={post?.id} userId={currentUserId!} refresh={getPost} />
+                  </div>
+                  <p>{authLabel.like[lang]}</p>
                 </div>
                 <div className="flex flex-col gap-5">
                   <div className="flex flex-col font-poppins">
@@ -423,23 +437,23 @@ const ShowPost = () => {
                         <FaRegCommentDots />
                       )}
                     </button>
-                    <p>Comment</p>
+                    <p className="pl-6 font-poppins">{authLabel.comment[lang]}</p>
                   </div>
                   <div></div>
                 </div>
 
                 <div className="flex flex-col font-poppins">
-                  <button className="ml-2">
+                  <button className="ml-1">
                     <FaShare className="text-xl" />
                   </button>
-                  <p>Share</p>
+                  <p>{authLabel.share[lang]}</p>
                 </div>
               </div>
               {visibleCommentsPostId === post.id &&
                 (post.comment && post.comment.length > 0 ? (
                   <div className="mb-7 2xl:ml-20">{renderComments(post.comment)}</div>
                 ) : (
-                  <p className="ml-10 mb-3">No comments yet</p>
+                  <p className="ml-10 mb-3">{authLabel.noCommentsyet[lang]}</p>
                 ))}
 
               <div className="w-full">

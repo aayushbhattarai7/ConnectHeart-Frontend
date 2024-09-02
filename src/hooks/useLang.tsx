@@ -12,4 +12,3 @@ export const useLang = () => {
   return languageType;
 };
 
-//export default useLang

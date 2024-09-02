@@ -1,7 +1,6 @@
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { FaHeart, FaUserFriends, FaUser, FaUserClock } from 'react-icons/fa';
 import { IoHomeSharp } from 'react-icons/io5';
-import { IoMenu } from 'react-icons/io5';
 import { AiFillMessage } from 'react-icons/ai';
 import { IoMdFemale, IoMdMale, IoMdSettings } from 'react-icons/io';
 import { useEffect, useState } from 'react';
@@ -31,8 +30,6 @@ interface Like {
 interface Count {
   counts?: string;
 }
-
-
 
 const SideBarDetails = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -204,8 +201,8 @@ const SideBarDetails = () => {
                 to={'/profile'}
                 className={`group flex gap-3 h-14 justify-center items-center pr-16 hover:border-blue-200 hover:bg-gray-200 hover:text-blue-600 hover:rounded-lg ${isActive('/profile') ? 'rounded-lg w-[14rem] bg-gray-200 text-black' : ''}`}
               >
-                <div className=" `flex items-center justify-center rounded-full ${LanguageEnum.ne && (`ml-5`)} w-[2.5rem] h-[2.5rem] text-[1.8rem] group-hover:bg-gray-300 group-hover:border-blue-300`">
-                  <FaUser />
+                <div className=" `flex items-center justify-center rounded-full  w-[2.5rem] h-[2.5rem] text-[1.8rem] group-hover:bg-gray-300 group-hover:border-blue-300`">
+                  <FaUser/>
                 </div>
                 <Label
                   name="profile"

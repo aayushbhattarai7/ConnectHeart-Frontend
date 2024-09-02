@@ -40,14 +40,20 @@ const UpdatePasswords = () => {
   };
 
   return (
-    <div>
+    <div className="flex justify-center items-center h-screen ml-60">
       {' '}
-      <div className="flex-1 2xl:w-[76rem] h-screen  bg-white p-4 lg:p-12 shadow-lg">
+      <div className="flex 2xl:ml-40 2xl:w-[30rem] justify-center bg-white p-4 lg:p-12 shadow-lg">
         {success && <PopupMessage message={success} setMessage={setSuccess} type="success" />}
         {error && <PopupMessage message={error} setMessage={setError} type="error" />}
         <form action="" onSubmit={handleSubmit(onSubmit)}>
-          <h2 className="text-2xl lg:text-3xl font-bold mb-8 text-gray-800">Update Password</h2>
-          <div className="grid grid-cols-1 gap-6">
+          <h1 className="text-3xl font-bold text-gray-800 mb-4 text-center">
+            Update Your Password
+          </h1>
+          <p className="text-lg text-gray-600 mb-6 text-center">
+            Enter your new password below to update your account credentials. Make sure to choose a
+            strong and secure password.
+          </p>
+          <div className="flex flex-col pl-20 justify-center gap-6">
             <div className="mb-4 w-fit">
               <Label name="password" label={authLabel.password[lang]} />
               <InputField
@@ -79,7 +85,7 @@ const UpdatePasswords = () => {
               />
             </div>
           </div>
-          <div className="flex justify-end mt-6">
+          <div className="flex justify-center mt-6">
             <Button
               buttonText={authLabel.updatePassword[lang]}
               type="submit"

@@ -69,7 +69,7 @@ const Like: React.FC<LikeProps> = ({ postId, refresh }) => {
     if (decodedToken) {
       getLike(postId);
     }
-  }, [postId, decodedToken]);
+  }, [decodedToken]);
 
   return (
     <div>

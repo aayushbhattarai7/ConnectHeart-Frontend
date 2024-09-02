@@ -131,7 +131,7 @@ const Post: React.FC<PostProps> = ({ postId, refresh }) => {
           )}
           <div className="flex flex-col flex-1  gap-4 ">
             <input
-              placeholder="What on your mind?"
+              placeholder={authLabel.whatsOnMind[lang] || "What's on your mind?"}
               name="thought"
               onChange={handleChange}
               className="w-full p-3 border bg-gray-100 border-gray-300 rounded-2xl focus:outline-none resize-none"
@@ -162,7 +162,7 @@ const Post: React.FC<PostProps> = ({ postId, refresh }) => {
                 onChange={handleFileChange}
                 className="hidden"
               />
-              <span className="text-sm text-gray-600">Media</span>
+              <span className="text-sm text-gray-600">{authLabel.media[lang]}</span>
             </label>
             <button type="button" className="flex items-center gap-1 text-yellow-500">
               <FaSmile className="text-xl" />
@@ -172,7 +172,7 @@ const Post: React.FC<PostProps> = ({ postId, refresh }) => {
                 onChange={handleChange}
                 className=" rounded-md  w-24 py-2  focus:outline-none bg-white text-yellow-500"
               >
-                <option value="">Feeling</option>
+                <option value=""> {authLabel.feeling[lang]}</option>
                 <option value="Happy">😊 Happy</option>
                 <option value="Loved">❤️ Loved</option>
                 <option value="Flirty">😉 Flirty</option>
@@ -188,7 +188,7 @@ const Post: React.FC<PostProps> = ({ postId, refresh }) => {
 
             <button type="button" className="flex items-center gap-1 text-green-500">
               <FaVideo className="text-xl" />
-              <span className="text-sm">Live Video</span>
+              <span className="text-sm">{authLabel.live[lang]}</span>
             </button>
           </div>
         </div>
@@ -209,4 +209,3 @@ const Post: React.FC<PostProps> = ({ postId, refresh }) => {
 };
 
 export default Post;
-

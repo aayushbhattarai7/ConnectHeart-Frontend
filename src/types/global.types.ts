@@ -5,9 +5,19 @@ export enum LanguageEnum {
   ne = 'ne',
 }
 
+export enum ThemeEnum {
+  dark = 'dark',
+  light = 'light'
+}
 
 export type Language = keyof typeof LanguageEnum;
 
+export type Theme = keyof typeof ThemeEnum;
+
+export type ThemeType = {
+  theme: ThemeEnum;
+  setTheme: (theme: ThemeEnum) => void;
+}
 
 export type LanguageType = {
   lang: LanguageEnum;

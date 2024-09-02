@@ -101,7 +101,7 @@ const Connection = () => {
               connects.map((connect) => (
                 <div
                   key={connect.id}
-                  className="flex flex-col p-5 mb-5 justify-center items-center w-64 bg-white shadow-lg rounded-lg"
+                  className="flex flex-col mt-14 p-5 mb-5 justify-center items-center w-64 bg-white shadow-lg rounded-lg"
                 >
                   <div onClick={() => handleUserClick(connect.id)}>
                     <div className="h-44 w-44 mb-5 shadow-md">

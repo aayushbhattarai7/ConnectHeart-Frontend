@@ -111,9 +111,37 @@ export const authLabel: LabelTypes = {
     en: 'Post',
     ne: 'पोस्ट',
   },
+  live: {
+    en: 'Live Video',
+    ne:'लाइभ भिडियो'
+  },
+  like: {
+    en: 'like',
+    ne:'लाइक'
+  },
+  likes: {
+    en: 'likes',
+    ne:'लाइकहरू'
+  },
   comment: {
     en: 'comment',
     ne: 'कमेंट',
+  },
+
+  comments: {
+    en: 'comments',
+    ne:''
+  },
+  share:{
+    en: 'Share',
+    ne:'शेयर'
+  },
+  noCommentsyet: {
+    en: 'No comments yet',
+    ne:'अहिले सम्म कुनै कमेन्ट छैन।'
+  },
+  sharedThePost: {
+    en:''
   },
   profile: {
     en: 'Profile',
@@ -175,5 +203,10 @@ export const authLabel: LabelTypes = {
   noConnectionP: {
     en: "You haven't connected with anyone yet.",
     ne:'तपाईंले अहिलेसम्म कुनै साथी बनाउनुभएको छैन।'
-  }
+  }, 
+  whatsOnMind: {
+    en: 'What on your mind?',
+    ne:'तपाईंको मनमा के छ?'
+  },
+ 
 };

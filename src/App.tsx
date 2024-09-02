@@ -16,6 +16,7 @@ import MessageUser from './ui/landingPage/organisms/MessageUser';
 import './App.css';
 import { SocketProvider } from './contexts/OnlineStatus';
 import LanguageProvider from './contexts/LanguageContext';
+import ThemeProvider from './contexts/ThemeContext';
 
 const router = createBrowserRouter([
   {
@@ -68,18 +69,19 @@ const router = createBrowserRouter([
         path: '/userProfile/:userId',
         element: <UserProfile />,
       },
-     
     ],
   },
 ]);
 function App() {
   return (
     <>
-      <LanguageProvider>
-        <SocketProvider>
-          <RouterProvider router={router} />
-        </SocketProvider>
-      </LanguageProvider>
+      <ThemeProvider>
+        <LanguageProvider>
+          <SocketProvider>
+            <RouterProvider router={router} />
+          </SocketProvider>
+        </LanguageProvider>
+      </ThemeProvider>
     </>
   );
 }
