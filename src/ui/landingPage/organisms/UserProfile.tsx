@@ -21,7 +21,7 @@ interface User {
 
 const UserProfile = () => {
   const [user, setUser] = useState<User | null>(null);
-
+  const { userId } = useParams<{ userId: string }>();
   const fetchUser = async (id: string) => {
     try {
       const response = await axiosInstance.get(`/user/userProfile/${id}`, {
@@ -37,11 +37,8 @@ const UserProfile = () => {
   };
 
   useEffect(() => {
-    const userId = user?.id
-    if (userId) {
-      fetchUser(userId!);
-    }
-  }, [user]);
+    fetchUser(userId!);
+  }, [userId]);
 
   return (
     <div className="min-h-screen  flex flex-col border border-black w-full  mt-10 px-5 sm:px-10 lg:px-20 ">

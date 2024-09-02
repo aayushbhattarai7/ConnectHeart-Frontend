@@ -12,7 +12,7 @@ import { image } from '../../../config/constant/image';
 import { PiPhoneCallFill } from 'react-icons/pi';
 import { FaCircleArrowLeft, FaCircleArrowRight, FaVideo } from 'react-icons/fa6';
 import { IoMdMail } from 'react-icons/io';
-
+import {NavLink} from 'react-router-dom'
 interface Connection {
   id: string;
   email?: string;
@@ -345,9 +345,9 @@ const MessageUser = () => {
       {/* {user && ( */}
       <div className=" mt-20 justify-start  fixed top-0 lg:left-0 xs:left-1  lg:w-[25rem] sm:w-[25rem] xs:w-[26rem] bg-white  items-start h-screen ">
         {sideMenu && (
-          <div className=" flex flex-col  mb-2 overflow-none lg:w-[25rem] border h-screen pt-5">
+          <div className=" flex flex-col  mb-2 mt-5 overflow-none lg:w-[25rem] border h-screen pt-5">
             <div className="mb-6">
-              <h1 className="text-blue-500 font-medium pl-7">Messages</h1>
+              <NavLink  to={'/'} className="text-blue-500 font-medium pl-7">Messages</NavLink>
             </div>
             <div className=" w-[22rem] mb-10 flex gap-5 ml-6 h-10 border bg-gray-100 rounded-lg">
               <button>

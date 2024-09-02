@@ -534,7 +534,7 @@ const ShowPost = () => {
       {sideMenu && (
         <div className=" mb-5 xs:mb-10 flex-col h-fit ">
           <Notification />
-          <div className=" fixed top-[37rem] sm:w-[18rem] overflow-y-auto right-1 h-72  bg-white  shadow-lg rounded-lg ">
+          <div className=" fixed top-[33rem] sm:w-[18rem] overflow-y-auto right-1 h-[23rem]  bg-gray-100  shadow-xl rounded-lg ">
             <div className="flex justify-center items-center  mb-4">
               <Label
                 name="connection"
@@ -543,7 +543,7 @@ const ShowPost = () => {
               />
             </div>
             {connects.length === 0 ? (
-              <div className="flex items-center justify-center h-56 mb-4">
+              <div className="flex items-center w-[32rem] bg-gray-100  justify-center h-56 mb-4">
                 <Label
                   name="noConnection"
                   className={`text-xl font-poppins font-medium text-gray-800`}

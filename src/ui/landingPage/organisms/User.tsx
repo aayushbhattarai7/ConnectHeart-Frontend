@@ -21,6 +21,7 @@ interface Connection {
 const User = () => {
   const [users, setUsers] = useState<Connection[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [user, setUser] = useState<string | null>(null)
   const navigate = useNavigate();
 
   const showUsers = async () => {
@@ -57,6 +58,8 @@ const User = () => {
 
   const handleUserClick = (userId: string) => {
     navigate(`/userProfile/${userId}`);
+
+    setUser((prevId) => (prevId))
   };
 
   useEffect(() => {
