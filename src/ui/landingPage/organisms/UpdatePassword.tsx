@@ -40,7 +40,7 @@ const UpdatePasswords = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen ml-60">
+    <div className="flex justify-center items-center mt-32 h-[70vh] ml-60">
       {' '}
       <div className="flex 2xl:ml-40 2xl:w-[30rem] justify-center bg-white p-4 lg:p-12 shadow-lg">
         {success && <PopupMessage message={success} setMessage={setSuccess} type="success" />}
