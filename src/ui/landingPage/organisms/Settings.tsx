@@ -53,6 +53,9 @@ const Settings = () => {
      try {
        const response = await axiosInstance.patch(`/user/delete`);
        console.log(response);
+       sessionStorage.removeItem('accessToken');
+       localStorage.removeItem('user');
+       navigate('/login');
        navigate('/login')
      } catch (error) {}
    };
