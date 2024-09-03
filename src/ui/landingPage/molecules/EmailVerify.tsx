@@ -9,7 +9,6 @@ import axiosInstance from '../../../service/instance';
 import axios from 'axios';
 import OtpVerify from './OtpVerify';
 
-// Define the FormData type
 interface FormData {
   email: string;
 }
@@ -39,7 +38,7 @@ const EmailVerify = () => {
         setError(error.response?.data?.message || 'An error occurred');
         setSuccess('');
       } else {
-        setError('Email or password is incorrect');
+        setError('Email is incorrect');
       }
     }
   };

@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
 import Label from '../../common/atoms/Label';
 import { authLabel } from '../../../localization/auth';
 import { useLang } from '../../../hooks/useLang';
@@ -11,7 +11,7 @@ import ResetPassword from './ResetPassword';
 
 interface FormData {
   email: string;
-  otp: string; // Add otp to the form data interface
+  otp: string; 
 }
 
 interface OtpVerifyProps {

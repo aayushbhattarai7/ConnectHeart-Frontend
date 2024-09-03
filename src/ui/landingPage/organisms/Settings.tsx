@@ -1,24 +1,21 @@
 import { useState } from 'react';
-import {
-  FaKey,
-  FaUnlockAlt,
-  FaUserCircle,
-  FaSignOutAlt,
-} from 'react-icons/fa';
+import { FaKey, FaUnlockAlt, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import { BsHouseLockFill } from 'react-icons/bs';
 import UpdatePasswords from './UpdatePassword';
 import EmailVerify from '../molecules/EmailVerify';
 import { useNavigate } from 'react-router-dom';
 import { RxCross2 } from 'react-icons/rx';
+import axiosInstance from '../../../service/instance';
 
 const Settings = () => {
   const [updatePass, setUpdatePass] = useState(false);
   const [resetpass, setResetPass] = useState(false);
   const [activeItem, setActiveItem] = useState('');
-    const [isLogout, setIsLogout] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
+  const [isLogout, setIsLogout] = useState(false);
 
-const navigate = useNavigate()
-  const handleMenuClick = (item:any) => {
+  const navigate = useNavigate();
+  const handleMenuClick = (item: any) => {
     setActiveItem(item);
     if (item === 'updatePass') {
       setUpdatePass(true);
@@ -32,22 +29,35 @@ const navigate = useNavigate()
     }
   };
 
-
-  const isActive = (item:any) => activeItem === item;
-  
+  const isActive = (item: any) => activeItem === item;
 
   const Logout = () => {
-    sessionStorage.removeItem('accessToken')
-      localStorage.removeItem('user');
-    navigate('/login')
+    sessionStorage.removeItem('accessToken');
+    localStorage.removeItem('user');
+    navigate('/login');
   };
 
   const handleLogoutClick = () => {
     setIsLogout(true);
   };
 
-   const handleCloseLogout = () => {
-     setIsLogout(false);
+  const handleCloseLogout = () => {
+    setIsLogout(false);
+  };
+
+  const handleDeleteClick = () => {
+    setIsDelete(true)
+    console.log('clicked')
+  };
+   const handleDelete = async () => {
+     try {
+       const response = await axiosInstance.patch(`/user/delete`);
+       console.log(response);
+       navigate('/login')
+     } catch (error) {}
+   };
+   const handleCloseDelete = () => {
+     setIsDelete(false);
    };
 
   return (
@@ -87,6 +97,14 @@ const navigate = useNavigate()
             <FaSignOutAlt className="text-gray-600 mr-4" size={20} />
             <span className="text-lg font-medium text-gray-800">Logout</span>
           </li>
+
+          <li
+            className="flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 hover:bg-gray-200"
+            onClick={handleDeleteClick}
+          >
+            <FaSignOutAlt className="text-gray-600 mr-4" size={20} />
+            <span className="text-lg font-medium text-gray-800">Delete Account</span>
+          </li>
         </ul>
       </div>
       {updatePass && <UpdatePasswords />}
@@ -122,6 +140,46 @@ const navigate = useNavigate()
           </div>
         </div>
       )}
+      <div>
+        {isDelete && (
+          <div>
+            <div className="fixed inset-0 w-[100%] flex items-center justify-center font-poppins bg-black bg-opacity-50 z-50">
+              <div className="bg-white p-6 rounded shadow-lg w-96">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-lg font-bold">Delete Account</h2>
+                  <button onClick={handleCloseDelete} className="text-gray-500">
+                    <RxCross2 />
+                  </button>
+                </div>
+                <p className="mb-4">
+                  {' '}
+                  Are you sure you want to delete your account? Please note that your account will
+                  be permanently deleted only after 10 days from the start of the deletion process.
+                  During this period, you can cancel the deletion if you change your mind.
+                </p>
+                <div className="flex justify-end gap-4">
+                  <button
+                    name="Cancel"
+                    type="button"
+                    onClick={handleCloseDelete}
+                    className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    name="Confirm"
+                    type="button"
+                    onClick={handleDelete}
+                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
