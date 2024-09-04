@@ -16,8 +16,7 @@ import MessageUser from './ui/landingPage/organisms/MessageUser';
 import './App.css';
 import { SocketProvider } from './contexts/OnlineStatus';
 import LanguageProvider from './contexts/LanguageContext';
-import ThemeProvider from './contexts/ThemeContext';
-
+import { ThemeProvider } from './contexts/ThemeContext';
 const router = createBrowserRouter([
   {
     path: '/',

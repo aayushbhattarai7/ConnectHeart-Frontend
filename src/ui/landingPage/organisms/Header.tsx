@@ -1,10 +1,11 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import SideBarDetails from './SideBarDetails';
 import { IoMenu } from 'react-icons/io5';
-import {  useState } from 'react';
+import { useContext, useState } from 'react';
 import { useLang } from '../../../hooks/useLang';
 import { LanguageEnum } from '../../../types/global.types';
 import { LuSunMedium } from 'react-icons/lu';
+import { ThemeContext } from '../../../contexts/ThemeContext';
 
 const Header = () => {
   const { lang, setLang } = useLang();
@@ -13,12 +14,27 @@ const Header = () => {
     setLang(lang === LanguageEnum.en ? LanguageEnum.ne : LanguageEnum.en);
   };
   const location = useLocation();
+  const theme = useContext(ThemeContext);
+  const darkMode = theme.state.darkMode;
+  const toggleTheme = () => {
+    if (darkMode === true) {
+      theme.dispatch({ type: 'LIGHTMODE' });
+    } else {
+      theme.dispatch({ type: 'DARKMODE' });
+    }
+  };
 
   const targetPath =
     location.pathname !== '/login' && location.pathname !== '/signup' ? '/' : '/login';
   return (
     <div className="relative">
-      <header className="fixed top-0 left-0 w-full h-[11vh] bg-white shadow-md z-50">
+      <header
+        className={
+          darkMode
+            ? 'fixed top-0 left-0 w-full h-[11vh] bg-white text-black shadow-md z-50'
+            : 'fixed top-0 left-0 w-full h-[11vh] bg-gray-750 text-white shadow-md z-50'
+        }
+      >
         <div
           className="font-poppins font-medium flex items-center justify-between 
         p-4 h-full"
@@ -35,7 +51,7 @@ const Header = () => {
             <button onClick={toggleLanguage}>
               {lang === 'en' ? <p>English</p> : <p>नेपाली</p>}
             </button>
-            <button>
+            <button onClick={() => toggleTheme()}>
               <LuSunMedium size={25} />
             </button>
             {/* {location.pathname !== '/login' && location.pathname !== '/signup' && (

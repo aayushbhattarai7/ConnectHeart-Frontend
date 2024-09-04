@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import InputField from '../../common/atoms/InputField';
 import Button from '../../common/atoms/Button';
 import Label from '../../common/atoms/Label';
@@ -12,15 +12,23 @@ import axios from 'axios';
 import GoogleAuth from '../molecules/GoogleLogin';
 import PopupMessage from '../../common/atoms/PopupMessage';
 import EmailVerify from '../molecules/EmailVerify';
+import { ThemeContext } from '../../../contexts/ThemeContext';
 
 interface FormData {
   email: string;
   password: string;
 }
 
+
+
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const { lang } = useLang();
+   const {
+     state: { darkMode },
+   } = useContext(ThemeContext);
+
+   const bgColor = darkMode ? 'bg-white' : 'bg-gray-700';
   const {
     register,
     handleSubmit,
@@ -59,11 +67,17 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#f3f4f6] font-poppins px-4">
+    <div className={`flex justify-center items-center min-h-screen  font-poppins px-4 ${bgColor}`}>
       {error && <PopupMessage message={error} setMessage={setError} type="error" />}
       {success && <PopupMessage message={success} setMessage={setSuccess} type="success" />}
       {!resetpass && (
-        <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
+        <div
+          className={
+            darkMode
+              ? `w-full max-w-md p-6 rounded-lg bg-white shadow-md`
+              : `w-full max-w-md p-6 rounded-lg bg-white shadow-md`
+          }
+        >
           <h1 className="text-2xl font-semibold mb-4">Login</h1>
           <p className="mb-6">Hi, Welcome Back👋</p>
 
@@ -75,7 +89,7 @@ const Login: React.FC = () => {
             <GoogleAuth />
           </div>
 
-          <div className="relative mb-6">
+          <div className="relative mb-14">
             <div className="absolute inset-x-0 top-1/2 border-t border-gray-300" />
             <p className="absolute inset-x-0 top-1/2 text-center bg-white px-2 text-gray-400">
               or login with email

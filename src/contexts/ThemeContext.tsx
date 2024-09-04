@@ -1,34 +1,38 @@
-import {  createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { ThemeEnum } from "../types/global.types";
-interface ThemeProviderProps {
-  children: ReactNode;
-}
+import React, { createContext, useReducer, Dispatch } from 'react';
 
+type StateType = {
+  darkMode: boolean;
+};
 
-export const ThemeContext = createContext<{
-  theme: ThemeEnum,
-    setTheme: (theme:ThemeEnum) => void
-}>({
-    theme: ThemeEnum.light, 
-    setTheme: () => {
-        return
-    }
+type ActionType = { type: 'LIGHTMODE' } | { type: 'DARKMODE' };
+
+type ContextType = {
+  state: StateType;
+  dispatch: Dispatch<ActionType>;
+};
+
+const initialState: StateType = { darkMode: true };
+
+export const ThemeContext = createContext<ContextType>({
+  state: initialState,
+  dispatch: () => undefined,
 });
-const ThemeProvider = ({ children }: ThemeProviderProps) => {
-    const [themes, setThemes] = useState<ThemeEnum>(
-        (localStorage.getItem('theme') as ThemeEnum || ThemeEnum.light)
-    )
-    useEffect(() => {
-    localStorage.setItem('theme', themes);
-    }, [themes])
-    
-    return (
-        <ThemeContext.Provider value={{ theme: themes, setTheme: setThemes }}>
-            {children}
-        </ThemeContext.Provider>
-    )
 
+const themeReducer = (state: StateType, action: ActionType): StateType => {
+  switch (action.type) {
+    case 'LIGHTMODE':
+      return { darkMode: false };
+    case 'DARKMODE':
+      return { darkMode: true };
+    default:
+      return state;
+  }
+};
+
+export function ThemeProvider(props: React.PropsWithChildren<{}>) {
+  const [state, dispatch] = useReducer(themeReducer, initialState);
+
+  return (
+    <ThemeContext.Provider value={{ state, dispatch }}>{props.children}</ThemeContext.Provider>
+  );
 }
-
-
-export default ThemeProvider;

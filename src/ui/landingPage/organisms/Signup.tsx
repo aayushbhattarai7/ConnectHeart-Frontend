@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import InputField from '../../common/atoms/InputField';
 import Button from '../../common/atoms/Button';
 import Label from '../../common/atoms/Label';
@@ -10,6 +10,7 @@ import axiosInstance from '../../../service/instance';
 import { MdOutlineArrowOutward } from 'react-icons/md';
 import axios from 'axios';
 import PopupMessage from '../../common/atoms/PopupMessage';
+import { ThemeContext } from '../../../contexts/ThemeContext';
 
 interface FormData {
   first_name: string;
@@ -26,6 +27,11 @@ interface FormData {
 const Signup: React.FC = () => {
   const navigate = useNavigate();
   const { lang } = useLang();
+   const {
+     state: { darkMode },
+   } = useContext(ThemeContext);
+
+   const bgColor = darkMode ? 'bg-white' : 'bg-gray-700';
   const {
     register,
     handleSubmit,
@@ -66,8 +72,8 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#f3f4f6] font-poppins mb-2 p-4">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+    <div className={`flex justify-center items-center min-h-screen  font-poppins px-4 ${bgColor}`}>
+      <div className="bg-white p-6 mt-20 rounded-lg shadow-lg w-full max-w-lg">
         <h1 className="text-2xl font-semibold mb-4">Signup</h1>
         <p className="mb-6">Hi, Welcome to ConnectHeart👋</p>
         {success && <PopupMessage message={success} setMessage={setSuccess} type="success" />}
