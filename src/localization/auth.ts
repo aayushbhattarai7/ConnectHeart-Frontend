@@ -205,7 +205,7 @@ export const authLabel: LabelTypes = {
     ne:'तपाईंले अहिलेसम्म कुनै साथी बनाउनुभएको छैन।'
   }, 
   whatsOnMind: {
-    en: 'What on your mind?',
+    en: "What's on your mind?",
     ne:'तपाईंको मनमा के छ?'
   },
  

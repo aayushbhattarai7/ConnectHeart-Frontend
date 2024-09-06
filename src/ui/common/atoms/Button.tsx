@@ -21,7 +21,7 @@ const Button: React.FC<ButtonProps> = ({
       <button
         type={type}
         disabled={disabled}
-        className={`border rounded-md 
+        className={` rounded-md 
             w-24 bg-blue-700 text-white p-2  ${className}`}
       >
         {disabled ? <img className="w-10 h-10" src={image?.loader} alt="" /> : name}

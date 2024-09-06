@@ -6,7 +6,8 @@ import { useLang } from '../../../hooks/useLang';
 import { LanguageEnum } from '../../../types/global.types';
 import { LuSunMedium } from 'react-icons/lu';
 import { ThemeContext } from '../../../contexts/ThemeContext';
-
+import whiteLogo from '../../../assets/images/logo.png'
+import darkLogo from '../../../assets/images/logo1.png'
 const Header = () => {
   const { lang, setLang } = useLang();
   const [sideBar, setSidebar] = useState(false);
@@ -23,6 +24,7 @@ const Header = () => {
       theme.dispatch({ type: 'DARKMODE' });
     }
   };
+  const logo = darkMode ? darkLogo : whiteLogo;
 
   const targetPath =
     location.pathname !== '/login' && location.pathname !== '/signup' ? '/' : '/login';
@@ -42,7 +44,7 @@ const Header = () => {
           <div>
             <h2 className="pl-5">
               <NavLink to={targetPath}>
-                <img className="w-24 h-24 pb-3" src="/logo.png" alt="Logo" />
+                <img className="w-[10rem] h-[10rem] pb-3" src={logo} alt="Logo" />
               </NavLink>
             </h2>
           </div>

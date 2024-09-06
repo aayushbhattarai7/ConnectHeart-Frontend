@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import axiosInstance from '../../../service/instance';
 import { jwtDecode } from 'jwt-decode';
 import { useForm } from 'react-hook-form';
@@ -13,6 +13,7 @@ import { PiPhoneCallFill } from 'react-icons/pi';
 import { FaCircleArrowLeft, FaCircleArrowRight, FaVideo } from 'react-icons/fa6';
 import { IoMdMail } from 'react-icons/io';
 import {NavLink} from 'react-router-dom'
+import { ThemeContext } from '../../../contexts/ThemeContext';
 interface Connection {
   id: string;
   email?: string;
@@ -83,6 +84,14 @@ const MessageUser = () => {
   const [sideMenu, setSideMenu] = useState(false);
   const [messageBox, setMessageBox] = useState(false);
   const chatEndRef = useRef<HTMLDivElement | null>(null);
+   const {
+     state: { darkMode },
+   } = useContext(ThemeContext);
+
+  const bgColor = darkMode ? 'bg-white' : 'bg-gray-800';
+  const textColor = darkMode ? 'text-black' : 'text-white';
+  const clickUser = darkMode? 'bg-gray-200':'bg-gray-900'
+
   const {
     register,
     handleSubmit,
@@ -341,20 +350,20 @@ const MessageUser = () => {
   };
 
   return (
-    <div className=" font-poppins flex justify-between">
+    <div className={`font-poppins flex ${bgColor} justify-between`}>
       {/* {user && ( */}
-      <div className=" mt-20 justify-start  fixed top-0 lg:left-0 xs:left-1  lg:w-[25rem] sm:w-[25rem] xs:w-[26rem] bg-white  items-start h-screen ">
+      <div className=" mt-20 justify-start  fixed top-0 lg:left-0 xs:left-1  lg:w-[25rem] sm:w-[25rem] xs:w-[26rem]   items-start h-screen ">
         {sideMenu && (
-          <div className=" flex flex-col  mb-2 mt-5 overflow-none lg:w-[25rem] border h-screen pt-5">
+          <div className=" flex flex-col  mb-2 mt-5 overflow-none lg:w-[25rem]  h-screen pt-5">
             <div className="mb-6">
               <NavLink  to={'/'} className="text-blue-500 font-medium pl-7">Messages</NavLink>
             </div>
-            <div className=" w-[22rem] mb-10 flex gap-5 ml-6 h-10 border bg-gray-100 rounded-lg">
-              <button>
+            <div className={`w-[22rem] mb-10 flex gap-5 ${bgColor} ml-6 h-10 border  rounded-lg`}>
+              <button className={`${textColor} ml-1`}>
                 <FiSearch />
               </button>
               <input
-                className="outline-none bg-gray-100 w-[20rem]"
+                className={`outline-none ${bgColor} w-[19rem] `}
                 type="text"
                 name=""
                 id=""
@@ -366,9 +375,9 @@ const MessageUser = () => {
               return (
                 <div
                   key={connect?.id}
-                  className={`flex flex-col p-8  h-11 mb-10 justify-center overflow-hidden w-[24.9rem]  items-center cursor-pointer${
+                  className={`flex flex-col p-10 pt-8  h-11 mb-10 justify-center overflow-hidden w-[24.9rem]  items-center cursor-pointer${
                     senders === connect.id
-                      ? ' text-black hover:bg-gray-100 bg-gray-100 border-t-2 border-b-2 '
+                      ? ` text-black hover:bg-gray-100 ${clickUser} `
                       : ' hover:bg-gray-100'
                   }`}
                   onClick={() => handleChatClick(connect?.id)}
@@ -399,15 +408,15 @@ const MessageUser = () => {
                       )}
                       <div className="flex justify-start w-[18rem] pl-3 items-center">
                         <div className="mb-3 mt-2 w-[10rem]  flex flex-col font-medium">
-                          <p className="font-medium">
+                          <p className={` ${textColor} font-medium`}>
                             {connect?.details?.first_name} {connect?.details?.last_name}
                           </p>
-                          {type && senders === connect.id && <p>Typing...</p>}
+                          {type && senders === connect.id && <p className={`${textColor}`}>Typing...</p>}
                         </div>
                       </div>
                     </div>
                     <div className="pr-7">
-                      <p className="">5:30</p>
+                      <p className={`${textColor}`}>5:30</p>
                       {unreadCounts[connect.id] > 0 && (
                         <span className="bg-red-500 text-white rounded-full text-xs w-9 px-[8px] h-5">
                           {unreadCounts[connect.id]}
@@ -430,10 +439,9 @@ const MessageUser = () => {
           </button>
         </div>
       </div>
-      <div className="h-[58rem]  flex flex-col w-full  overflow-hidden">
-        <div className="p-4 flex items-center justify-between bg-white"></div>
+      <div className="h-[60.09rem]  flex flex-col w-full  overflow-hidden">
         {showMessage && messageBox ? (
-          <div className=" 2xl:ml-[25rem] xl:ml-10 p-4 mb-10 justify-start items-start   overflow-auto mx-auto 2xl:w-[70rem] xl:w-[40rem] lg:w-[35rem] sm:w-[30rem] xs:w-[25rem] bg-white border-b-0 overflow-y-auto border  flex-grow">
+          <div className=" 2xl:ml-[25rem] xl:ml-10 p-4 mb-10 justify-start items-start   overflow-auto mx-auto 2xl:w-[70rem] xl:w-[40rem] lg:w-[35rem] sm:w-[30rem] xs:w-[25rem] border-b-0 overflow-y-auto border  flex-grow">
             {/* {connects?.map((connect) => {
             return (
               <div>
@@ -522,11 +530,11 @@ const MessageUser = () => {
           </div>
         ) : (
           <div className="h-screen flex justify-center items-center ml-32">
-            <p className="ml-56">Select any user to message</p>
+            <p className={`${textColor} ml-56`}>Select any user to message</p>
           </div>
         )}
         {messageBox && (
-          <div className="w-[70rem] xs:left-[40rem] fixed bottom-0 lg:left-[25rem] gap-20 p-4 bg-white border border-gray-300">
+          <div className="w-[70rem] xs:left-[40rem] fixed bottom-0 lg:left-[25rem] gap-20 p-4 border border-gray-300">
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="flex w-full xl:max-w-[65rem]  mx-auto"
@@ -535,12 +543,12 @@ const MessageUser = () => {
                 type="text"
                 {...register('message')}
                 placeholder="Type Here..."
-                className="flex-grow p-2 rounded-l-lg  outline-none"
+                className={`flex-grow ${bgColor} p-2 rounded-l-lg  outline-none`}
                 onKeyDown={() => socket?.emit('typing', { senders })}
                 required
               />
               <div className="flex gap-12 xl:pl-20 ">
-                <p className="text-2xl pt-3 " onClick={() => setToggleEmoji(!toggleEmoji)}>
+                <p className={`text-2xl ${textColor} pt-3 `} onClick={() => setToggleEmoji(!toggleEmoji)}>
                   <MdOutlineEmojiEmotions />
                 </p>
 
@@ -580,7 +588,7 @@ const MessageUser = () => {
                         alt="Default Profile"
                       />
                     )}
-                    <p className="font-medium text-xl pl-7">
+                    <p className={`font-medium ${textColor} text-xl pl-7`}>
                       {connect?.details?.first_name} {connect?.details.last_name}
                     </p>
                     <div className="flex gap-7 justify-center ml-8 mb-5">
@@ -598,15 +606,15 @@ const MessageUser = () => {
                       <div className="flex pt-2 flex-col mr-24">
                         <div className="mb-5">
                           <p className="text-gray-500">Gender</p>
-                          <p>{connect?.details?.gender}</p>
+                          <p className={`${textColor}`}>{connect?.details?.gender}</p>
                         </div>
                         <div className="mb-5">
                           <p className="text-gray-500">Email</p>
-                          <p>{connect?.email}</p>
+                          <p className={`${textColor}`}>{connect?.email}</p> 
                         </div>
                         <div>
                           <p className="text-gray-500">Phone</p>
-                          <p>{connect?.details?.phone_number}</p>
+                          <p className={`${textColor}`}>{connect?.details?.phone_number}</p>
                         </div>
                       </div>
                     </div>

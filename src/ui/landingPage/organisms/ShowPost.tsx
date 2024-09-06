@@ -111,9 +111,10 @@ const ShowPost = () => {
     state: { darkMode },
   } = useContext(ThemeContext);
 
-  const bgColor = darkMode ? 'bg-white' : 'bg-gray-700';
+  const bgColor = darkMode ? 'bg-white' : 'bg-gray-800';
+  const connectBgColor = darkMode ? 'bg-white' : 'bg-gray-700';
   const textColor = darkMode ? 'text-black' : 'text-white';
-  const hoverDiv = darkMode ? 'hover:bg-gray-50':'hover:bg-gray-800';
+  const hoverDiv = darkMode ? 'hover:bg-gray-50' : 'hover:bg-gray-800';
   const getPost = async () => {
     try {
       const response = await axiosInstance.get('/post/', {
@@ -197,8 +198,6 @@ const ShowPost = () => {
   const handleSideClick = () => {
     setSideMenu(!sideMenu);
   };
-
- 
 
   const renderComments = (comments: Comment[], isChild: boolean = false) => {
     if (!visibleCommentsPostId) return null;
@@ -499,7 +498,7 @@ const ShowPost = () => {
       <div className="mt-10 mb-1 flex-col hidden xl:block ">
         <Notification />
         <div
-          className={`fixed  lg:top-[38rem] lg:w-[24rem] h-80 ${bgColor} right-1 shadow-lg rounded-lg`}
+          className={`fixed  lg:top-[38rem] lg:w-[24rem] h-80 ${connectBgColor} right-1 shadow-lg rounded-lg`}
         >
           <div className="flex flex-col items-center mt-4 mx-auto overflow-y-auto lg:w-[23rem] xs:w-[30rem] ">
             <div className="flex justify-center  mb-4">
@@ -522,7 +521,9 @@ const ShowPost = () => {
                 {connects?.map((connect) => {
                   return (
                     <div>
-                      <div className={`2xl:w-[23rem] ${bgColor}  shadow-md rounded-lg overflow-hidden `}>
+                      <div
+                        className={`2xl:w-[23rem] ${connectBgColor} border border-gray-600  shadow-md rounded-lg overflow-hidden `}
+                      >
                         <ul className="divide-y divide-gray-200">
                           <li
                             key={connect?.id}
@@ -549,9 +550,7 @@ const ShowPost = () => {
                                 <p className="font-semibold text-lg">
                                   {connect?.details?.first_name} {connect?.details?.last_name}
                                 </p>
-                                {connect?.email && (
-                                  <p className=" text-sm">{connect?.email}</p>
-                                )}
+                                {connect?.email && <p className=" text-sm">{connect?.email}</p>}
                               </div>
                             </div>
                           </li>

@@ -46,7 +46,7 @@ const InputField: React.FC<InputFieldProps> = ({
         multiple={multiple}
         {...register(name, { required })}
         onChange={onChange}
-        className={`border rounded-lg p-2 outline-none ${className}`}
+        className={` rounded-lg p-2 outline-none ${className}`}
         maxLength={maxLength}
         onKeyDown={onKeyDown}
       />

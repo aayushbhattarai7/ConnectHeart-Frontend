@@ -140,7 +140,7 @@ const Post: React.FC<PostProps> = ({ postId, refresh }) => {
               placeholder={authLabel.whatsOnMind[lang] || "What's on your mind?"}
               name="thought"
               onChange={handleChange}
-              className={`w-full p-3 border ${bgColor} border-gray-300 rounded-2xl focus:outline-none resize-none`}
+              className={`w-full p-3 border ${bgColor} border-gray-600 rounded-2xl focus:outline-none resize-none`}
             />
             <div className="flex items-center justify-between">
               <Button
