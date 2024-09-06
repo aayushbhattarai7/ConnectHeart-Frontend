@@ -100,11 +100,11 @@ const Request = () => {
     showRequest();
   }, []);
   return (
-    <div className={`h-screen mt-20 justify-start flex flex-col  items-start 2xl:ml-72 xs:pl-20 ${bgColor}`}>
+    <div className={`h-screen mt-20 justify-start flex flex-col  items-start xs:pl-20 ${bgColor}`}>
       <div className=" flex flex-wrap">
         {error && <p>{error}</p>}
         {requests.length === 0 ? (
-          <div className="flex flex-col 2xl:ml-[30rem] mt-32 items-center justify-center w-full h-[40rem]">
+          <div className="flex flex-col 2xl:ml-[55rem] mt-32 items-center justify-center w-full h-[40rem]">
             <div className=" shadow-lg rounded-lg p-6 max-w-md text-center flex flex-col">
               <Label
                 name="requests"

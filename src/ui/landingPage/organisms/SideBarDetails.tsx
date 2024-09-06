@@ -41,7 +41,9 @@ const SideBarDetails = () => {
    } = useContext(ThemeContext);
 
   const bgColor = darkMode ? 'bg-white' : 'bg-gray-900';
-     const textColor = darkMode ? 'text-black' : 'text-white';
+  const textColor = darkMode ? 'text-black' : 'text-white';
+  const activeText = darkMode ? 'text-black' : 'text-white'
+  const activeBg = darkMode? 'bg-gray-300':'bg-gray-700'
 
   const location = useLocation();
   const { lang } = useLang();
@@ -93,7 +95,7 @@ const SideBarDetails = () => {
         location.pathname !== '/signup' &&
         location.pathname !== '/message' && (
           <div
-            className={`p-8 flex-col  fixed top-[6.5rem] left-2 w-72 z-50 h-screen xs:h-auto ${bgColor} ${textColor}`}
+            className={`p-8 flex-col  fixed top-[7rem] left-2 w-72 z-50 h-screen xs:h-auto ${bgColor} ${textColor}`}
           >
             <div key={user?.id} className="flex-col justify-center ml-4 flex mb-10 ">
               {user?.profile?.path ? (
@@ -152,70 +154,70 @@ const SideBarDetails = () => {
             <div className={`flex flex-col gap-5 ${textColor}`}>
               <NavLink
                 to={'/'}
-                className={`group flex gap-3 h-14 justify-center items-center pr-7 hover:border-blue-200 hover:bg-gray-200 hover:text-blue-600 hover:rounded-lg ${isActive('/') ? 'rounded-lg w-[14rem] bg-gray-200 text-black' : 'text-white'}`}
+                className={`group flex gap-3 h-14 justify-center items-center pr-7 hover:border-blue-200 hover:bg-gray-200 hover:text-blue-600 hover:rounded-lg ${isActive('/') ? `rounded-lg w-[14rem] ${activeBg}` : ''}`}
               >
                 <div className=" flex items-center justify-center rounded-full w-[2.5rem] h-[2.5rem] text-[1.7rem] group-hover:bg-gray-300 group-hover:border-blue-300">
                   <IoHomeSharp />
                 </div>
                 <Label
                   name="feed"
-                  className={`text-xl ${textColor} font-medium font-poppins`}
+                  className={`text-xl group-hover:text-black font-medium font-poppins ${activeText}`}
                   label={authLabel.feed[lang]}
                 />
               </NavLink>
 
               <NavLink
                 to={'/connect'}
-                className={`group flex gap-3 h-14 justify-center items-center pr-7 hover:border-blue-200 hover:bg-gray-200 hover:text-blue-600 hover:rounded-lg ${isActive('/connect') ? 'rounded-lg w-[14rem] bg-gray-200 text-black' : ''}`}
+                className={`group flex gap-3 h-14 justify-center items-center pr-7 hover:border-blue-200 hover:bg-gray-200 hover:text-blue-600 hover:rounded-lg ${isActive('/connect') ? `rounded-lg w-[14rem] ${activeBg}` : ''}`}
               >
                 <div className=" flex items-center justify-center rounded-full w-[2.5rem] h-[2.5rem] group-hover:bg-gray-300 p-1 text-[1.8rem] group-hover:border-blue-300">
                   <FaUserFriends />
                 </div>
                 <Label
                   name="connection"
-                  className={`text-xl ${textColor} font-medium font-poppins`}
+                  className={`text-xl group-hover:text-black font-medium font-poppins ${activeText}`}
                   label={authLabel.connection[lang]}
                 />
               </NavLink>
 
               <NavLink
                 to={'/requests'}
-                className={`group flex gap-3 h-14 justify-center items-center pr-10 hover:border-blue-200 hover:bg-gray-200 hover:text-blue-600 hover:rounded-lg ${isActive('/requests') ? 'rounded-lg w-[14rem] bg-gray-200 text-black' : ''}`}
+                className={`group flex gap-3 h-14 justify-center items-center pr-10 hover:border-blue-200 hover:bg-gray-200 hover:text-blue-600 hover:rounded-lg ${isActive('/requests') ? `rounded-lg w-[14rem]  ${activeBg}` : ''}`}
               >
                 <div className=" flex items-center justify-center rounded-full w-[2.5rem] h-[2.5rem] text-[1.8rem] group-hover:bg-gray-300 group-hover:border-blue-300">
                   <FaUserClock />
                 </div>
                 <Label
                   name="requests"
-                  className={`text-xl ${textColor} font-medium font-poppins`}
+                  className={`text-xl group-hover:text-black font-medium font-poppins ${activeText}`}
                   label={authLabel.requests[lang]}
                 />
               </NavLink>
 
               <NavLink
                 to={'/message'}
-                className={`group flex gap-3 h-14 justify-center items-center pr-10 hover:border-blue-200 hover:bg-gray-200 hover:text-blue-600 hover:rounded-lg ${isActive('/message') ? 'rounded-lg w-[14rem] bg-gray-200 text-black' : ''}`}
+                className={`group flex gap-3 h-14 justify-center items-center pr-10 hover:border-blue-200 hover:bg-gray-200 hover:text-blue-600 hover:rounded-lg ${isActive('/message') ? `rounded-lg w-[14rem]  ${activeBg}` : ''}`}
               >
                 <div className=" flex items-center justify-center rounded-full w-[2.5rem] h-[2.5rem] text-[1.8rem] group-hover:bg-gray-300 group-hover:border-blue-300">
                   <AiFillMessage />
                 </div>
                 <Label
                   name="message"
-                  className={`text-xl ${textColor} font-medium font-poppins`}
+                  className={`text-xl group-hover:text-black font-medium font-poppins ${activeText}`}
                   label={authLabel.message[lang]}
                 />
               </NavLink>
 
               <NavLink
                 to={'/profile'}
-                className={`group flex gap-3 h-14 justify-center items-center pr-16 hover:border-blue-200 hover:bg-gray-200 hover:text-blue-600 hover:rounded-lg ${isActive('/profile') ? 'rounded-lg w-[14rem] bg-gray-200 text-black' : ''}`}
+                className={`group flex gap-3 h-14 justify-center items-center pr-16 hover:border-blue-200 hover:bg-gray-200 hover:text-blue-600 hover:rounded-lg ${isActive('/profile') ? `rounded-lg w-[14rem]   ${activeBg}` : ''}`}
               >
-                <div className=" `flex items-center justify-center rounded-full  w-[2.5rem] h-[2.5rem] text-[1.8rem] group-hover:bg-gray-300 group-hover:border-blue-300`">
+                <div className=" flex items-center justify-center rounded-full w-[2.7rem] h-[2.7rem] text-[1.8rem] group-hover:bg-gray-300 group-hover:border-blue-300">
                   <FaUser />
                 </div>
                 <Label
                   name="profile"
-                  className={`text-xl ${textColor} font-medium font-poppins`}
+                  className={`text-xl group-hover:text-black font-medium font-poppins ${activeText}`}
                   label={authLabel.profile[lang]}
                 />
               </NavLink>
@@ -224,14 +226,14 @@ const SideBarDetails = () => {
 
               <NavLink
                 to={'/settings'}
-                className={`group flex gap-3 h-14 justify-center items-center pr-16 hover:border-blue-200 hover:bg-gray-200 hover:text-blue-600 hover:rounded-lg ${isActive('/settings') ? 'rounded-lg w-[14rem] bg-gray-200 text-black' : ''}`}
+                className={`group flex gap-3 h-14 justify-center items-center pr-16 hover:border-blue-200 hover:bg-gray-200 hover:text-blue-600 hover:rounded-lg ${isActive('/settings') ? `rounded-lg w-[14rem]  ${activeBg}` : ''}`}
               >
                 <div className=" flex items-center justify-center rounded-full w-[2.5rem] h-[2.5rem] text-[1.8rem] group-hover:bg-gray-300 group-hover:border-blue-300">
                   <IoMdSettings />
                 </div>
                 <Label
                   name="settings"
-                  className={`text-xl ${textColor} font-medium font-poppins`}
+                  className={`text-xl group-hover:text-black font-medium font-poppins ${activeText}`}
                   label={authLabel.settings[lang]}
                 />
               </NavLink>
