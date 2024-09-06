@@ -112,6 +112,8 @@ const ShowPost = () => {
   } = useContext(ThemeContext);
 
   const bgColor = darkMode ? 'bg-white' : 'bg-gray-700';
+  const textColor = darkMode ? 'text-black' : 'text-white';
+  const hoverDiv = darkMode ? 'hover:bg-gray-50':'hover:bg-gray-800';
   const getPost = async () => {
     try {
       const response = await axiosInstance.get('/post/', {
@@ -322,7 +324,7 @@ const ShowPost = () => {
             className={
               darkMode
                 ? ' flex justify-center shadow-xl  w-full rounded-xl mx-auto   mb-14 text-ellipsis bg-white'
-                : ' flex justify-center border border-white shadow-xl  w-full rounded-xl mx-auto text-gray-200  mb-14 text-ellipsis bg-gray-800'
+                : ' flex justify-center  shadow-xl  w-full rounded-xl mx-auto text-gray-200  mb-14 text-ellipsis bg-gray-700'
             }
             key={post.id}
           >
@@ -496,12 +498,14 @@ const ShowPost = () => {
 
       <div className="mt-10 mb-1 flex-col hidden xl:block ">
         <Notification />
-        <div className="fixed  lg:top-[38rem] lg:w-[24rem] h-80 right-1 bg-white shadow-lg rounded-lg">
+        <div
+          className={`fixed  lg:top-[38rem] lg:w-[24rem] h-80 ${bgColor} right-1 shadow-lg rounded-lg`}
+        >
           <div className="flex flex-col items-center mt-4 mx-auto overflow-y-auto lg:w-[23rem] xs:w-[30rem] ">
             <div className="flex justify-center  mb-4">
               <Label
                 name="connection"
-                className={`text-xl font-poppins font-medium text-gray-800`}
+                className={`text-xl ${textColor} font-poppins font-medium`}
                 label={authLabel.connection[lang]}
               />
             </div>
@@ -509,7 +513,7 @@ const ShowPost = () => {
               <div className="h-56 flex justify-center items-center">
                 <Label
                   name="noConnection"
-                  className={` text-xl font-poppins font-medium`}
+                  className={` text-xl ${textColor} font-poppins font-medium`}
                   label={authLabel.noConnection[lang]}
                 />{' '}
               </div>
@@ -518,14 +522,14 @@ const ShowPost = () => {
                 {connects?.map((connect) => {
                   return (
                     <div>
-                      <div className="2xl:w-[23rem]  bg-white shadow-md rounded-lg overflow-hidden ">
+                      <div className={`2xl:w-[23rem] ${bgColor}  shadow-md rounded-lg overflow-hidden `}>
                         <ul className="divide-y divide-gray-200">
                           <li
                             key={connect?.id}
-                            className="flex flex-col sm:flex-row  xs:gap-2 lg:justify-between p-2 hover:bg-gray-50"
+                            className={`flex flex-col sm:flex-row  xs:gap-2 lg:justify-between p-2 ${hoverDiv} `}
                           >
                             <div
-                              className="flex items-center space-x-4 cursor-pointer"
+                              className={`flex items-center ${textColor} space-x-4 cursor-pointer `}
                               // onClick={() => handleUserClick(user.id)}
                             >
                               {connect?.profile?.path ? (
@@ -542,11 +546,11 @@ const ShowPost = () => {
                                 />
                               )}
                               <div className="text-center sm:text-left mt-2 sm:mt-0">
-                                <p className="font-semibold text-lg text-gray-700">
+                                <p className="font-semibold text-lg">
                                   {connect?.details?.first_name} {connect?.details?.last_name}
                                 </p>
                                 {connect?.email && (
-                                  <p className="text-gray-500 text-sm">{connect?.email}</p>
+                                  <p className=" text-sm">{connect?.email}</p>
                                 )}
                               </div>
                             </div>
@@ -573,10 +577,10 @@ const ShowPost = () => {
               />
             </div>
             {connects.length === 0 ? (
-              <div className="flex items-center w-[32rem] bg-gray-100  justify-center h-56 mb-4">
+              <div className={`flex items-center w-[32rem]  ${bgColor} justify-center h-56 mb-4`}>
                 <Label
                   name="noConnection"
-                  className={`text-xl font-poppins font-medium text-gray-800`}
+                  className={`text-xl font-poppins font-medium ${textColor}`}
                   label={authLabel.noConnection[lang]}
                 />
               </div>

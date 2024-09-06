@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axiosInstance from '../../../service/instance';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -6,6 +6,7 @@ import { useSocket } from '../../../contexts/OnlineStatus';
 import Label from '../../common/atoms/Label';
 import { authLabel } from '../../../localization/auth';
 import { useLang } from '../../../hooks/useLang';
+import { ThemeContext } from '../../../contexts/ThemeContext';
 interface Request {
   id: string;
   sender: {
@@ -29,6 +30,12 @@ const Notification = () => {
   const navigate = useNavigate();
   const socket = useSocket();
   const {lang} = useLang()
+const {
+  state: { darkMode },
+} = useContext(ThemeContext);
+
+  const bgColor = darkMode ? 'bg-white' : 'bg-gray-700';
+   const textColor = darkMode ? 'text-black' : 'text-white';
 
   const request = async () => {
     try {
@@ -59,18 +66,20 @@ const Notification = () => {
   }, []);
 
   return (
-    <div className=" fixed lg:top-[7.5rem] xs:top-[6rem] rounded-lg right-2 lg:h-[50vh] xs:h-[45vh] shadow-lg w-96 xl:w-96 lg:w-72 xs:w-[31rem] lg:p-0 bg-white flex justify-center items-start ">
+    <div
+      className={`fixed lg:top-[7.5rem] xs:top-[6rem] rounded-lg right-2 lg:h-[50vh] xs:h-[45vh] shadow-lg w-96 xl:w-96 lg:w-72 xs:w-[31rem] lg:p-0 ${bgColor}  flex justify-center items-start `}
+    >
       <div className="w-[30rem] flex flex-col justify-center items-center overflow-y-auto">
         <Label
           name="notification"
-          className={`mt-6 text-xl font-poppins font-medium`}
+          className={`mt-6 text-xl ${textColor} font-poppins font-medium`}
           label={authLabel.notification[lang]}
         />
         {requests.length === 0 ? (
           <div className="h-[40vh] flex justify-center items-center">
             <Label
               name="noNotification"
-              className={`mt-6 text-xl font-poppins font-medium`}
+              className={`mt-6 text-xl ${textColor} font-poppins font-medium`}
               label={authLabel.noNotification[lang]}
             />{' '}
           </div>

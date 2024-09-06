@@ -29,7 +29,9 @@ const User = () => {
  } = useContext(ThemeContext);
 
  const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-800';
- const textColor = darkMode ? 'text-black' : 'text-white';
+  const textColor = darkMode ? 'text-black' : 'text-white';
+     const cardBgColor = darkMode ? 'bg-gray-100 hover:bg-gray-50' : 'bg-gray-900 hover:bg-gray-700';
+
 
   const showUsers = async () => {
     try {
@@ -74,17 +76,17 @@ const User = () => {
   }, []);
 
   return (
-    <div className={` ${bgColor} ${textColor} flex flex-col items-center mt-4 mx-auto overflow-y-auto lg:w-[40rem] xs:w-[30rem] `}>
+    <div className={` ${bgColor} ${textColor} flex flex-col items-center  mt-4 mx-auto overflow-y-auto lg:w-[40rem] xs:w-[30rem] `}>
       <div className="flex justify-center mb-4 2xl:ml-[20rem">
         <h1 className="text-xl  font-poppins font-medium">People You May Know</h1>
       </div>
-      <div className="w-full shadow-md rounded-lg overflow-hidden 2xl:w-[40rem] xl:w-[32rem] lg:w-[27rem] md:w-[30rem] sm:w-[40rem] ">
+      <div className={`w-full shadow-md rounded-lg overflow-hidden 2xl:w-[40rem] xl:w-[32rem] ${cardBgColor} lg:w-[27rem] md:w-[30rem] sm:w-[40rem] `}>
         {error && <p className="text-red-500 p-4">{error}</p>}
         <ul className="divide-y divide-gray-200">
           {users?.map((user) => (
             <li
               key={user?.id}
-              className="flex flex-col sm:flex-row items-center xs:gap-2 lg:justify-between p-2 hover:bg-gray-50"
+              className="flex flex-col sm:flex-row items-center xs:gap-2 lg:justify-between p-2 "
             >
               <div
                 className="flex items-center space-x-4 cursor-pointer"
@@ -104,10 +106,10 @@ const User = () => {
                   />
                 )}
             <div className="text-center sm:text-left mt-2 sm:mt-0">
-                  <p className="font-semibold text-lg text-gray-700">
+                  <p className="font-semibold text-lg ">
                     {user?.details?.first_name} {user?.details?.last_name}
                   </p>
-                  {user?.email && <p className="text-gray-500 text-sm">{user?.email}</p>}
+                  {user?.email && <p className=" text-sm">{user?.email}</p>}
                 </div>
               </div>
               <button

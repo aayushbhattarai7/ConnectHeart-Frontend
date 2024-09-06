@@ -33,7 +33,9 @@ const Connection = () => {
    state: { darkMode },
  } = useContext(ThemeContext);
 
- const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-800';
+  const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-800';
+   const cardBgColor = darkMode ? 'bg-gray-100' : 'bg-gray-700';
+
  const textColor = darkMode ? 'text-black' : 'text-white';
 
   const showConnection = async () => {
@@ -81,15 +83,14 @@ const Connection = () => {
   }, []);
 
   return (
-    <div className={`p-4 sm:p-8  ${bgColor} overflow-y-auto flex flex-col`}>
+    <div className={`p-4 sm:p-8  ${bgColor} h-screen overflow-y-auto flex flex-col`}>
       <div className=" ">
-        <div className="justify-center items-center flex p-5">
-        </div>
-        <div className=" justify-start lg:mx-96 xs:ml-[2rem] h-auto pl-16 items-start">
+        <div className="justify-center items-center flex p-5"></div>
+        <div className=" justify-start xs:ml-[2rem] h-auto pl-16 items-start">
           <div className="justify-start flex mx-auto flex-wrap gap-8 mb-10 overflow-hidden">
             {error && <p>{error}</p>}
             {connects.length === 0 ? (
-              <div className="flex flex-col mt-14 items-center justify-center w-full h-[75vh]">
+              <div className="flex flex-col mt-14 items-center justify-center w-full">
                 <div className="shadow-lg rounded-lg p-6 max-w-md text-center flex flex-col">
                   <div className="text-4xl text-gray-500 mb-4"></div>
                   <Label
@@ -108,7 +109,7 @@ const Connection = () => {
               connects.map((connect) => (
                 <div
                   key={connect.id}
-                  className="flex flex-col mt-14 p-5 mb-5 justify-center items-center w-64 bg-white shadow-lg rounded-lg"
+                  className={`flex flex-col ml-56 mt-14 p-5  mb-5 justify-start items-center w-[15rem] ${textColor} ${cardBgColor} shadow-lg rounded-lg`}
                 >
                   <div onClick={() => handleUserClick(connect.id)}>
                     <div className="h-44 w-44 mb-5 shadow-md">

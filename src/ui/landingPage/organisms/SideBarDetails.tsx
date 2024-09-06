@@ -95,7 +95,7 @@ const SideBarDetails = () => {
         location.pathname !== '/signup' &&
         location.pathname !== '/message' && (
           <div
-            className={`p-8 flex-col  fixed top-[7rem] left-2 w-72 z-50 h-screen xs:h-auto ${bgColor} ${textColor}`}
+            className={`p-8 flex-col  fixed top-[6rem]  w-72 z-50 h-screen xs:h-auto ${bgColor} ${textColor}`}
           >
             <div key={user?.id} className="flex-col justify-center ml-4 flex mb-10 ">
               {user?.profile?.path ? (

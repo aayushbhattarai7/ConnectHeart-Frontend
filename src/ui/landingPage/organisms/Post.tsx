@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useContext, useEffect, useState } from 'react';
 import { FaImage, FaSmile, FaVideo } from 'react-icons/fa';
 import { useForm } from 'react-hook-form';
 import { useLang } from '../../../hooks/useLang';
@@ -8,6 +8,7 @@ import { authLabel } from '../../../localization/auth';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import PopupMessage from '../../common/atoms/PopupMessage';
+import { ThemeContext } from '../../../contexts/ThemeContext';
 
 interface FormData {
   thought: string;
@@ -42,6 +43,11 @@ const Post: React.FC<PostProps> = ({ postId, refresh }) => {
     reset,
     formState: { isSubmitting },
   } = useForm<FormData>();
+ const {
+   state: { darkMode },
+ } = useContext(ThemeContext);
+
+ const bgColor = darkMode ? 'bg-white' : 'bg-gray-700';
 
   const [user, setUser] = useState<User | null>(null);
   const [formData, setformData] = useState<FormData>({ thought: '', feeling: '', files: [] });
@@ -112,7 +118,7 @@ const Post: React.FC<PostProps> = ({ postId, refresh }) => {
   });
 
   return (
-    <div className="2xl:w-[50rem] xl:w-[48rem]  lg:w-[40rem] md:w-[40rem] sm:w-[30rem] mb-10 mt-20  bg-white rounded-lg shadow-md p-6">
+    <div className={`2xl:w-[50rem] xl:w-[48rem]  lg:w-[40rem] md:w-[40rem] sm:w-[30rem] mb-10 mt-20 ${bgColor} rounded-lg shadow-md p-6`}>
       <form onSubmit={handleSubmit} noValidate encType="multipart/form-data">
         <div className="flex gap-6 items-start mb-6" key={user?.id}>
           {user?.profile?.path ? (
@@ -134,7 +140,7 @@ const Post: React.FC<PostProps> = ({ postId, refresh }) => {
               placeholder={authLabel.whatsOnMind[lang] || "What's on your mind?"}
               name="thought"
               onChange={handleChange}
-              className="w-full p-3 border bg-gray-100 border-gray-300 rounded-2xl focus:outline-none resize-none"
+              className={`w-full p-3 border ${bgColor} border-gray-300 rounded-2xl focus:outline-none resize-none`}
             />
             <div className="flex items-center justify-between">
               <Button
@@ -162,7 +168,7 @@ const Post: React.FC<PostProps> = ({ postId, refresh }) => {
                 onChange={handleFileChange}
                 className="hidden"
               />
-              <span className="text-sm text-gray-600">{authLabel.media[lang]}</span>
+              <span className="text-sm ">{authLabel.media[lang]}</span>
             </label>
             <button type="button" className="flex items-center gap-1 text-yellow-500">
               <FaSmile className="text-xl" />
@@ -170,7 +176,7 @@ const Post: React.FC<PostProps> = ({ postId, refresh }) => {
                 id="feeling"
                 {...register('feeling')}
                 onChange={handleChange}
-                className=" rounded-md  w-24 py-2  focus:outline-none bg-white text-yellow-500"
+                className={`rounded-md  w-24 py-2  focus:outline-none ${bgColor} text-yellow-500`}
               >
                 <option value=""> {authLabel.feeling[lang]}</option>
                 <option value="Happy">😊 Happy</option>

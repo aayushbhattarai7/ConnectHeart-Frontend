@@ -120,7 +120,7 @@ const Request = () => {
           </div>
         ) : (
           requests.map((request) => (
-            <div className="mb-7 pl-5 flex flex-col justify-start items-start ">
+            <div className="mb-7 pl-5 ml-56 mt-16 flex flex-col justify-start items-start ">
               <div
                 key={request.id}
                 className="flex flex-col p-5 justify-center  bg-white shadow-lg rounded-lg"
