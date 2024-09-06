@@ -1,11 +1,12 @@
 import axios from 'axios';
 import axiosInstance from '../../../service/instance';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import User from './User';
 import { useNavigate } from 'react-router-dom';
 import Label from '../../common/atoms/Label';
 import { authLabel } from '../../../localization/auth';
 import { useLang } from '../../../hooks/useLang';
+import { ThemeContext } from '../../../contexts/ThemeContext';
 
 interface Connection {
   id: string;
@@ -28,6 +29,12 @@ const Connection = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const {lang} = useLang()
+ const {
+   state: { darkMode },
+ } = useContext(ThemeContext);
+
+ const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-800';
+ const textColor = darkMode ? 'text-black' : 'text-white';
 
   const showConnection = async () => {
     try {
@@ -74,25 +81,25 @@ const Connection = () => {
   }, []);
 
   return (
-    <div className="p-4 sm:p-8  bg-gray-100 overflow-y-auto flex flex-col">
-      <div className="bg-gray-100 ">
-        <div className="justify-center items-center flex p-5 bg-gray-100">
+    <div className={`p-4 sm:p-8  ${bgColor} overflow-y-auto flex flex-col`}>
+      <div className=" ">
+        <div className="justify-center items-center flex p-5">
         </div>
-        <div className=" justify-start lg:mx-96 xs:ml-[2rem] h-auto pl-16 items-start bg-gray-100">
+        <div className=" justify-start lg:mx-96 xs:ml-[2rem] h-auto pl-16 items-start">
           <div className="justify-start flex mx-auto flex-wrap gap-8 mb-10 overflow-hidden">
             {error && <p>{error}</p>}
             {connects.length === 0 ? (
-              <div className="flex flex-col mt-14 items-center justify-center w-full h-[75vh] bg-gray-100">
+              <div className="flex flex-col mt-14 items-center justify-center w-full h-[75vh]">
                 <div className="shadow-lg rounded-lg p-6 max-w-md text-center flex flex-col">
                   <div className="text-4xl text-gray-500 mb-4"></div>
                   <Label
                     name="requests"
-                    className={`text-2xl font-semibold text-gray-700`}
+                    className={`text-2xl font-semibold ${textColor}`}
                     label={authLabel.noConnection[lang]}
                   />
                   <Label
                     name="requests"
-                    className={` text-gray-500`}
+                    className={` ${textColor}`}
                     label={authLabel.noConnectionP[lang]}
                   />{' '}
                 </div>

@@ -73,7 +73,7 @@ const Like: React.FC<LikeProps> = ({ postId, refresh }) => {
 
   return (
     <div>
-      <button onClick={toggleLike} className="text-xl" style={{ color: like ? 'red' : 'black' }}>
+      <button onClick={toggleLike} className="text-xl" style={{ color: like ? 'red' : '' }}>
         {like ? <FaHeart /> : <FaRegHeart />}
       </button>
     </div>

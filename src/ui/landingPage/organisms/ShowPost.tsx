@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axiosInstance from '../../../service/instance';
 import Comments from '../molecules/Comment';
 import ReplyComment from '../molecules/ReplyComment';
@@ -16,6 +16,7 @@ import Label from '../../common/atoms/Label';
 import { authLabel } from '../../../localization/auth';
 import { useLang } from '../../../hooks/useLang';
 import CommentOptions from '../molecules/CommentOption';
+import { ThemeContext } from '../../../contexts/ThemeContext';
 
 interface Post {
   id: string;
@@ -106,6 +107,11 @@ const ShowPost = () => {
   const [sideMenu, setSideMenu] = useState(false);
   const [connects, setConnects] = useState<Connection[]>([]);
   const { lang } = useLang();
+  const {
+    state: { darkMode },
+  } = useContext(ThemeContext);
+
+  const bgColor = darkMode ? 'bg-white' : 'bg-gray-700';
   const getPost = async () => {
     try {
       const response = await axiosInstance.get('/post/', {
@@ -196,7 +202,7 @@ const ShowPost = () => {
     if (!visibleCommentsPostId) return null;
 
     return comments.map((cmt) => (
-      <div key={cmt?.id} className="flex bg-white p-3 mb-2">
+      <div key={cmt?.id} className={`flex${bgColor} p-3 mb-2`}>
         <img
           className="w-8 h-8 rounded-full mr-3"
           src={cmt?.commentAuth?.profile?.path || '/profilenull.jpg'}
@@ -204,7 +210,7 @@ const ShowPost = () => {
         />
         <div className="w-full">
           <div className="flex items-center">
-            <p className="text-sm font-semibold text-gray-900">
+            <p className="text-sm font-semibold">
               {cmt?.commentAuth?.details?.first_name} {cmt?.commentAuth?.details?.last_name}{' '}
               <span className="font-extralight">{getTimeDifference(cmt?.createdAt)}</span>
             </p>
@@ -221,7 +227,7 @@ const ShowPost = () => {
             </div>
           </div>
 
-          <p className="mt-1 text-sm text-gray-800">{cmt?.comment}</p>
+          <p className="mt-1 text-sm ">{cmt?.comment}</p>
 
           <div className="flex items-center gap-3 mt-1">
             <button className="text-blue-600 text-xs font-medium hover:underline">Like</button>
@@ -301,18 +307,28 @@ const ShowPost = () => {
   }, []);
 
   return (
-    <div className="mt-6 flex flex-col lg:flex-row justify-evenly items-start mx-auto   lg:p-6 bg-gray-100 ">
-      <div className="flex flex-col justify-start items-center overflow-y-auto h-fit w-full  mt-30 2xl:w-[52rem] xl:w-[50rem]  lg:w-[45rem] md:w-[40rem] sm:w-[35rem] mx-auto   mb-16 bg-gray-100">
+    <div
+      className={
+        darkMode
+          ? 'mt-6 flex flex-col lg:flex-row justify-evenly items-start mx-auto   lg:p-6 bg-gray-100'
+          : 'mt-6 flex flex-col lg:flex-row justify-evenly items-start mx-auto   lg:p-6 bg-gray-800'
+      }
+    >
+      <div className="flex flex-col justify-start items-center overflow-y-auto h-fit w-full  mt-30 2xl:w-[52rem] xl:w-[50rem]  lg:w-[45rem] md:w-[40rem] sm:w-[35rem] mx-auto  mb-16 ">
         <Post postId={posts[0]?.id || ''} refresh={getPost} />
         {error && <p>{error}</p>}
         {posts.map((post) => (
           <div
-            className=" flex justify-center shadow-xl  w-full rounded-xl mx-auto   mb-14 text-ellipsis bg-white"
+            className={
+              darkMode
+                ? ' flex justify-center shadow-xl  w-full rounded-xl mx-auto   mb-14 text-ellipsis bg-white'
+                : ' flex justify-center border border-white shadow-xl  w-full rounded-xl mx-auto text-gray-200  mb-14 text-ellipsis bg-gray-800'
+            }
             key={post.id}
           >
             <div className="items-start sm:mr-20 sm:flex-row w-full p-10">
-              <div key={post.postIt?.id} className="bg-white  mb-5">
-                <div className="flex flex-col bg-white relative z-0 p-4">
+              <div key={post.postIt?.id} className="  mb-5">
+                <div className="flex flex-col relative z-0 p-4">
                   <div className="flex gap-1">
                     {post?.postIt?.profile?.path ? (
                       <img
@@ -342,7 +358,7 @@ const ShowPost = () => {
                       )}
                     </div>
                   </div>
-                  <p className="text-black absolute top-10 left-[5.2rem]">
+                  <p className=" absolute top-10 left-[5.2rem]">
                     {getTimeDifference(post?.createdAt)}
                   </p>
                 </div>
@@ -389,7 +405,7 @@ const ShowPost = () => {
                 </div>
                 <div className="flex mt-4 font-poppins">
                   <button
-                    className="rounded-xl text-black text-2xl h-7 pl-5 ml-6  w-14"
+                    className="rounded-xl  text-2xl h-7 pl-5 ml-6  w-14"
                     // onClick={() => toggleComments(post.id)}
                   >
                     {visibleCommentsPostId === post.id ? (
@@ -432,7 +448,7 @@ const ShowPost = () => {
                       onClick={() => toggleComments(post.id)}
                     >
                       {commentForm === post.id ? (
-                        <FaRegCommentDots className="text-black" />
+                        <FaRegCommentDots className="" />
                       ) : (
                         <FaRegCommentDots />
                       )}

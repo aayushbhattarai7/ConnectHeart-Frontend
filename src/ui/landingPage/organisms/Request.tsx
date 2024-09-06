@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axiosInstance from '../../../service/instance';
 import { FaHeartCirclePlus, FaHeartCircleXmark } from 'react-icons/fa6';
 import axios from 'axios';
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import Label from '../../common/atoms/Label';
 import { authLabel } from '../../../localization/auth';
 import { useLang } from '../../../hooks/useLang';
+import { ThemeContext } from '../../../contexts/ThemeContext';
 
 interface Request {
   id: string;
@@ -30,7 +31,13 @@ const Request = () => {
   const [requests, setRequests] = useState<Request[]>([]);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const {lang} = useLang()
+  const { lang } = useLang()
+   const {
+     state: { darkMode },
+   } = useContext(ThemeContext);
+
+  const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-700';
+   const textColor = darkMode ? 'text-black' : 'text-white';
   const showRequest = async () => {
     try {
       const response = await axiosInstance.get('/connect/requests', {
@@ -93,20 +100,20 @@ const Request = () => {
     showRequest();
   }, []);
   return (
-    <div className="h-screen mt-20 justify-start flex flex-col  items-start 2xl:ml-72 xs:pl-20 bg-gray-100">
+    <div className={`h-screen mt-20 justify-start flex flex-col  items-start 2xl:ml-72 xs:pl-20 ${bgColor}`}>
       <div className=" flex flex-wrap">
         {error && <p>{error}</p>}
         {requests.length === 0 ? (
-          <div className="flex flex-col 2xl:ml-[30rem] mt-32 items-center justify-center w-full h-[40rem] bg-gray-100">
+          <div className="flex flex-col 2xl:ml-[30rem] mt-32 items-center justify-center w-full h-[40rem]">
             <div className=" shadow-lg rounded-lg p-6 max-w-md text-center flex flex-col">
               <Label
                 name="requests"
-                className={`text-2xl font-semibold text-gray-700`}
+                className={`text-2xl font-semibold ${textColor}`}
                 label={authLabel.noRequest[lang]}
               />
                 <Label
                   name="requests"
-                  className={`text-gray-600 mt-2`}
+                  className={`${textColor} mt-2`}
                   label={authLabel.noRequestP[lang]}
                 />{' '}
             </div>

@@ -31,7 +31,7 @@ const Signup: React.FC = () => {
      state: { darkMode },
    } = useContext(ThemeContext);
 
-   const bgColor = darkMode ? 'bg-white' : 'bg-gray-700';
+   const bgColor = darkMode ? 'bg-white' : 'bg-gray-900';
   const {
     register,
     handleSubmit,
@@ -73,7 +73,13 @@ const Signup: React.FC = () => {
 
   return (
     <div className={`flex justify-center items-center min-h-screen  font-poppins px-4 ${bgColor}`}>
-      <div className="bg-white p-6 mt-20 rounded-lg shadow-lg w-full max-w-lg">
+      <div
+        className={
+          darkMode
+            ? 'bg-white p-6 mt-20 rounded-lg shadow-lg w-full max-w-lg'
+            : 'bg-gray-800 p-6 mt-20 rounded-lg text-white shadow-md w-full max-w-lg'
+        }
+      >
         <h1 className="text-2xl font-semibold mb-4">Signup</h1>
         <p className="mb-6">Hi, Welcome to ConnectHeart👋</p>
         {success && <PopupMessage message={success} setMessage={setSuccess} type="success" />}
@@ -87,7 +93,11 @@ const Signup: React.FC = () => {
               type="text"
               name="first_name"
               register={register}
-              className="w-full"
+              className={
+                darkMode
+                  ? 'w-full bg-white text-black border-gray-200'
+                  : 'w-full bg-gray-900 text-white border-gray-500'
+              }
             />
           </div>
 
@@ -98,7 +108,11 @@ const Signup: React.FC = () => {
               type="text"
               name="last_name"
               register={register}
-              className="w-full"
+              className={
+                darkMode
+                  ? 'w-full bg-white text-black border-gray-200'
+                  : 'w-full bg-gray-900 text-white border-gray-500'
+              }
             />
           </div>
 
@@ -109,14 +123,22 @@ const Signup: React.FC = () => {
               type="text"
               name="phone_number"
               register={register}
-              className="w-full"
+              className={
+                darkMode
+                  ? 'w-full bg-white text-black border-gray-200'
+                  : 'w-full bg-gray-900 text-white border-gray-500'
+              }
             />
           </div>
 
           <div className="mb-4">
             <Label name="gender" label={authLabel.gender[lang]} required />
             <select
-              className="w-full border rounded-lg p-2"
+              className={
+                darkMode
+                  ? 'w-full border border-white rounded-lg p-2'
+                  : 'w-full border border-gray-500 bg-gray-900 rounded-lg p-2'
+              }
               {...register('gender', { required: true })}
             >
               <option value="">Gender</option>
@@ -132,7 +154,11 @@ const Signup: React.FC = () => {
               type="email"
               name="email"
               register={register}
-              className="w-full"
+              className={
+                darkMode
+                  ? 'w-full bg-white text-black border-gray-200'
+                  : 'w-full bg-gray-900 text-white border-gray-500'
+              }
             />
           </div>
 
@@ -143,13 +169,25 @@ const Signup: React.FC = () => {
               type="password"
               name="password"
               register={register}
-              className="w-full"
+              className={
+                darkMode
+                  ? 'w-full bg-white text-black border-gray-200'
+                  : 'w-full bg-gray-900 text-white border-gray-500'
+              }
             />
           </div>
 
           <div className="mb-4">
             <Label name="profile" label={authLabel.profile[lang]} />
-            <input type="file" {...register('profile')} className="w-full border rounded-lg p-2" />
+            <input
+              type="file"
+              {...register('profile')}
+              className={
+                darkMode
+                  ? 'w-full border bg-white rounded-lg p-2'
+                  : 'w-full border bg-gray-900 border-gray-500 rounded-lg p-2'
+              }
+            />
           </div>
 
           <Button

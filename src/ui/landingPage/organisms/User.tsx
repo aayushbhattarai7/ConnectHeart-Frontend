@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axiosInstance from '../../../service/instance';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ThemeContext } from '../../../contexts/ThemeContext';
 
 interface Connection {
   id: string;
@@ -23,6 +24,12 @@ const User = () => {
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<string | null>(null)
   const navigate = useNavigate();
+ const {
+   state: { darkMode },
+ } = useContext(ThemeContext);
+
+ const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-800';
+ const textColor = darkMode ? 'text-black' : 'text-white';
 
   const showUsers = async () => {
     try {
@@ -67,11 +74,11 @@ const User = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center mt-4 mx-auto overflow-y-auto lg:w-[40rem] xs:w-[30rem] ">
+    <div className={` ${bgColor} ${textColor} flex flex-col items-center mt-4 mx-auto overflow-y-auto lg:w-[40rem] xs:w-[30rem] `}>
       <div className="flex justify-center mb-4 2xl:ml-[20rem">
-        <h1 className="text-xl  font-poppins font-medium text-gray-800">People You May Know</h1>
+        <h1 className="text-xl  font-poppins font-medium">People You May Know</h1>
       </div>
-      <div className="w-full  bg-white shadow-md rounded-lg overflow-hidden 2xl:w-[40rem] xl:w-[32rem] lg:w-[27rem] md:w-[30rem] sm:w-[40rem] ">
+      <div className="w-full shadow-md rounded-lg overflow-hidden 2xl:w-[40rem] xl:w-[32rem] lg:w-[27rem] md:w-[30rem] sm:w-[40rem] ">
         {error && <p className="text-red-500 p-4">{error}</p>}
         <ul className="divide-y divide-gray-200">
           {users?.map((user) => (

@@ -3,11 +3,12 @@ import { FaHeart, FaUserFriends, FaUser, FaUserClock } from 'react-icons/fa';
 import { IoHomeSharp } from 'react-icons/io5';
 import { AiFillMessage } from 'react-icons/ai';
 import { IoMdFemale, IoMdMale, IoMdSettings } from 'react-icons/io';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axiosInstance from '../../../service/instance';
 import { authLabel } from '../../../localization/auth';
 import Label from '../../common/atoms/Label';
 import { useLang } from '../../../hooks/useLang';
+import { ThemeContext } from '../../../contexts/ThemeContext';
 
 interface User {
   id?: string;
@@ -35,6 +36,12 @@ const SideBarDetails = () => {
   const [user, setUser] = useState<User | null>(null);
   const [count, setCount] = useState<Count | null>(null);
   const [like, setLike] = useState<Like[] | null>(null);
+   const {
+     state: { darkMode },
+   } = useContext(ThemeContext);
+
+  const bgColor = darkMode ? 'bg-white' : 'bg-gray-900';
+     const textColor = darkMode ? 'text-black' : 'text-white';
 
   const location = useLocation();
   const { lang } = useLang();
@@ -85,7 +92,9 @@ const SideBarDetails = () => {
       {location.pathname !== '/login' &&
         location.pathname !== '/signup' &&
         location.pathname !== '/message' && (
-          <div className="p-8 flex-col  fixed top-20 left-2 w-72 z-50 h-screen xs:h-auto bg-white  ">
+          <div
+            className={`p-8 flex-col  fixed top-[6.5rem] left-2 w-72 z-50 h-screen xs:h-auto ${bgColor} ${textColor}`}
+          >
             <div key={user?.id} className="flex-col justify-center ml-4 flex mb-10 ">
               {user?.profile?.path ? (
                 <Link to="/profile">
@@ -106,8 +115,8 @@ const SideBarDetails = () => {
                 </Link>
               )}
               <div className="flex gap-1 ml-2 mb-2">
-                <h1 className="text-xl text-blue-950">{user?.details?.first_name}</h1>
-                <h1 className="text-xl text-blue-950">{user?.details?.last_name}</h1>
+                <h1 className="text-xl">{user?.details?.first_name}</h1>
+                <h1 className="text-xl">{user?.details?.last_name}</h1>
               </div>
 
               {user?.details?.gender === 'MALE' && (
@@ -126,8 +135,8 @@ const SideBarDetails = () => {
               <Link to="/connect">
                 {' '}
                 <div className="w-fit flex flex-col items-center pr-9">
-                  <h1 className="font-poppins font-medium">{count?.counts}</h1>
-                  <h1 className="pr-1 text-blue-900 text-xl">
+                  <h1 className={`${textColor}font-poppins font-medium`}>{count?.counts}</h1>
+                  <h1 className="pr-1 text-blue-700 text-xl">
                     <FaUserFriends />
                   </h1>
                 </div>
@@ -140,17 +149,17 @@ const SideBarDetails = () => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-5 text-black">
+            <div className={`flex flex-col gap-5 ${textColor}`}>
               <NavLink
                 to={'/'}
-                className={`group flex gap-3 h-14 justify-center items-center pr-7 hover:border-blue-200 hover:bg-gray-200 hover:text-blue-600 hover:rounded-lg ${isActive('/') ? 'rounded-lg w-[14rem] bg-gray-200 text-black' : ''}`}
+                className={`group flex gap-3 h-14 justify-center items-center pr-7 hover:border-blue-200 hover:bg-gray-200 hover:text-blue-600 hover:rounded-lg ${isActive('/') ? 'rounded-lg w-[14rem] bg-gray-200 text-black' : 'text-white'}`}
               >
                 <div className=" flex items-center justify-center rounded-full w-[2.5rem] h-[2.5rem] text-[1.7rem] group-hover:bg-gray-300 group-hover:border-blue-300">
                   <IoHomeSharp />
                 </div>
                 <Label
                   name="feed"
-                  className={`text-xl font-medium font-poppins`}
+                  className={`text-xl ${textColor} font-medium font-poppins`}
                   label={authLabel.feed[lang]}
                 />
               </NavLink>
@@ -164,7 +173,7 @@ const SideBarDetails = () => {
                 </div>
                 <Label
                   name="connection"
-                  className={`text-xl font-medium font-poppins`}
+                  className={`text-xl ${textColor} font-medium font-poppins`}
                   label={authLabel.connection[lang]}
                 />
               </NavLink>
@@ -178,7 +187,7 @@ const SideBarDetails = () => {
                 </div>
                 <Label
                   name="requests"
-                  className={`text-xl font-medium font-poppins`}
+                  className={`text-xl ${textColor} font-medium font-poppins`}
                   label={authLabel.requests[lang]}
                 />
               </NavLink>
@@ -192,7 +201,7 @@ const SideBarDetails = () => {
                 </div>
                 <Label
                   name="message"
-                  className={`text-xl font-medium font-poppins`}
+                  className={`text-xl ${textColor} font-medium font-poppins`}
                   label={authLabel.message[lang]}
                 />
               </NavLink>
@@ -202,11 +211,11 @@ const SideBarDetails = () => {
                 className={`group flex gap-3 h-14 justify-center items-center pr-16 hover:border-blue-200 hover:bg-gray-200 hover:text-blue-600 hover:rounded-lg ${isActive('/profile') ? 'rounded-lg w-[14rem] bg-gray-200 text-black' : ''}`}
               >
                 <div className=" `flex items-center justify-center rounded-full  w-[2.5rem] h-[2.5rem] text-[1.8rem] group-hover:bg-gray-300 group-hover:border-blue-300`">
-                  <FaUser/>
+                  <FaUser />
                 </div>
                 <Label
                   name="profile"
-                  className={`text-xl  font-medium font-poppins`}
+                  className={`text-xl ${textColor} font-medium font-poppins`}
                   label={authLabel.profile[lang]}
                 />
               </NavLink>
@@ -222,7 +231,7 @@ const SideBarDetails = () => {
                 </div>
                 <Label
                   name="settings"
-                  className={`text-xl font-medium font-poppins`}
+                  className={`text-xl ${textColor} font-medium font-poppins`}
                   label={authLabel.settings[lang]}
                 />
               </NavLink>

@@ -28,7 +28,7 @@ const Login: React.FC = () => {
      state: { darkMode },
    } = useContext(ThemeContext);
 
-   const bgColor = darkMode ? 'bg-white' : 'bg-gray-700';
+   const bgColor = darkMode ? 'bg-white' : 'bg-gray-900';
   const {
     register,
     handleSubmit,
@@ -74,8 +74,8 @@ const Login: React.FC = () => {
         <div
           className={
             darkMode
-              ? `w-full max-w-md p-6 rounded-lg bg-white shadow-md`
-              : `w-full max-w-md p-6 rounded-lg bg-white shadow-md`
+              ? `w-full max-w-md p-6 rounded-lg text-black bg-white shadow-md`
+              : `w-full border-white max-w-md p-6 rounded-lg text-white bg-gray-800  shadow-md `
           }
         >
           <h1 className="text-2xl font-semibold mb-4">Login</h1>
@@ -91,7 +91,7 @@ const Login: React.FC = () => {
 
           <div className="relative mb-14">
             <div className="absolute inset-x-0 top-1/2 border-t border-gray-300" />
-            <p className="absolute inset-x-0 top-1/2 text-center bg-white px-2 text-gray-400">
+            <p className="absolute inset-x-0 top-1/2 text-center px-2 text-gray-400">
               or login with email
             </p>
           </div>
@@ -106,7 +106,11 @@ const Login: React.FC = () => {
                 type="email"
                 name="email"
                 register={register}
-                className="w-full"
+                className={
+                  darkMode
+                    ? 'w-full bg-white text-black border-gray-200'
+                    : 'w-full bg-gray-900 border-gray-500 text-white border-blue'
+                }
               />
             </div>
 
@@ -117,7 +121,11 @@ const Login: React.FC = () => {
                 type="password"
                 name="password"
                 register={register}
-                className="w-full"
+                className={
+                  darkMode
+                    ? 'w-full bg-white text-black border-gray-200'
+                    : 'w-full bg-gray-900 border-gray-500 text-white border-blue'
+                }
               />
             </div>
 

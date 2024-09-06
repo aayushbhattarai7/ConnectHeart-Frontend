@@ -32,7 +32,7 @@ const Header = () => {
         className={
           darkMode
             ? 'fixed top-0 left-0 w-full h-[11vh] bg-white text-black shadow-md z-50'
-            : 'fixed top-0 left-0 w-full h-[11vh] bg-gray-750 text-white shadow-md z-50'
+            : 'fixed top-0 left-0 w-full h-[11vh] bg-gray-900 text-white shadow-md z-50'
         }
       >
         <div
@@ -66,7 +66,7 @@ const Header = () => {
               <div className="justify-end flex items-end w-full">
                 <NavLink
                   to="/signup"
-                  className="text-white bg-blue-600 w-20 px-4
+                  className="text-white bg-blue-600 w-20 px-[0.7rem]
                  py-1 rounded-lg h-8 transition duration-300 ease-in-out hover:bg-blue-900"
                 >
                   Signup
