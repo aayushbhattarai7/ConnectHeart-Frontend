@@ -87,7 +87,7 @@ const SideBarDetails = () => {
     getUserDetails();
     getFriendCount();
     getUserLike();
-  }, []);
+  }, [SideBarDetails]);
 
   return (
     <div>

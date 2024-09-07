@@ -16,7 +16,7 @@ interface Connection {
     first_name?: string;
     last_name?: string;
     phone_number?: string;
-    gender:string
+    gender: string;
   };
   profile: {
     id?: string;
@@ -28,15 +28,15 @@ const Connection = () => {
   const [connects, setConnects] = useState<Connection[]>([]);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const {lang} = useLang()
- const {
-   state: { darkMode },
- } = useContext(ThemeContext);
+  const { lang } = useLang();
+  const {
+    state: { darkMode },
+  } = useContext(ThemeContext);
 
   const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-800';
-   const cardBgColor = darkMode ? 'bg-gray-100' : 'bg-gray-700';
+  const cardBgColor = darkMode ? 'bg-gray-100' : 'bg-gray-700';
 
- const textColor = darkMode ? 'text-black' : 'text-white';
+  const textColor = darkMode ? 'text-black' : 'text-white';
 
   const showConnection = async () => {
     try {
@@ -90,7 +90,7 @@ const Connection = () => {
           <div className="justify-start flex mx-auto flex-wrap gap-8 mb-10 overflow-hidden">
             {error && <p>{error}</p>}
             {connects.length === 0 ? (
-              <div className="flex flex-col mt-14 items-center justify-center w-full">
+              <div className="flex flex-col mt-12 mb-3 items-center justify-center w-full">
                 <div className="shadow-lg rounded-lg p-6 max-w-md text-center flex flex-col">
                   <div className="text-4xl text-gray-500 mb-4"></div>
                   <Label
@@ -100,7 +100,7 @@ const Connection = () => {
                   />
                   <Label
                     name="requests"
-                    className={` ${textColor}`}
+                    className={` ${textColor} p-1`}
                     label={authLabel.noConnectionP[lang]}
                   />{' '}
                 </div>

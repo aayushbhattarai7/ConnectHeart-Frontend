@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { RxCross2 } from 'react-icons/rx';
 import EditPost from './EditPost';
 import axiosInstance from '../../../service/instance';
+import { ThemeContext } from '../../../contexts/ThemeContext';
 
 interface Post {
   postId: string;
@@ -16,7 +17,11 @@ const Dropdown: React.FC<Post> = ({ postId, refresh, thought, feeling }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [edit, setEdit] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
-
+  const {
+    state: { darkMode },
+  } = useContext(ThemeContext);
+  const hoverColor = darkMode ? 'hover:bg-gray-100' : 'hover:bg-gray-900';
+  const textColor = darkMode ? 'text-black' : 'text-white';
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -59,10 +64,10 @@ const Dropdown: React.FC<Post> = ({ postId, refresh, thought, feeling }) => {
   };
 
   return (
-    <div ref={dropdownRef} className="relative inline-block text-left">
+    <div ref={dropdownRef} className={` relative inline-block  h-10 text-left `}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex justify-center w-full rounded-md shadow-sm px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+        className={`inline-flex justify-center w-full rounded-md shadow-sm px-4 py-2 text-sm font-medium ${textColor} ${hoverColor}`}
       >
         <BsThreeDotsVertical />
       </button>
@@ -75,14 +80,13 @@ const Dropdown: React.FC<Post> = ({ postId, refresh, thought, feeling }) => {
             aria-labelledby="options-menu"
           >
             <button
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+              className={`block px-4 py-2 text-sm ${textColor} ${hoverColor} w-full text-left`}
               onClick={handleEditClick}
             >
-                
               Edit
             </button>
             <button
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+              className={`block px-4 py-2 text-sm ${textColor} ${hoverColor} w-full text-left`}
               onClick={handleDeleteClick}
             >
               Delete
