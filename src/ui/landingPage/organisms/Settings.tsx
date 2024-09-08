@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { FaKey, FaUnlockAlt, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import { BsHouseLockFill } from 'react-icons/bs';
 import UpdatePasswords from './UpdatePassword';
@@ -6,6 +6,7 @@ import EmailVerify from '../molecules/EmailVerify';
 import { useNavigate } from 'react-router-dom';
 import { RxCross2 } from 'react-icons/rx';
 import axiosInstance from '../../../service/instance';
+import { ThemeContext } from '../../../contexts/ThemeContext';
 
 const Settings = () => {
   const [updatePass, setUpdatePass] = useState(false);
@@ -13,7 +14,13 @@ const Settings = () => {
   const [activeItem, setActiveItem] = useState('');
   const [isDelete, setIsDelete] = useState(false);
   const [isLogout, setIsLogout] = useState(false);
+ const {
+   state: { darkMode },
+ } = useContext(ThemeContext);
 
+ const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-800';
+ const hoverBgColor = darkMode ? 'hover:bg-gray-300' : 'hover:bg-gray-900';
+ const textColor = darkMode ? 'text-black' : 'text-white';
   const navigate = useNavigate();
   const handleMenuClick = (item: any) => {
     setActiveItem(item);
@@ -64,49 +71,51 @@ const Settings = () => {
    };
 
   return (
-    <div className="flex flex-col mt-20 2xl:ml-72 lg:ml-0 lg:flex-row bg-gray-100 min-h-[90vh]">
-      <div className="w-full lg:w-1/4 bg-white p-4 lg:p-8 shadow-lg">
-        <h2 className="text-xl lg:text-2xl font-semibold text-gray-800 mb-6">Settings</h2>
+    <div
+      className={`flex flex-col mt-20 2xl:ml-72 lg:ml-0 lg:flex-row ${bgColor} ${textColor} min-h-[91.7vh]`}
+    >
+      <div className="w-full lg:w-1/4 p-4 lg:p-8 shadow-lg">
+        <h2 className={`text-xl lg:text-2xl ${textColor} font-semibold  mb-6`}>Settings</h2>
         <ul className="space-y-4">
           <li
-            className={`flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 ${isActive('updatePass') ? 'bg-gray-100' : 'hover:bg-gray-200'}`}
+            className={`flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 ${isActive('updatePass') ? 'bg-gray-100' : `${hoverBgColor}`}`}
             onClick={() => handleMenuClick('updatePass')}
           >
-            <FaKey className="text-gray-600 mr-4" size={20} />
-            <span className="text-lg font-medium text-gray-800">Update Password</span>
+            <FaKey className=" mr-4" size={20} />
+            <span className="text-lg font-medium ">Update Password</span>
           </li>
           <li
-            className={`flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 ${isActive('resetPass') ? 'bg-gray-100' : 'hover:bg-gray-200'}`}
+            className={`flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 ${isActive('resetPass') ? 'bg-gray-100' : `${hoverBgColor}`}`}
             onClick={() => handleMenuClick('resetPass')}
           >
-            <FaUnlockAlt className="text-gray-600 mr-4" size={20} />
-            <span className="text-lg font-medium text-gray-800">Reset Password</span>
+            <FaUnlockAlt className=" mr-4" size={20} />
+            <span className="text-lg font-medium ">Reset Password</span>
           </li>
-          <li className="flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 hover:bg-gray-200">
-            <BsHouseLockFill className="text-gray-600 mr-4" size={20} />
-            <span className="text-lg font-medium text-gray-800">Privacy</span>
+          <li className={`flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 ${hoverBgColor}`}>
+            <BsHouseLockFill className=" mr-4" size={20} />
+            <span className="text-lg font-medium ">Privacy</span>
           </li>
           <li
-            className={`flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 ${isActive('otpVerify') ? 'bg-gray-100' : 'hover:bg-gray-200'}`}
+            className={`flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 ${isActive('otpVerify') ? 'bg-gray-100' : `${hoverBgColor}`}`}
             onClick={() => handleMenuClick('otpVerify')}
           >
-            <FaUserCircle className="text-gray-600 mr-4" size={20} />
-            <span className="text-lg font-medium text-gray-800">Login Details</span>
+            <FaUserCircle className=" mr-4" size={20} />
+            <span className="text-lg font-medium ">Login Details</span>
           </li>
           <li
-            className="flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 hover:bg-gray-200"
+            className={`flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 ${hoverBgColor}`}
             onClick={handleLogoutClick}
           >
-            <FaSignOutAlt className="text-gray-600 mr-4" size={20} />
-            <span className="text-lg font-medium text-gray-800">Logout</span>
+            <FaSignOutAlt className=" mr-4" size={20} />
+            <span className="text-lg font-medium ">Logout</span>
           </li>
 
           <li
-            className="flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 hover:bg-gray-200"
+              className={`flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 ${hoverBgColor}`}
             onClick={handleDeleteClick}
           >
-            <FaSignOutAlt className="text-gray-600 mr-4" size={20} />
-            <span className="text-lg font-medium text-gray-800">Delete Account</span>
+            <FaSignOutAlt className=" mr-4" size={20} />
+            <span className="text-lg font-medium ">Delete Account</span>
           </li>
         </ul>
       </div>
