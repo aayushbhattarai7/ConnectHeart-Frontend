@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axiosInstance from '../../../service/instance';
 import { IoMdMale, IoMdFemale } from 'react-icons/io';
 import { FaImage, FaUserFriends } from 'react-icons/fa';
 import { BiEditAlt } from 'react-icons/bi';
 import UserPost from './UserPost';
 import EditUser from '../molecules/EditUser';
+import { ThemeContext } from '../../../contexts/ThemeContext';
 
 interface User {
   id?: string;
@@ -29,6 +30,15 @@ const Profile = () => {
   const [user, setUser] = useState<User | null>(null);
   const [count, setCount] = useState<Count | null>(null);
   const [edit, setEdit] = useState(false);
+  const {
+    state: { darkMode },
+  } = useContext(ThemeContext);
+
+  const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-800';
+  const ProfileBgColor = darkMode ? 'bg-gray-100' : 'bg-gray-700';
+    const textColor = darkMode ? 'text-black' : 'text-white';
+
+
   const profile = async () => {
     try {
       const response = await axiosInstance.get('/user/user', {
@@ -68,11 +78,11 @@ const Profile = () => {
   }, []);
 
   return (
-    <div className='w-full bg-gray-100'>
+    <div className={`w-full ${bgColor} ${textColor}`}>
       {' '}
-      <div className="min-h-screen  flex flex-col  w-fit justify-center  mt-10 px-5 sm:px-10 lg:px-20 ml-[34rem] ">
-        <div className="max-w-5xl mx-auto bg-white p-20 w-max2 mt-20 rounded-xl shadow-lg">
-          <div className="flex  justify-start items-start gap-8 mb-7">
+      <div className={`min-h-screen  flex flex-col ${ProfileBgColor} w-fit justify-center  mt-10 px-5 sm:px-10 lg:px-20 ml-[34rem] `}>
+        <div className="max-w-5xl mx-auto p-20 w-max2 mt-20 rounded-xl shadow-lg">
+          <div className={`flex ${ProfileBgColor} justify-start items-start gap-8 mb-7`}>
             <div className="relative  mb-6">
               {user?.profile?.path ? (
                 <img
@@ -125,17 +135,17 @@ const Profile = () => {
               </div>
               <div className="flex justify-around">
                 <div className="p-7">
-                  <h1 className="text-gray-500">Full Name</h1>
+                  <h1>Full Name</h1>
                   <p>
                     {user?.details?.first_name} {user?.details?.last_name}
                   </p>
                 </div>
                 <div className="p-7">
-                  <h1 className="text-gray-500">Email</h1>
+                  <h1>Email</h1>
                   <p>{user?.email}</p>
                 </div>
                 <div className="p-7">
-                  <h1 className="text-gray-500">Phone</h1>
+                  <h1>Phone</h1>
                   <p>{user?.details?.phone_number}</p>
                 </div>
               </div>

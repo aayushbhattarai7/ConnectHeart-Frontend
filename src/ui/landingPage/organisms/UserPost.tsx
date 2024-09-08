@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axiosInstance from '../../../service/instance';
 import Comments from '../molecules/Comment';
 import ReplyComment from '../molecules/ReplyComment';
@@ -11,6 +11,7 @@ import { useLang } from '../../../hooks/useLang';
 import CommentOptions from '../molecules/CommentOption';
 import Dropdown from '../molecules/DropDownMenu';
 import { jwtDecode } from 'jwt-decode';
+import { ThemeContext } from '../../../contexts/ThemeContext';
 
 interface Post {
   id: string;
@@ -82,6 +83,13 @@ const UserPost = () => {
   const [visibleCommentsPostId, setVisibleCommentsPostId] = useState<string | null>(null);
   const [commentForm, setCommentForm] = useState<string | null>(null);
   const { lang } = useLang();
+const {
+  state: { darkMode },
+} = useContext(ThemeContext);
+
+const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-800';
+const ProfileBgColor = darkMode ? 'bg-gray-100' : 'bg-gray-700';
+const textColor = darkMode ? 'text-black' : 'text-white';
 
   const getPost = async () => {
     try {
@@ -242,12 +250,12 @@ const UserPost = () => {
   
 
   return (
-    <div className="mt-6 flex flex-col lg:flex-row justify-evenly items-start mx-auto mr-32  bg-gray-100 lg:p-6  ">
-      <div className="flex flex-col justify-start items-center overflow-y-auto h-fit w-full  mt-30  xl:w-[50rem]  lg:w-[45rem] md:w-[40rem] sm:w-[35rem] mx-auto bg-white  mb-16 bg">
+    <div className={`mt-6 flex flex-col lg:flex-row justify-evenly items-start mx-auto mr-32  ${bgColor} lg:p-6 `}>
+      <div className="flex flex-col justify-start items-center overflow-y-auto h-fit w-full  mt-30  xl:w-[50rem]  lg:w-[45rem] md:w-[40rem] sm:w-[35rem] mx-auto  mb-16 bg">
         {error && <p>{error}</p>}
         {posts.map((post) => (
           <div
-            className=" flex justify-center shadow-xl  w-full rounded-xl mx-auto   mb-14 text-ellipsis bg-white"
+            className=" flex justify-center shadow-xl  w-full rounded-xl mx-auto   mb-14 text-ellipsis"
             key={post.id}
           >
             <div className="items-start sm:mr-20 sm:flex-row w-full p-10">
