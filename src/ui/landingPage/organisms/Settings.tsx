@@ -20,7 +20,8 @@ const Settings = () => {
 
  const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-800';
  const hoverBgColor = darkMode ? 'hover:bg-gray-300' : 'hover:bg-gray-900';
- const textColor = darkMode ? 'text-black' : 'text-white';
+  const textColor = darkMode ? 'text-black' : 'text-white';
+  const bgActive = darkMode?'bg-gray-100':'bg-gray-900'
   const navigate = useNavigate();
   const handleMenuClick = (item: any) => {
     setActiveItem(item);
@@ -78,25 +79,27 @@ const Settings = () => {
         <h2 className={`text-xl lg:text-2xl ${textColor} font-semibold  mb-6`}>Settings</h2>
         <ul className="space-y-4">
           <li
-            className={`flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 ${isActive('updatePass') ? 'bg-gray-100' : `${hoverBgColor}`}`}
+            className={`flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 ${isActive('updatePass') ? `${bgActive}` : `${hoverBgColor}`}`}
             onClick={() => handleMenuClick('updatePass')}
           >
             <FaKey className=" mr-4" size={20} />
             <span className="text-lg font-medium ">Update Password</span>
           </li>
           <li
-            className={`flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 ${isActive('resetPass') ? 'bg-gray-100' : `${hoverBgColor}`}`}
+            className={`flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 ${isActive('resetPass') ? `${bgActive}` : `${hoverBgColor}`}`}
             onClick={() => handleMenuClick('resetPass')}
           >
             <FaUnlockAlt className=" mr-4" size={20} />
             <span className="text-lg font-medium ">Reset Password</span>
           </li>
-          <li className={`flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 ${hoverBgColor}`}>
+          <li
+            className={`flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 ${hoverBgColor}`}
+          >
             <BsHouseLockFill className=" mr-4" size={20} />
             <span className="text-lg font-medium ">Privacy</span>
           </li>
           <li
-            className={`flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 ${isActive('otpVerify') ? 'bg-gray-100' : `${hoverBgColor}`}`}
+            className={`flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 ${isActive('otpVerify') ? `${bgActive}` : `${hoverBgColor}`}`}
             onClick={() => handleMenuClick('otpVerify')}
           >
             <FaUserCircle className=" mr-4" size={20} />
@@ -111,7 +114,7 @@ const Settings = () => {
           </li>
 
           <li
-              className={`flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 ${hoverBgColor}`}
+            className={`flex items-center cursor-pointer p-4 rounded-lg transition-all duration-200 ${hoverBgColor}`}
             onClick={handleDeleteClick}
           >
             <FaSignOutAlt className=" mr-4" size={20} />
