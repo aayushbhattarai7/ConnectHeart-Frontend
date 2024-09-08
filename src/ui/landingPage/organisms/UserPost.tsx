@@ -63,7 +63,6 @@ interface Comment {
   isParent: boolean;
 }
 
-
 interface PostMedia {
   id?: string;
   path?: string;
@@ -83,13 +82,13 @@ const UserPost = () => {
   const [visibleCommentsPostId, setVisibleCommentsPostId] = useState<string | null>(null);
   const [commentForm, setCommentForm] = useState<string | null>(null);
   const { lang } = useLang();
-const {
-  state: { darkMode },
-} = useContext(ThemeContext);
+  const {
+    state: { darkMode },
+  } = useContext(ThemeContext);
 
-const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-800';
-const ProfileBgColor = darkMode ? 'bg-gray-100' : 'bg-gray-700';
-const textColor = darkMode ? 'text-black' : 'text-white';
+  const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-800';
+  const ProfileBgColor = darkMode ? 'bg-gray-100' : 'bg-gray-800';
+  const textColor = darkMode ? 'text-black' : 'text-white';
 
   const getPost = async () => {
     try {
@@ -123,7 +122,6 @@ const textColor = darkMode ? 'text-black' : 'text-white';
     }
   }, []);
 
- 
   function getTimeDifference(createdAt: string) {
     const noteDate = new Date(createdAt);
     const now = new Date();
@@ -151,9 +149,6 @@ const textColor = darkMode ? 'text-black' : 'text-white';
     setReplyCommentId((prevCmtId) => (prevCmtId === comment ? null : comment));
   };
 
-  
- 
-
   const renderComments = (comments: Comment[], isChild: boolean = false) => {
     if (!visibleCommentsPostId) return null;
 
@@ -173,13 +168,13 @@ const textColor = darkMode ? 'text-black' : 'text-white';
             <div className="flex gap-4 w-[20rem] ">
               {(decodedToken?.id === cmt?.commentAuth.id ||
                 posts.some((post) => post.postIt?.id === decodedToken?.id)) && (
-                  <CommentOptions
-                    commentId={cmt?.id!}
-                    refresh={getPost}
-                    commentUser={cmt?.commentAuth.id}
-                    comment={cmt.comment!}
-                  />
-                )}
+                <CommentOptions
+                  commentId={cmt?.id!}
+                  refresh={getPost}
+                  commentUser={cmt?.commentAuth.id}
+                  comment={cmt.comment!}
+                />
+              )}
             </div>
           </div>
 
@@ -247,20 +242,28 @@ const textColor = darkMode ? 'text-black' : 'text-white';
     getPost();
   }, []);
 
-  
-
   return (
-    <div className={`mt-6 flex flex-col lg:flex-row justify-evenly items-start mx-auto mr-32  ${bgColor} lg:p-6 `}>
-      <div className="flex flex-col justify-start items-center overflow-y-auto h-fit w-full  mt-30  xl:w-[50rem]  lg:w-[45rem] md:w-[40rem] sm:w-[35rem] mx-auto  mb-16 bg">
+    <div
+      className={
+        darkMode
+          ? 'mt-6 flex flex-col lg:flex-row justify-evenly items-start mx-auto   lg:p-6 bg-gray-100'
+          : 'mt-6 flex flex-col lg:flex-row justify-evenly items-start mx-auto   lg:p-6 bg-gray-800'
+      }
+    >
+      <div className="flex flex-col justify-start items-center overflow-y-auto h-fit w-full  mt-30 2xl:w-[50.8rem] xl:w-[50rem]  lg:w-[45rem] md:w-[40rem] sm:w-[35rem] mx-auto  mb-16 ">
         {error && <p>{error}</p>}
         {posts.map((post) => (
           <div
-            className=" flex justify-center shadow-xl  w-full rounded-xl mx-auto   mb-14 text-ellipsis"
+            className={
+              darkMode
+                ? ' flex justify-center shadow-xl  w-full rounded-xl mx-auto   mb-14 text-ellipsis'
+                : ' flex justify-center  shadow-xl  w-full rounded-xl mx-auto text-gray-200  mb-14 text-ellipsis bg-gray-700'
+            }
             key={post.id}
           >
             <div className="items-start sm:mr-20 sm:flex-row w-full p-10">
-              <div key={post.postIt?.id} className="bg-white  mb-5">
-                <div className="flex flex-col bg-white relative z-0 p-4">
+              <div key={post.postIt?.id} className="  mb-5">
+                <div className="flex flex-col relative z-0 p-4">
                   <div className="flex gap-1">
                     {post?.postIt?.profile?.path ? (
                       <img
@@ -290,7 +293,7 @@ const textColor = darkMode ? 'text-black' : 'text-white';
                       )}
                     </div>
                   </div>
-                  <p className="text-black absolute top-10 left-[5.2rem]">
+                  <p className=" absolute top-10 left-[5.2rem]">
                     {getTimeDifference(post?.createdAt)}
                   </p>
                 </div>
@@ -337,8 +340,8 @@ const textColor = darkMode ? 'text-black' : 'text-white';
                 </div>
                 <div className="flex mt-4 font-poppins">
                   <button
-                    className="rounded-xl text-black text-2xl h-7 pl-5 ml-6  w-14"
-                  // onClick={() => toggleComments(post.id)}
+                    className="rounded-xl  text-2xl h-7 pl-5 ml-6  w-14"
+                    // onClick={() => toggleComments(post.id)}
                   >
                     {visibleCommentsPostId === post.id ? (
                       <FaRegCommentDots />
@@ -380,7 +383,7 @@ const textColor = darkMode ? 'text-black' : 'text-white';
                       onClick={() => toggleComments(post.id)}
                     >
                       {commentForm === post.id ? (
-                        <FaRegCommentDots className="text-black" />
+                        <FaRegCommentDots className="" />
                       ) : (
                         <FaRegCommentDots />
                       )}
@@ -425,13 +428,7 @@ const textColor = darkMode ? 'text-black' : 'text-white';
           </div>
         ))}
       </div>
-
-  
-     
-     
     </div>
-  )
-}
+  );
+};
 export default UserPost;
- 
-

@@ -35,7 +35,7 @@ const Profile = () => {
   } = useContext(ThemeContext);
 
   const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-800';
-  const ProfileBgColor = darkMode ? 'bg-gray-100' : 'bg-gray-700';
+  const ProfileBgColor = darkMode ? 'bg-gray-100' : 'bg-gray-800';
     const textColor = darkMode ? 'text-black' : 'text-white';
 
 
@@ -86,7 +86,7 @@ const Profile = () => {
             <div className="relative  mb-6">
               {user?.profile?.path ? (
                 <img
-                  className="h-32 w-32 rounded-full object-cover border bordre-gray-200"
+                  className="h-32 w-32 rounded-full object-cover border border-gray-200"
                   src={user?.profile?.path}
                   alt="Profile"
                 />
@@ -103,6 +103,9 @@ const Profile = () => {
                 )}
                 {user?.details?.gender === 'FEMALE' && (
                   <IoMdFemale className="text-pink-700 text-3xl" />
+                )}
+                {user?.details?.gender === "NULL" && (
+                  <p className='text-red-500'>Null</p>
                 )}
               </div>
             </div>
@@ -153,10 +156,10 @@ const Profile = () => {
 
             <div className="border border-gray-100  rounded-lg"></div>
           </div>
-          <div className="border border-gray-200 bg-gray-100 rounded-xl flex justify-between font-poppins ">
+          <div className="border border-gray-200  rounded-xl flex justify-between font-poppins ">
             <div className="flex justify-start items-start">
               <div className="mb-10 mt-5 flex flex-col justify-start items-start  w-[53rem] mt-">
-                <h1 className="font-medium text-xl">Posts</h1>
+                <h1 className="font-medium text-xl ml-3">Posts</h1>
                 <div className="flex justify-start">
                   <UserPost />
                 </div>
