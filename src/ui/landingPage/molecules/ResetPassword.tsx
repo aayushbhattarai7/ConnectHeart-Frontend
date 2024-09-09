@@ -34,6 +34,10 @@ const ResetPassword: React.FC<EmailProps> = ({ email }) => {
   } = useContext(ThemeContext);
 
   const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-900';
+  const inputBg = darkMode ? 'bg-gray-200' : 'bg-gray-700';
+    const cardBgColor = darkMode ? 'bg-gray-100' : 'bg-gray-900';
+
+
   const onSubmit = async (data: FormData) => {
     try {
       const formData = new FormData();
@@ -62,42 +66,44 @@ const ResetPassword: React.FC<EmailProps> = ({ email }) => {
   };
 
   return (
-    <div className={`flex-1 2xl:w-[76rem] h-screen ${bgColor} p-4 lg:p-12 shadow-lg`}>
-      {error && <PopupMessage message={error} setMessage={setError} type="error" />}
-      {success && <PopupMessage message={success} setMessage={setSuccess} type="success" />}
-      {!verify && (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid grid-cols-1 gap-6">
-            <Label name="otp" label={authLabel.enterNewPassword[lang]} />
-            <input
-              {...register('password', { required: true })}
-              placeholder={authLabel.enterNewPassword[lang]}
-              type="password"
-              className="w-fit"
-            />
-          </div>
+    <div className={`flex items-center justify-center  ${bgColor} p-4 lg:p-12`}>
+      <div className={`w-full max-w-lg ${cardBgColor} p-6 rounded-lg`}>
+        {error && <PopupMessage message={error} setMessage={setError} type="error" />}
+        {success && <PopupMessage message={success} setMessage={setSuccess} type="success" />}
+        {!verify && (
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="grid grid-cols-1 gap-2 mb-6">
+              <Label name="otp" label={authLabel.enterNewPassword[lang]} />
+              <input
+                {...register('password', { required: true })}
+                placeholder={authLabel.enterNewPassword[lang]}
+                type="password"
+                className={`w-full p-2 ${inputBg} outline-none`}
+              />
+            </div>
 
-          <div className="grid grid-cols-1 gap-6">
-            <Label name="otp" label={authLabel.confirmPassword[lang]} />
-            <input
-              {...register('confirmPassword', { required: true })}
-              placeholder={authLabel.confirmPassword[lang]}
-              type="password"
-              className="w-fit"
-            />
-          </div>
+            <div className="grid grid-cols-1 gap-2">
+              <Label name="otp" label={authLabel.confirmPassword[lang]} />
+              <input
+                {...register('confirmPassword', { required: true })}
+                placeholder={authLabel.confirmPassword[lang]}
+                type="password"
+                className={`w-full p-2 ${inputBg} outline-none`}
+              />
+            </div>
 
-          <div className="flex justify-end mt-6">
-            <Button
-              buttonText={authLabel.updatePassword[lang]}
-              type="submit"
-              name=""
-              disabled={isSubmitting}
-              className="w-full lg:w-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-        </form>
-      )}
+            <div className="flex justify-end mt-6">
+              <Button
+                buttonText={authLabel.updatePassword[lang]}
+                type="submit"
+                name=""
+                disabled={isSubmitting}
+                className="w-full lg:w-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </form>
+        )}
+      </div>
     </div>
   );
 };

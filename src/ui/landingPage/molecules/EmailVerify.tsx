@@ -9,6 +9,7 @@ import axiosInstance from '../../../service/instance';
 import axios from 'axios';
 import OtpVerify from './OtpVerify';
 import { ThemeContext } from '../../../contexts/ThemeContext';
+import PopupMessage from '../../common/atoms/PopupMessage';
 
 interface FormData {
   email: string;
@@ -20,14 +21,14 @@ const EmailVerify = () => {
   const [success, setSuccess] = useState<string | null>(null);
   const [email, setEmail] = useState<string>('');
   const [verify, setVerify] = useState(false);
-const {
-  state: { darkMode },
-} = useContext(ThemeContext);
+  const {
+    state: { darkMode },
+  } = useContext(ThemeContext);
 
-const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-800';
-const cardBgColor = darkMode ? 'bg-gray-100' : 'bg-gray-900';
+  const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-800';
+  const cardBgColor = darkMode ? 'bg-gray-100' : 'bg-gray-900';
 
-const inputBg = darkMode ? 'bg-gray-200' : 'bg-gray-700';
+  const inputBg = darkMode ? 'bg-gray-200' : 'bg-gray-700';
   const {
     register,
     handleSubmit,
@@ -54,18 +55,16 @@ const inputBg = darkMode ? 'bg-gray-200' : 'bg-gray-700';
   return (
     <div className={`flex items-center justify-center h-[80vh] ${bgColor} p-4 lg:p-12`}>
       <div className={`w-full max-w-lg ${cardBgColor} p-6 rounded-lg shadow-lg`}>
-        {success && <p className="text-green-500 text-center mb-4">{success}</p>}
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+        {success && <PopupMessage message={success} setMessage={setSuccess} type="success" />}
+        {error && <PopupMessage message={error} setMessage={setError} type="error" />}
 
         {!verify && (
           <div>
-              <h1 className="text-3xl font-bold  mb-4 text-center">
-                Forgot Your Password?
-              </h1>
-              <p className="text-lg  mb-6 text-center">
-                No worries! Enter your email address below and we'll send you a OTP to reset your
-                password.
-              </p>
+            <h1 className="text-3xl font-bold  mb-4 text-center">Forgot Your Password?</h1>
+            <p className="text-lg  mb-6 text-center">
+              No worries! Enter your email address below and we'll send you a OTP to reset your
+              password.
+            </p>
             <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
               <div className="grid grid-cols-1 gap-4">
                 <Label name="email" label={authLabel.email[lang]} />
