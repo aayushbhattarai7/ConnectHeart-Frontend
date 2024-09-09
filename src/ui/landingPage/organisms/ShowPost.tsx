@@ -111,8 +111,8 @@ const ShowPost = () => {
     state: { darkMode },
   } = useContext(ThemeContext);
 
-  const bgColor = darkMode ? 'bg-white' : 'bg-gray-800';
-  const connectBgColor = darkMode ? 'bg-white' : 'bg-gray-700';
+  const bgColor = darkMode ? 'bg-white' : 'bg-gray-900';
+  const connectBgColor = darkMode ? 'bg-white' : 'bg-gray-900';
   const textColor = darkMode ? 'text-black' : 'text-white';
   const hoverDiv = darkMode ? 'hover:bg-gray-50' : 'hover:bg-gray-800';
   const getPost = async () => {
@@ -323,7 +323,7 @@ const ShowPost = () => {
             className={
               darkMode
                 ? ' flex justify-center shadow-xl  w-full rounded-xl mx-auto   mb-14 text-ellipsis bg-white'
-                : ' flex justify-center  shadow-xl  w-full rounded-xl mx-auto text-gray-200  mb-14 text-ellipsis bg-gray-700'
+                : ' flex justify-center  shadow-xl  w-full rounded-xl mx-auto text-gray-200  mb-14 text-ellipsis bg-gray-900'
             }
             key={post.id}
           >

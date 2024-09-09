@@ -34,7 +34,7 @@ const {
   state: { darkMode },
 } = useContext(ThemeContext);
 
-  const bgColor = darkMode ? 'bg-white' : 'bg-gray-700';
+  const bgColor = darkMode ? 'bg-white' : 'bg-gray-900';
    const textColor = darkMode ? 'text-black' : 'text-white';
 
   const request = async () => {

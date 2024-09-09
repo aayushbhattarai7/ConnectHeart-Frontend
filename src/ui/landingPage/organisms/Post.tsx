@@ -47,7 +47,7 @@ const Post: React.FC<PostProps> = ({ postId, refresh }) => {
    state: { darkMode },
  } = useContext(ThemeContext);
 
- const bgColor = darkMode ? 'bg-white' : 'bg-gray-700';
+ const bgColor = darkMode ? 'bg-white' : 'bg-gray-900';
 
   const [user, setUser] = useState<User | null>(null);
   const [formData, setformData] = useState<FormData>({ thought: '', feeling: '', files: [] });
