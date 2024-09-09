@@ -18,7 +18,8 @@ const Settings = () => {
    state: { darkMode },
  } = useContext(ThemeContext);
 
- const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-800';
+  const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-800';
+  const logoutBgColor = darkMode ? 'bg-white':'bg-gray-900'
  const hoverBgColor = darkMode ? 'hover:bg-gray-300' : 'hover:bg-gray-900';
   const textColor = darkMode ? 'text-black' : 'text-white';
   const bgActive = darkMode?'bg-gray-100':'bg-gray-900'
@@ -125,8 +126,8 @@ const Settings = () => {
       {updatePass && <UpdatePasswords />}
       <div className="xl:ml-96"> {resetpass && <EmailVerify />}</div>
       {isLogout && (
-        <div className="fixed inset-0 flex items-center justify-center font-poppins bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded shadow-lg w-96">
+        <div className={`fixed inset-0 flex items-center justify-center font-poppins bg-black bg-opacity-50 z-50`}>
+          <div className={`p-6 rounded ${logoutBgColor} shadow-lg w-96`}>
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-bold">Logout</h2>
               <button onClick={handleCloseLogout} className="text-gray-500">
@@ -159,7 +160,7 @@ const Settings = () => {
         {isDelete && (
           <div>
             <div className="fixed inset-0 w-[100%] flex items-center justify-center font-poppins bg-black bg-opacity-50 z-50">
-              <div className="bg-white p-6 rounded shadow-lg w-96">
+              <div className={`${logoutBgColor} p-6 rounded shadow-lg w-96`}>
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-lg font-bold">Delete Account</h2>
                   <button onClick={handleCloseDelete} className="text-gray-500">

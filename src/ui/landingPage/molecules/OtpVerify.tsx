@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Label from '../../common/atoms/Label';
 import { authLabel } from '../../../localization/auth';
 import { useLang } from '../../../hooks/useLang';
@@ -8,6 +8,7 @@ import axiosInstance from '../../../service/instance';
 import axios from 'axios';
 import PopupMessage from '../../common/atoms/PopupMessage';
 import ResetPassword from './ResetPassword';
+import { ThemeContext } from '../../../contexts/ThemeContext';
 
 interface FormData {
   email: string;
@@ -28,7 +29,12 @@ const OtpVerify: React.FC<OtpVerifyProps> = ({ email }) => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [verify, setVerify] = useState(false);
+const {
+  state: { darkMode },
+} = useContext(ThemeContext);
 
+const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-900';
+const inputBg = darkMode ? 'bg-gray-200' : 'bg-gray-700';
   const onSubmit = async (data: FormData) => {
     try {
       const formData = new FormData();
@@ -56,7 +62,7 @@ const OtpVerify: React.FC<OtpVerifyProps> = ({ email }) => {
   };
 
   return (
-      <div className="w-full max-w-md  p-6 rounded-lg ">
+      <div className={`w-[30rem] p-6 rounded-lg ${bgColor} `}>
         {error && <PopupMessage message={error} setMessage={setError} type="error" />}
         {success && <PopupMessage message={success} setMessage={setSuccess} type="success" />}
 
@@ -68,7 +74,7 @@ const OtpVerify: React.FC<OtpVerifyProps> = ({ email }) => {
                 {...register('otp', { required: true })}
                 placeholder={authLabel.EnterOTP[lang]}
                 type="number"
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={`w-full p-2  ${inputBg} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
               />
             </div>
 

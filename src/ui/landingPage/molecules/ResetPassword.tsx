@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Label from '../../common/atoms/Label';
 import { authLabel } from '../../../localization/auth';
 import { useLang } from '../../../hooks/useLang';
@@ -7,6 +7,7 @@ import Button from '../../common/atoms/Button';
 import axiosInstance from '../../../service/instance';
 import axios from 'axios';
 import PopupMessage from '../../common/atoms/PopupMessage';
+import { ThemeContext } from '../../../contexts/ThemeContext';
 
 interface FormData {
   email: string;
@@ -28,7 +29,11 @@ const ResetPassword: React.FC<EmailProps> = ({ email }) => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [verify, setVerify] = useState(false);
+  const {
+    state: { darkMode },
+  } = useContext(ThemeContext);
 
+  const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-900';
   const onSubmit = async (data: FormData) => {
     try {
       const formData = new FormData();
@@ -57,7 +62,7 @@ const ResetPassword: React.FC<EmailProps> = ({ email }) => {
   };
 
   return (
-    <div className="flex-1 2xl:w-[76rem] h-screen bg-white p-4 lg:p-12 shadow-lg">
+    <div className={`flex-1 2xl:w-[76rem] h-screen ${bgColor} p-4 lg:p-12 shadow-lg`}>
       {error && <PopupMessage message={error} setMessage={setError} type="error" />}
       {success && <PopupMessage message={success} setMessage={setSuccess} type="success" />}
       {!verify && (
