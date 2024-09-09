@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import axiosInstance from '../../../service/instance';
 import { IoMdMale, IoMdFemale } from 'react-icons/io';
-import { FaImage, FaUserFriends } from 'react-icons/fa';
+import { CiNoWaitingSign } from 'react-icons/ci';
 import { BiEditAlt } from 'react-icons/bi';
 import UserPost from './UserPost';
 import EditUser from '../molecules/EditUser';
@@ -80,7 +80,9 @@ const Profile = () => {
   return (
     <div className={`w-full ${bgColor} ${textColor}`}>
       {' '}
-      <div className={`min-h-screen  flex flex-col ${ProfileBgColor} w-fit justify-center  mt-10 px-5 sm:px-10 lg:px-20 ml-[34rem] `}>
+      <div
+        className={`min-h-screen  flex flex-col ${ProfileBgColor} w-fit justify-center  mt-10 px-5 sm:px-10 lg:px-20 ml-[34rem] `}
+      >
         <div className="max-w-5xl mx-auto p-20 w-max2 mt-20 rounded-xl shadow-lg">
           <div className={`flex ${ProfileBgColor} justify-start items-start gap-8 mb-7`}>
             <div className="relative  mb-6">
@@ -104,8 +106,8 @@ const Profile = () => {
                 {user?.details?.gender === 'FEMALE' && (
                   <IoMdFemale className="text-pink-700 text-3xl" />
                 )}
-                {user?.details?.gender === "NULL" && (
-                  <p className='text-red-500'>Null</p>
+                {user?.details?.gender === 'NULL' && (
+                  <CiNoWaitingSign className="text-red-700 text-3xl" />
                 )}
               </div>
             </div>

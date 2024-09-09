@@ -257,7 +257,7 @@ const UserPost = () => {
             className={
               darkMode
                 ? ' flex justify-center shadow-xl  w-full rounded-xl mx-auto   mb-14 text-ellipsis'
-                : ' flex justify-center  shadow-xl  w-full rounded-xl mx-auto text-gray-200  mb-14 text-ellipsis bg-gray-700'
+                : ' flex justify-center  shadow-xl  w-full rounded-xl mx-auto text-gray-200  mb-14 text-ellipsis bg-gray-900'
             }
             key={post.id}
           >

@@ -28,7 +28,6 @@ const UpdatePasswords = () => {
   } = useContext(ThemeContext);
 
   const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-900';
-  const hoverBgColor = darkMode ? 'hover:bg-gray-300' : 'hover:bg-gray-900';
   const textColor = darkMode ? 'text-black' : 'text-white';
   const onSubmit: SubmitHandler<FormData> = async (data, e) => {
     try {
