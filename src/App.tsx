@@ -17,6 +17,8 @@ import './App.css';
 import { SocketProvider } from './contexts/OnlineStatus';
 import LanguageProvider from './contexts/LanguageContext';
 import { ThemeProvider } from './contexts/ThemeContext';
+
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -71,7 +73,9 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+
 function App() {
+ 
   return (
     <>
       <ThemeProvider>
