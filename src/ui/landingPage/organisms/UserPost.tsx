@@ -78,7 +78,6 @@ const UserPost = () => {
   const [error, setError] = useState<string | null>(null);
   const [decodedToken, setDecodedToken] = useState<DecodedToken | null>(null);
   const [replyCommentId, setReplyCommentId] = useState<string | null>(null);
-  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [visibleCommentsPostId, setVisibleCommentsPostId] = useState<string | null>(null);
   const [commentForm, setCommentForm] = useState<string | null>(null);
   const { lang } = useLang();
