@@ -86,10 +86,6 @@ const UserPost = () => {
     state: { darkMode },
   } = useContext(ThemeContext);
 
-  const bgColor = darkMode ? 'bg-gray-100' : 'bg-gray-800';
-  const ProfileBgColor = darkMode ? 'bg-gray-100' : 'bg-gray-800';
-  const textColor = darkMode ? 'text-black' : 'text-white';
-
   const getPost = async () => {
     try {
       const response = await axiosInstance.get('/post/user/posts', {
@@ -256,7 +252,7 @@ const UserPost = () => {
           <div
             className={
               darkMode
-                ? ' flex justify-center shadow-xl  w-full rounded-xl mx-auto   mb-14 text-ellipsis'
+                ? ' flex justify-center shadow-xl  w-full rounded-xl mx-auto   mb-14 text-ellipsis bg-gray-200'
                 : ' flex justify-center  shadow-xl  w-full rounded-xl mx-auto text-gray-200  mb-14 text-ellipsis bg-gray-900'
             }
             key={post.id}
@@ -372,7 +368,7 @@ const UserPost = () => {
               <div className="flex gap-20 justify-around ml-10">
                 <div className="flex flex-col  font-poppins">
                   <div className="ml-1">
-                    <Like postId={post?.id} userId={currentUserId!} refresh={getPost} />
+                    <Like postId={post?.id} userId={decodedToken?.id!} refresh={getPost} />
                   </div>
                   <p>{authLabel.like[lang]}</p>
                 </div>

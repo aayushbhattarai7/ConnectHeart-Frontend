@@ -495,7 +495,7 @@ const ShowPost = () => {
         ))}
       </div>
 
-      <div className="mt-10 mb-1 flex-col hidden xl:block ">
+      <div className={'mt-10 mb-1 flex-col hidden xl:block '}>
         <Notification />
         <div
           className={`fixed  lg:top-[38rem] lg:w-[24rem] h-80 ${connectBgColor} right-1 shadow-lg rounded-lg`}
@@ -565,18 +565,18 @@ const ShowPost = () => {
         </div>
       </div>
       {sideMenu && (
-        <div className=" mb-5 xs:mb-10 flex-col h-fit ">
+        <div className={`mb-5 xs:mb-10 flex-col block ${bgColor} h-full `}>
           <Notification />
-          <div className=" fixed top-[33rem] sm:w-[18rem] overflow-y-auto right-1 h-[23rem]  bg-gray-100  shadow-xl rounded-lg ">
+          <div className={`fixed top-[30rem] sm:w-[18rem] overflow-y-auto right-1 h-[23rem] ${bgColor} shadow-xl rounded-lg `}>
             <div className="flex justify-center items-center  mb-4">
               <Label
                 name="connection"
-                className={`text-xl font-poppins font-medium text-gray-800`}
+                className={`text-xl font-poppins ${textColor} font-medium`}
                 label={authLabel.connection[lang]}
               />
             </div>
             {connects.length === 0 ? (
-              <div className={`flex items-center w-[32rem]  ${bgColor} justify-center h-56 mb-4`}>
+              <div className={`flex items-center w-[32rem]  ${bgColor} justify-center h-72 mb-4`}>
                 <Label
                   name="noConnection"
                   className={`text-xl font-poppins font-medium ${textColor}`}
@@ -589,7 +589,7 @@ const ShowPost = () => {
                 {connects?.map((connect) => {
                   return (
                     <div>
-                      <div className="   border rounded-lg  ">
+                      <div className=" border rounded-lg  ">
                         <ul className="divide-y divide-gray-200">
                           <li
                             key={connect?.id}
@@ -633,7 +633,7 @@ const ShowPost = () => {
         </div>
       )}
       <button
-        className="fixed right-2 z-50 top-28 text-2xl block xl:hidden"
+        className={`fixed right-2 z-50 top-28 text-2xl ${textColor} block xl:hidden`}
         onClick={() => handleSideClick()}
       >
         {sideMenu ? <FaCircleArrowRight /> : <FaCircleArrowLeft />}
