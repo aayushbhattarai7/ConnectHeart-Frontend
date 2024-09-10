@@ -6,11 +6,17 @@ import { useLang } from '../../../hooks/useLang';
 import { LanguageEnum } from '../../../types/global.types';
 import { LuSunMedium } from 'react-icons/lu';
 import { ThemeContext } from '../../../contexts/ThemeContext';
-import whiteLogo from '../../../assets/images/logo.png'
-import darkLogo from '../../../assets/images/logo1.png'
+import whiteLogo from '../../../assets/images/logo.png';
+import darkLogo from '../../../assets/images/logo1.png';
+import axiosInstance from '../../../service/instance';
+interface User {
+  first_name: string;
+  last_name: string;
+}
 const Header = () => {
   const { lang, setLang } = useLang();
   const [sideBar, setSidebar] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
   const toggleLanguage = () => {
     setLang(lang === LanguageEnum.en ? LanguageEnum.ne : LanguageEnum.en);
   };
@@ -24,8 +30,29 @@ const Header = () => {
       theme.dispatch({ type: 'DARKMODE' });
     }
   };
-  const logo = darkMode ? darkLogo : whiteLogo;
 
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const searchValue = event.target.value.trim();
+    const searchParts = searchValue.split(' ');
+    if (searchParts.length === 1) {
+      searchUser(searchParts[0], '');
+    } else if (searchParts.length >= 2) {
+      searchUser(searchParts[0], searchParts[1]);
+    }
+  };
+  const searchUser = async (first_name: string, last_name: string) => {
+    const response = await axiosInstance.get('/auth/search', {
+      params: {
+        first_name,
+        last_name,
+      },
+    });
+    setUser(response.data);
+    console.log(response, 'haha');
+  };
+
+  const logo = darkMode ? darkLogo : whiteLogo;
   const targetPath =
     location.pathname !== '/login' && location.pathname !== '/signup' ? '/' : '/login';
   return (
@@ -48,7 +75,30 @@ const Header = () => {
               </NavLink>
             </h2>
           </div>
+          <div>
+            <form action="" onSubmit={() => handleSearch}>
+              <input
+                type="text"
+                className={
+                  darkMode
+                    ? 'p-2 outline-none rounded bg-gray-200 text-black'
+                    : 'p-2 outline-none rounded bg-gray-800 text-white'
+                }
+                onChange={handleSearch}
+                placeholder="Search User"
+              />
 
+              <button type="submit">Search</button>
+            </form>
+
+            {user && (
+              <div className="mt-4 bg-gray-100 dark:bg-gray-700 p-2 rounded-lg">
+                <p>
+                  <strong>Name:</strong> {user.first_name} {user.last_name}
+                </p>
+              </div>
+            )}
+          </div>
           <div className="flex justify-center items-center gap-7">
             <button onClick={toggleLanguage}>
               {lang === 'en' ? <p>English</p> : <p>नेपाली</p>}
