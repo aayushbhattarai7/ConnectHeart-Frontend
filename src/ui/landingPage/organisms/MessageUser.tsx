@@ -12,13 +12,16 @@ import { image } from '../../../config/constant/image';
 import { PiPhoneCallFill } from 'react-icons/pi';
 import { FaCircleArrowLeft, FaCircleArrowRight, FaVideo } from 'react-icons/fa6';
 import { IoMdMail } from 'react-icons/io';
-import {NavLink} from 'react-router-dom'
+import { NavLink } from 'react-router-dom';
 import { ThemeContext } from '../../../contexts/ThemeContext';
 interface Connection {
   id: string;
   email?: string;
   username?: string;
   active?: boolean;
+  people?: {
+    id: string;
+  };
   details: {
     first_name?: string;
     last_name?: string;
@@ -84,13 +87,15 @@ const MessageUser = () => {
   const [sideMenu, setSideMenu] = useState(false);
   const [messageBox, setMessageBox] = useState(false);
   const chatEndRef = useRef<HTMLDivElement | null>(null);
-   const {
-     state: { darkMode },
-   } = useContext(ThemeContext);
+    const [isBlocked, setIsBlocked] = useState(false);
+
+  const {
+    state: { darkMode },
+  } = useContext(ThemeContext);
 
   const bgColor = darkMode ? 'bg-white' : 'bg-gray-800';
   const textColor = darkMode ? 'text-black' : 'text-white';
-  const clickUser = darkMode? 'bg-gray-200':'bg-gray-900'
+  const clickUser = darkMode ? 'bg-gray-200' : 'bg-gray-900';
 
   const {
     register,
@@ -105,7 +110,6 @@ const MessageUser = () => {
 
   useEffect(() => {
     const token = sessionStorage.getItem('accessToken');
-
     if (token) {
       try {
         const decoded = jwtDecode<DecodedToken>(token);
@@ -292,10 +296,24 @@ const MessageUser = () => {
     }
   };
 
+ 
+  const blockUser = async (id: string) => {
+    try {
+      const response = await axiosInstance.patch(`/connect/block/${id}`);
+      console.log(response, 'hahah');
+     setIsBlocked(!isBlocked)
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.message || 'Error while fetching connection');
+      } else {
+        setError('Error while fetching connection');
+      }
+    }
+  };
+
   useEffect(() => {
     showConnection();
   }, []);
- 
 
   useEffect(() => {
     const handleResize = () => {
@@ -306,8 +324,6 @@ const MessageUser = () => {
       }
     };
 
-  
-
     handleResize();
 
     window.addEventListener('resize', handleResize);
@@ -315,11 +331,11 @@ const MessageUser = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-    useEffect(() => {
-      if (chatEndRef.current) {
-        chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, [chats]);
+  useEffect(() => {
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [chats]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -356,7 +372,9 @@ const MessageUser = () => {
         {sideMenu && (
           <div className=" flex flex-col  mb-2 mt-5 overflow-none lg:w-[25rem]  h-screen pt-5">
             <div className="mb-6">
-              <NavLink  to={'/'} className="text-blue-500 font-medium pl-7">Messages</NavLink>
+              <NavLink to={'/'} className="text-blue-500 font-medium pl-7">
+                Messages
+              </NavLink>
             </div>
             <div className={`w-[22rem] mb-10 flex gap-5 ${bgColor} ml-6 h-10 border  rounded-lg`}>
               <button className={`${textColor} ml-1`}>
@@ -411,7 +429,9 @@ const MessageUser = () => {
                           <p className={` ${textColor} font-medium`}>
                             {connect?.details?.first_name} {connect?.details?.last_name}
                           </p>
-                          {type && senders === connect.id && <p className={`${textColor}`}>Typing...</p>}
+                          {type && senders === connect.id && (
+                            <p className={`${textColor}`}>Typing...</p>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -548,7 +568,10 @@ const MessageUser = () => {
                 required
               />
               <div className="flex gap-12 xl:pl-20 ">
-                <p className={`text-2xl ${textColor} pt-3 `} onClick={() => setToggleEmoji(!toggleEmoji)}>
+                <p
+                  className={`text-2xl ${textColor} pt-3 `}
+                  onClick={() => setToggleEmoji(!toggleEmoji)}
+                >
                   <MdOutlineEmojiEmotions />
                 </p>
 
@@ -610,7 +633,7 @@ const MessageUser = () => {
                         </div>
                         <div className="mb-5">
                           <p className="text-gray-500">Email</p>
-                          <p className={`${textColor}`}>{connect?.email}</p> 
+                          <p className={`${textColor}`}>{connect?.email}</p>
                         </div>
                         <div>
                           <p className="text-gray-500">Phone</p>
@@ -619,9 +642,14 @@ const MessageUser = () => {
                       </div>
                     </div>
                     <div>
-                      <button className="bg-red-200 p-3 rounded-lg text-red-500 w-32 hover:bg-red-300 hover:text-red-600">
-                        Block
-                      </button>
+                      {connect?.people?.id === decodedToken?.id && (
+                        <button
+                          className="bg-red-200 p-3 rounded-lg text-red-500 w-32 hover:bg-red-300 hover:text-red-600"
+                          onClick={() => blockUser(connect.id)}
+                        >
+{                          isBlocked?'Block':'Unblock'
+}                        </button>
+                      )}
                     </div>
                   </div>
                 ) : null}
