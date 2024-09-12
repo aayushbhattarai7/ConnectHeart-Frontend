@@ -606,6 +606,7 @@ const MessageUser = () => {
                   </form>
                 ) : (
                     <p>You cannot message to this user{block?.blocked_to.id}</p>
+
                 )}
               </div>
             ) : (
