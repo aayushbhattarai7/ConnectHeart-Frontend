@@ -72,6 +72,14 @@ interface Messages {
     };
   };
 }
+interface Block {
+  blocked_by: {
+    id: string;
+  };
+  blocked_to: {
+    id: string;
+  };
+}
 
 const MessageUser = () => {
   const [connects, setConnects] = useState<Connection[]>([]);
@@ -87,7 +95,8 @@ const MessageUser = () => {
   const [sideMenu, setSideMenu] = useState(false);
   const [messageBox, setMessageBox] = useState(false);
   const chatEndRef = useRef<HTMLDivElement | null>(null);
-    const [isBlocked, setIsBlocked] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(false);
+  const [block, setBlock] = useState<Block | null>(null);
 
   const {
     state: { darkMode },
@@ -220,6 +229,7 @@ const MessageUser = () => {
         'Content-Type': 'application/json',
       },
     });
+    getBlockStatus(senderId);
     setMessageBox(true);
     setSenders(senderId);
     console.log(response);
@@ -296,12 +306,11 @@ const MessageUser = () => {
     }
   };
 
- 
   const blockUser = async (id: string) => {
     try {
       const response = await axiosInstance.patch(`/connect/block/${id}`);
       console.log(response, 'hahah');
-     setIsBlocked(!isBlocked)
+      setIsBlocked(!isBlocked);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setError(error.response?.data?.message || 'Error while fetching connection');
@@ -309,6 +318,14 @@ const MessageUser = () => {
         setError('Error while fetching connection');
       }
     }
+  };
+
+  const getBlockStatus = async (id: string) => {
+    try {
+      const response = await axiosInstance.get(`/connect/block/${id}`);
+      setBlock(response.data.blockeduser);
+      console.log(response.data.blockeduser, 'lyalya');
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -555,38 +572,86 @@ const MessageUser = () => {
         )}
         {messageBox && (
           <div className="w-[70rem] xs:left-[40rem] fixed bottom-0 lg:left-[25rem] gap-20 p-4 border border-gray-300">
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="flex w-full xl:max-w-[65rem]  mx-auto"
-            >
-              <input
-                type="text"
-                {...register('message')}
-                placeholder="Type Here..."
-                className={`flex-grow ${bgColor} p-2 rounded-l-lg  outline-none`}
-                onKeyDown={() => socket?.emit('typing', { senders })}
-                required
-              />
-              <div className="flex gap-12 xl:pl-20 ">
-                <p
-                  className={`text-2xl ${textColor} pt-3 `}
-                  onClick={() => setToggleEmoji(!toggleEmoji)}
-                >
-                  <MdOutlineEmojiEmotions />
-                </p>
+            {!isBlocked ? (
+              <div>
+                {(block?.blocked_by.id || block?.blocked_to.id) !== decodedToken?.id ? (
+                  <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="flex w-full xl:max-w-[65rem]  mx-auto"
+                  >
+                    <input
+                      type="text"
+                      {...register('message')}
+                      placeholder="Type Here..."
+                      className={`flex-grow ${bgColor} p-2 rounded-l-lg  outline-none`}
+                      onKeyDown={() => socket?.emit('typing', { senders })}
+                      required
+                    />
+                    <div className="flex gap-12 xl:pl-20 ">
+                      <p
+                        className={`text-2xl ${textColor} pt-3 `}
+                        onClick={() => setToggleEmoji(!toggleEmoji)}
+                      >
+                        <MdOutlineEmojiEmotions />
+                      </p>
 
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="text-blue-700 text-2xl  p-2 rounded-r-full hover:text-blue-900 transition duration-300"
-                >
-                  <BsFillSendFill />
-                </button>
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="text-blue-700 text-2xl  p-2 rounded-r-full hover:text-blue-900 transition duration-300"
+                      >
+                        <BsFillSendFill />
+                      </button>
+                    </div>
+                  </form>
+                ) : (
+                    <p>You cannot message to this user{block?.blocked_to.id}</p>
+                )}
               </div>
-            </form>
+            ) : (
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex w-full xl:max-w-[65rem]  mx-auto"
+              >
+                <input
+                  type="text"
+                  {...register('message')}
+                  placeholder="Type Here..."
+                  className={`flex-grow ${bgColor} p-2 rounded-l-lg  outline-none`}
+                  onKeyDown={() => socket?.emit('typing', { senders })}
+                  required
+                />
+                <div className="flex gap-12 xl:pl-20 ">
+                  <p
+                    className={`text-2xl ${textColor} pt-3 `}
+                    onClick={() => setToggleEmoji(!toggleEmoji)}
+                  >
+                    <MdOutlineEmojiEmotions />
+                  </p>
+
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="text-blue-700 text-2xl  p-2 rounded-r-full hover:text-blue-900 transition duration-300"
+                  >
+                    <BsFillSendFill />
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         )}
       </div>
+      {/* /* <div className="w-full justify-center items-center flex text-red-500 font-poppins">
+                {connects.map((connect) => (
+                  <div>
+                    {connect?.people?.id === decodedToken?.id ? (
+                      <p className="">Unblock the user to chat</p>
+                    ) : (
+                      <p>You cannot message to this user</p>
+                    )}
+                    <p></p>
+                  </div> */}
 
       {profile && (
         <div className="pt-32 mr-64">
@@ -642,13 +707,20 @@ const MessageUser = () => {
                       </div>
                     </div>
                     <div>
-                      {connect?.people?.id === decodedToken?.id && (
+                      {block?.blocked_by.id === decodedToken?.id ? (
                         <button
                           className="bg-red-200 p-3 rounded-lg text-red-500 w-32 hover:bg-red-300 hover:text-red-600"
                           onClick={() => blockUser(connect.id)}
                         >
-{                          isBlocked?'Block':'Unblock'
-}                        </button>
+                          {isBlocked ? 'Block' : 'Unblock'}
+                        </button>
+                      ) : (
+                        <button
+                          className="bg-red-200 p-3 rounded-lg text-red-500 w-32 hover:bg-red-300 hover:text-red-600"
+                          onClick={() => blockUser(connect.id)}
+                        >
+                          Block
+                        </button>
                       )}
                     </div>
                   </div>
