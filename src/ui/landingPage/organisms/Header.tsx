@@ -86,28 +86,6 @@ const Header = () => {
             </h2>
           </div>
           <div>
-            {/* <form onSubmit={handleSearch}>
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)} 
-                className={
-                  darkMode
-                    ? 'p-2 outline-none rounded bg-gray-200 text-black'
-                    : 'p-2 outline-none rounded bg-gray-800 text-white'
-                }
-                placeholder="Search User"
-              />
-              <button type="submit">Search</button>
-            </form>
-
-            {user && (
-              <div className="mt-24 bg-gray-100 dark:bg-gray-700 p-2 rounded-lg">
-                <p>
-                 {user.first_name} {user.last_name}
-                </p>
-              </div>
-            )} */}
           </div>
           <div className="flex justify-center items-center gap-7">
             <button onClick={toggleLanguage}>
