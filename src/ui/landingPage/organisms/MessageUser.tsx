@@ -574,65 +574,74 @@ const MessageUser = () => {
           <div className="w-[70rem] xs:left-[40rem] fixed bottom-0 lg:left-[25rem] gap-20 p-4 border border-gray-300">
             {!isBlocked ? (
               <div>
-                {(block?.blocked_by.id || block?.blocked_to.id) !== decodedToken?.id ? (
-                  <form
-                    onSubmit={handleSubmit(onSubmit)}
-                    className="flex w-full xl:max-w-[65rem]  mx-auto"
-                  >
-                    <input
-                      type="text"
-                      {...register('message')}
-                      placeholder="Type Here..."
-                      className={`flex-grow ${bgColor} p-2 rounded-l-lg  outline-none`}
-                      onKeyDown={() => socket?.emit('typing', { senders })}
-                      required
-                    />
-                    <div className="flex gap-12 xl:pl-20 ">
-                      <p
-                        className={`text-2xl ${textColor} pt-3 `}
-                        onClick={() => setToggleEmoji(!toggleEmoji)}
+                {connects.map((connect) => (
+                  <div key={connect.id}>
+                    {(block?.blocked_by.id === decodedToken?.id &&
+                      block?.blocked_to.id === connect.id) ||
+                    (block?.blocked_by.id === connect.id &&
+                      block?.blocked_to.id === decodedToken?.id) ? (
+                      <div>
+                        <p>You cannot message this user</p>
+                        <p>{block?.blocked_to.id}</p>
+                      </div>
+                    ) : (
+                      <form
+                        onSubmit={handleSubmit(onSubmit)}
+                        className="flex w-full xl:max-w-[65rem] mx-auto"
                       >
-                        <MdOutlineEmojiEmotions />
-                      </p>
-
-                      <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="text-blue-700 text-2xl  p-2 rounded-r-full hover:text-blue-900 transition duration-300"
-                      >
-                        <BsFillSendFill />
-                      </button>
-                    </div>
-                  </form>
-                ) : (
-                  <p>You cannot message to this user</p>
-                )}
+                        <p>{block?.blocked_to.id}</p>
+                        <input
+                          type="text"
+                          {...register('message')}
+                          placeholder="Type Here..."
+                          className={`flex-grow ${bgColor} p-2 rounded-l-lg outline-none`}
+                          onKeyDown={() => socket?.emit('typing', { senders })}
+                          required
+                        />
+                        <div className="flex gap-12 xl:pl-20">
+                          <p
+                            className={`text-2xl ${textColor} pt-3`}
+                            onClick={() => setToggleEmoji(!toggleEmoji)}
+                          >
+                            <MdOutlineEmojiEmotions />
+                          </p>
+                          <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="text-blue-700 text-2xl p-2 rounded-r-full hover:text-blue-900 transition duration-300"
+                          >
+                            <BsFillSendFill />
+                          </button>
+                        </div>
+                      </form>
+                    )}
+                  </div>
+                ))}
               </div>
             ) : (
               <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex w-full xl:max-w-[65rem]  mx-auto"
+                className="flex w-full xl:max-w-[65rem] mx-auto"
               >
                 <input
                   type="text"
                   {...register('message')}
                   placeholder="Type Here..."
-                  className={`flex-grow ${bgColor} p-2 rounded-l-lg  outline-none`}
+                  className={`flex-grow ${bgColor} p-2 rounded-l-lg outline-none`}
                   onKeyDown={() => socket?.emit('typing', { senders })}
                   required
                 />
-                <div className="flex gap-12 xl:pl-20 ">
+                <div className="flex gap-12 xl:pl-20">
                   <p
-                    className={`text-2xl ${textColor} pt-3 `}
+                    className={`text-2xl ${textColor} pt-3`}
                     onClick={() => setToggleEmoji(!toggleEmoji)}
                   >
                     <MdOutlineEmojiEmotions />
                   </p>
-
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="text-blue-700 text-2xl  p-2 rounded-r-full hover:text-blue-900 transition duration-300"
+                    className="text-blue-700 text-2xl p-2 rounded-r-full hover:text-blue-900 transition duration-300"
                   >
                     <BsFillSendFill />
                   </button>
