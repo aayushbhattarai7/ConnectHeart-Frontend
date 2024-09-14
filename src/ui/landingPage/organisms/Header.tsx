@@ -136,3 +136,51 @@ const Header = () => {
 };
 
 export default Header;
+
+
+/** {/* {connects?.map((connect) => {
+            return (
+              <div>
+                {senders === connect.id ? (
+                  <div>
+                    <div
+                      key={senders}
+                      className="flex gap-6 fixed top-[6.7rem] h-16 rounded right-[21rem] text-black bg-white border w-[56rem]"
+                    >
+                      <div>
+                        {senders ? (
+                          <div
+                            key={senders}
+                            className="flex gap-6 fixed top-[6.7rem] h-16 rounded right-[21rem] text-black border w-[56rem]"
+                          >
+                            {connect?.profile?.path ? (
+                              <img
+                                className="h-12 w-12 rounded-full mb-3"
+                                src={connect?.profile?.path}
+                                alt=""
+                              />
+                            ) : (
+                              <img
+                                className="w-12 h-12 rounded-full"
+                                src="/profilenull.jpg"
+                                alt="Default Profile"
+                              />
+                            )}
+
+                            <div className="">
+                              <div className="flex pt-2 flex-col">
+                                <p className="font-medium text-xl">
+                                  {connect?.details?.first_name} {connect?.details.last_name}
+                                </p>
+                                {type && senders === connect.id && <p>Typing...</p>}
+                              </div>
+                            </div>
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            );
+          })}  */

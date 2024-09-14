@@ -195,7 +195,6 @@ const MessageUser = () => {
         const updatedConnects = prev.map((connect) =>
           connect.id === userId ? { ...connect, active: status } : connect,
         );
-        console.log('Updated connects:', updatedConnects);
         return updatedConnects;
       });
     };
@@ -220,9 +219,7 @@ const MessageUser = () => {
   }, [socket]);
 
   const handleChatClick = async (senderId: string) => {
-    socket?.emit('readed', { senderId }, (response: any) => {
-      console.log('yess', response);
-    });
+    socket?.emit('readed', { senderId }, (response: any) => {});
     console.log('clicked');
     const response = await axiosInstance.get(`/chat/${senderId}`, {
       headers: {
@@ -245,7 +242,6 @@ const MessageUser = () => {
       fetchUnreadCounts;
 
       setChats(response.data.displaychat);
-      console.log(response?.data?.displaychat);
     } catch (error) {
       console.error('Error fetching chat data', error);
     }
@@ -261,8 +257,6 @@ const MessageUser = () => {
       setUnreadCounts(() => ({
         [id]: res.data.unreadchat,
       }));
-
-      console.log(res.data, 'resdatatatata');
     } catch (error) {
       console.log('🚀 ~ fetchUnreadtCounts ~ error:', error);
     }
@@ -309,7 +303,6 @@ const MessageUser = () => {
   const blockUser = async (id: string) => {
     try {
       const response = await axiosInstance.patch(`/connect/block/${id}`);
-      console.log(response, 'hahah');
       setIsBlocked(!isBlocked);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -324,8 +317,13 @@ const MessageUser = () => {
     try {
       const response = await axiosInstance.get(`/connect/block/${id}`);
       setBlock(response.data.blockeduser);
-      console.log(response.data.blockeduser, 'lyalya');
-    } catch (error) {}
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.message || 'Error while fetching connection');
+      } else {
+        setError('Error while fetching connection');
+      }
+    }
   };
 
   useEffect(() => {
@@ -478,55 +476,9 @@ const MessageUser = () => {
       </div>
       <div className="h-[60.09rem]  flex flex-col w-full  overflow-hidden">
         {showMessage && messageBox ? (
-          <div className=" 2xl:ml-[25rem] xl:ml-10 p-4 mb-10 justify-start items-start   overflow-auto mx-auto 2xl:w-[70rem] xl:w-[40rem] lg:w-[35rem] sm:w-[30rem] xs:w-[25rem] border-b-0 overflow-y-auto border  flex-grow">
-            {/* {connects?.map((connect) => {
-            return (
-              <div>
-                {senders === connect.id ? (
-                  <div>
-                    <div
-                      key={senders}
-                      className="flex gap-6 fixed top-[6.7rem] h-16 rounded right-[21rem] text-black bg-white border w-[56rem]"
-                    >
-                      <div>
-                        {senders ? (
-                          <div
-                            key={senders}
-                            className="flex gap-6 fixed top-[6.7rem] h-16 rounded right-[21rem] text-black border w-[56rem]"
-                          >
-                            {connect?.profile?.path ? (
-                              <img
-                                className="h-12 w-12 rounded-full mb-3"
-                                src={connect?.profile?.path}
-                                alt=""
-                              />
-                            ) : (
-                              <img
-                                className="w-12 h-12 rounded-full"
-                                src="/profilenull.jpg"
-                                alt="Default Profile"
-                              />
-                            )}
-
-                            <div className="">
-                              <div className="flex pt-2 flex-col">
-                                <p className="font-medium text-xl">
-                                  {connect?.details?.first_name} {connect?.details.last_name}
-                                </p>
-                                {type && senders === connect.id && <p>Typing...</p>}
-                              </div>
-                            </div>
-                          </div>
-                        ) : null}
-                      </div>
-                    </div>
-                  </div>
-                ) : null}
-              </div>
-            );
-          })} */}
-            <div className="flex mt-20 2xl:justify-center xs:block justify-end items-end overflow-auto 2xl:w-[65rem]  ">
-              <div className="flex flex-col justify-end  overflow-auto hide-scrollbar  items-end  h-full ">
+          <div className=" 2xl:ml-[25rem] xl:ml-10 p-4 mb-10 justify-end items-end   overflow-auto mx-auto 2xl:w-[70rem] xl:w-[40rem] lg:w-[35rem] sm:w-[30rem] xs:w-[25rem] border-b-0 overflow-y-auto border  flex-grow">
+            <div className="flex mt-20 2xl:justify-end xs:block justify-end items-end overflow-auto 2xl:w-[65rem]  ">
+              <div className="flex flex-col justify-end  overflow-auto hide-scrollbar  items-end  h-auto ">
                 {chats?.map((chat, index) => (
                   <div
                     key={`${chat.id} ${index}`}
@@ -572,82 +524,45 @@ const MessageUser = () => {
         )}
         {messageBox && (
           <div className="w-[70rem] xs:left-[40rem] fixed bottom-0 lg:left-[25rem] gap-20 p-4 border border-gray-300">
-            {!isBlocked ? (
-              <div>
-                {connects.map((connect) => (
-                  <div key={connect.id}>
-                    {(block?.blocked_by.id === decodedToken?.id &&
-                      block?.blocked_to.id === connect.id) ||
-                    (block?.blocked_by.id === connect.id &&
-                      block?.blocked_to.id === decodedToken?.id) ? (
-                      <div>
-                        <p>You cannot message this user</p>
-                        <p>{block?.blocked_to.id}</p>
-                      </div>
-                    ) : (
-                      <form
-                        onSubmit={handleSubmit(onSubmit)}
-                        className="flex w-full xl:max-w-[65rem] mx-auto"
-                      >
-                        <p>{block?.blocked_to.id}</p>
-                        <input
-                          type="text"
-                          {...register('message')}
-                          placeholder="Type Here..."
-                          className={`flex-grow ${bgColor} p-2 rounded-l-lg outline-none`}
-                          onKeyDown={() => socket?.emit('typing', { senders })}
-                          required
-                        />
-                        <div className="flex gap-12 xl:pl-20">
-                          <p
-                            className={`text-2xl ${textColor} pt-3`}
-                            onClick={() => setToggleEmoji(!toggleEmoji)}
-                          >
-                            <MdOutlineEmojiEmotions />
-                          </p>
-                          <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="text-blue-700 text-2xl p-2 rounded-r-full hover:text-blue-900 transition duration-300"
-                          >
-                            <BsFillSendFill />
-                          </button>
-                        </div>
-                      </form>
-                    )}
+            <div>
+              <div key={senders}>
+                {(block?.blocked_by.id === decodedToken?.id && block?.blocked_to.id === senders) ||
+                (block?.blocked_by.id === senders && block?.blocked_to.id === decodedToken?.id) ? (
+                  <div className="w-full justify-center items-center flex text-red-500 font-light">
+                    <p>You cannot chat with this user</p>
                   </div>
-                ))}
+                ) : (
+                  <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="flex w-full xl:max-w-[65rem] mx-auto"
+                  >
+                    <input
+                      type="text"
+                      {...register('message')}
+                      placeholder="Type Here..."
+                      className={`flex-grow ${bgColor} p-2 rounded-l-lg outline-none`}
+                      onKeyDown={() => socket?.emit('typing', { senders })}
+                      required
+                    />
+                    <div className="flex gap-12 xl:pl-20">
+                      <p
+                        className={`text-2xl ${textColor} pt-3`}
+                        onClick={() => setToggleEmoji(!toggleEmoji)}
+                      >
+                        <MdOutlineEmojiEmotions />
+                      </p>
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="text-blue-700 text-2xl p-2 rounded-r-full hover:text-blue-900 transition duration-300"
+                      >
+                        <BsFillSendFill />
+                      </button>
+                    </div>
+                  </form>
+                )}
               </div>
-            ) : (
-              <form
-                onSubmit={handleSubmit(onSubmit)}
-                className="flex w-full xl:max-w-[65rem] mx-auto"
-              >
-                <input
-                  type="text"
-                  {...register('message')}
-                  placeholder="Type Here..."
-                  className={`flex-grow ${bgColor} p-2 rounded-l-lg outline-none`}
-                  onKeyDown={() => socket?.emit('typing', { senders })}
-                  required
-                />
-                <div className="flex gap-12 xl:pl-20">
-                  <p
-                    className={`text-2xl ${textColor} pt-3`}
-                    onClick={() => setToggleEmoji(!toggleEmoji)}
-                  >
-                    <MdOutlineEmojiEmotions />
-                  </p>
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="text-blue-700 text-2xl p-2 rounded-r-full hover:text-blue-900 transition duration-300"
-                  >
-                    <BsFillSendFill />
-                  </button>
-                </div>
-              </form>
-            )}
+            </div>
           </div>
         )}
       </div>
@@ -670,7 +585,7 @@ const MessageUser = () => {
                 {senders === connect.id ? (
                   <div
                     key={senders}
-                    className="flex flex-col justify-start items-center gap-6  h-[40rem] w-72 rounded  text-black"
+                    className="flex flex-col justify-start items-center gap-6  h-[17rem] w-72 rounded  text-black"
                   >
                     {connect?.profile?.path ? (
                       <img

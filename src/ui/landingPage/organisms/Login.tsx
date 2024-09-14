@@ -19,16 +19,14 @@ interface FormData {
   password: string;
 }
 
-
-
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const { lang } = useLang();
-   const {
-     state: { darkMode },
-   } = useContext(ThemeContext);
+  const {
+    state: { darkMode },
+  } = useContext(ThemeContext);
 
-   const bgColor = darkMode ? 'bg-white' : 'bg-gray-900';
+  const bgColor = darkMode ? 'bg-white' : 'bg-gray-900';
   const {
     register,
     handleSubmit,
@@ -49,7 +47,9 @@ const Login: React.FC = () => {
       e?.preventDefault();
       setSuccess(response?.data?.message);
       const token = response?.data?.data?.tokens?.accessToken;
-      if (token) {
+      const refreshToken = response?.data?.data?.tokens?.refreshToken;
+
+      if (token && refreshToken) {
         sessionStorage.setItem('accessToken', token);
       }
       navigate('/');
