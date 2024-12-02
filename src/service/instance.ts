@@ -5,8 +5,8 @@ const axiosInstance: AxiosInstance = axios.create({
 });
 
 const token =
-  encryptDecrypt.decrypt(localStorage.getItem('accessTokenInternProject') as string) ||
-  encryptDecrypt.decrypt(sessionStorage.getItem('accessTokenInternProject') as string);
+  encryptDecrypt.decrypt(localStorage.getItem('accessTokenProject') as string) ||
+  encryptDecrypt.decrypt(sessionStorage.getItem('accessTokenProject') as string);
 console.log('🚀 ~ token:', token);
 
 axiosInstance.interceptors.request.use(async (config: any) => {

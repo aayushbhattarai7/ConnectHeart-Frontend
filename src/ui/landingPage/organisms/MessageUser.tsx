@@ -14,6 +14,8 @@ import { FaCircleArrowLeft, FaCircleArrowRight, FaVideo } from 'react-icons/fa6'
 import { IoMdMail } from 'react-icons/io';
 import { NavLink } from 'react-router-dom';
 import { ThemeContext } from '../../../contexts/ThemeContext';
+import { RxCross2 } from 'react-icons/rx';
+
 interface Connection {
   id: string;
   email?: string;
@@ -97,6 +99,7 @@ const MessageUser = () => {
   const chatEndRef = useRef<HTMLDivElement | null>(null);
   const [isBlocked, setIsBlocked] = useState(false);
   const [block, setBlock] = useState<Block | null>(null);
+  const [toBlock, setToBlock] = useState(false);
 
   const {
     state: { darkMode },
@@ -195,7 +198,6 @@ const MessageUser = () => {
         const updatedConnects = prev.map((connect) =>
           connect.id === userId ? { ...connect, active: status } : connect,
         );
-        console.log('Updated connects:', updatedConnects);
         return updatedConnects;
       });
     };
@@ -220,9 +222,7 @@ const MessageUser = () => {
   }, [socket]);
 
   const handleChatClick = async (senderId: string) => {
-    socket?.emit('readed', { senderId }, (response: any) => {
-      console.log('yess', response);
-    });
+    socket?.emit('readed', { senderId }, (response: any) => {});
     console.log('clicked');
     const response = await axiosInstance.get(`/chat/${senderId}`, {
       headers: {
@@ -245,7 +245,6 @@ const MessageUser = () => {
       fetchUnreadCounts;
 
       setChats(response.data.displaychat);
-      console.log(response?.data?.displaychat);
     } catch (error) {
       console.error('Error fetching chat data', error);
     }
@@ -261,8 +260,6 @@ const MessageUser = () => {
       setUnreadCounts(() => ({
         [id]: res.data.unreadchat,
       }));
-
-      console.log(res.data, 'resdatatatata');
     } catch (error) {
       console.log('🚀 ~ fetchUnreadtCounts ~ error:', error);
     }
@@ -309,8 +306,8 @@ const MessageUser = () => {
   const blockUser = async (id: string) => {
     try {
       const response = await axiosInstance.patch(`/connect/block/${id}`);
-      console.log(response, 'hahah');
       setIsBlocked(!isBlocked);
+      setToBlock(false);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setError(error.response?.data?.message || 'Error while fetching connection');
@@ -324,8 +321,13 @@ const MessageUser = () => {
     try {
       const response = await axiosInstance.get(`/connect/block/${id}`);
       setBlock(response.data.blockeduser);
-      console.log(response.data.blockeduser, 'lyalya');
-    } catch (error) {}
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.message || 'Error while fetching connection');
+      } else {
+        setError('Error while fetching connection');
+      }
+    }
   };
 
   useEffect(() => {
@@ -380,6 +382,15 @@ const MessageUser = () => {
   const sides = () => {
     setSideMenu(!sideMenu);
     setShowMessage(!showMessage);
+  };
+
+  const handleDeleteClick = () => {
+    setToBlock(true);
+    console.log('clicked');
+  };
+
+  const handleCloseBlock = () => {
+    setToBlock(false);
   };
 
   return (
@@ -478,55 +489,9 @@ const MessageUser = () => {
       </div>
       <div className="h-[60.09rem]  flex flex-col w-full  overflow-hidden">
         {showMessage && messageBox ? (
-          <div className=" 2xl:ml-[25rem] xl:ml-10 p-4 mb-10 justify-start items-start   overflow-auto mx-auto 2xl:w-[70rem] xl:w-[40rem] lg:w-[35rem] sm:w-[30rem] xs:w-[25rem] border-b-0 overflow-y-auto border  flex-grow">
-            {/* {connects?.map((connect) => {
-            return (
-              <div>
-                {senders === connect.id ? (
-                  <div>
-                    <div
-                      key={senders}
-                      className="flex gap-6 fixed top-[6.7rem] h-16 rounded right-[21rem] text-black bg-white border w-[56rem]"
-                    >
-                      <div>
-                        {senders ? (
-                          <div
-                            key={senders}
-                            className="flex gap-6 fixed top-[6.7rem] h-16 rounded right-[21rem] text-black border w-[56rem]"
-                          >
-                            {connect?.profile?.path ? (
-                              <img
-                                className="h-12 w-12 rounded-full mb-3"
-                                src={connect?.profile?.path}
-                                alt=""
-                              />
-                            ) : (
-                              <img
-                                className="w-12 h-12 rounded-full"
-                                src="/profilenull.jpg"
-                                alt="Default Profile"
-                              />
-                            )}
-
-                            <div className="">
-                              <div className="flex pt-2 flex-col">
-                                <p className="font-medium text-xl">
-                                  {connect?.details?.first_name} {connect?.details.last_name}
-                                </p>
-                                {type && senders === connect.id && <p>Typing...</p>}
-                              </div>
-                            </div>
-                          </div>
-                        ) : null}
-                      </div>
-                    </div>
-                  </div>
-                ) : null}
-              </div>
-            );
-          })} */}
-            <div className="flex mt-20 2xl:justify-center xs:block justify-end items-end overflow-auto 2xl:w-[65rem]  ">
-              <div className="flex flex-col justify-end  overflow-auto hide-scrollbar  items-end  h-full ">
+          <div className=" 2xl:ml-[25rem] xl:ml-10 p-4 mb-10 justify-end items-end   overflow-auto mx-auto 2xl:w-[70rem] xl:w-[40rem] lg:w-[35rem] sm:w-[30rem] xs:w-[25rem] border-b-0 overflow-y-auto border  flex-grow">
+            <div className="flex mt-20 2xl:justify-end xs:block justify-end items-end overflow-auto 2xl:w-[65rem]  ">
+              <div className="flex flex-col justify-end  overflow-auto hide-scrollbar  items-end  h-auto ">
                 {chats?.map((chat, index) => (
                   <div
                     key={`${chat.id} ${index}`}
@@ -571,88 +536,52 @@ const MessageUser = () => {
           </div>
         )}
         {messageBox && (
-          <div className="w-[70rem] xs:left-[40rem] fixed bottom-0 lg:left-[25rem] gap-20 p-4 border border-gray-300">
-            {!isBlocked ? (
-              <div>
-                {(block?.blocked_by.id || block?.blocked_to.id) !== decodedToken?.id ? (
+          <div
+            className={`w-[70rem] xs:left-[40rem] fixed bottom-0 lg:left-[25rem] ${bgColor}  gap-20 p-4 border border-gray-300`}
+          >
+            <div>
+              <div key={senders}>
+                {(block?.blocked_by.id === decodedToken?.id && block?.blocked_to.id === senders) ||
+                (block?.blocked_by.id === senders && block?.blocked_to.id === decodedToken?.id) ? (
+                  <div className="w-full justify-center items-center flex text-red-500 font-light">
+                    <p>You cannot chat with this user</p>
+                  </div>
+                ) : (
                   <form
                     onSubmit={handleSubmit(onSubmit)}
-                    className="flex w-full xl:max-w-[65rem]  mx-auto"
+                    className={`flex w-full xl:max-w-[65rem] mx-auto`}
                   >
                     <input
                       type="text"
                       {...register('message')}
                       placeholder="Type Here..."
-                      className={`flex-grow ${bgColor} p-2 rounded-l-lg  outline-none`}
+                      className={`flex-grow ${bgColor} p-2 rounded-l-lg outline-none`}
                       onKeyDown={() => socket?.emit('typing', { senders })}
                       required
                     />
-                    <div className="flex gap-12 xl:pl-20 ">
+                    <div className="flex gap-12 xl:pl-20">
                       <p
-                        className={`text-2xl ${textColor} pt-3 `}
+                        className={`text-2xl ${textColor} pt-3`}
                         onClick={() => setToggleEmoji(!toggleEmoji)}
                       >
                         <MdOutlineEmojiEmotions />
                       </p>
-
                       <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="text-blue-700 text-2xl  p-2 rounded-r-full hover:text-blue-900 transition duration-300"
+                        className="text-blue-700 text-2xl p-2 rounded-r-full hover:text-blue-900 transition duration-300"
                       >
                         <BsFillSendFill />
                       </button>
                     </div>
                   </form>
-                ) : (
-                    <p>You cannot message to this user{block?.blocked_to.id}</p>
 
                 )}
               </div>
-            ) : (
-              <form
-                onSubmit={handleSubmit(onSubmit)}
-                className="flex w-full xl:max-w-[65rem]  mx-auto"
-              >
-                <input
-                  type="text"
-                  {...register('message')}
-                  placeholder="Type Here..."
-                  className={`flex-grow ${bgColor} p-2 rounded-l-lg  outline-none`}
-                  onKeyDown={() => socket?.emit('typing', { senders })}
-                  required
-                />
-                <div className="flex gap-12 xl:pl-20 ">
-                  <p
-                    className={`text-2xl ${textColor} pt-3 `}
-                    onClick={() => setToggleEmoji(!toggleEmoji)}
-                  >
-                    <MdOutlineEmojiEmotions />
-                  </p>
-
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="text-blue-700 text-2xl  p-2 rounded-r-full hover:text-blue-900 transition duration-300"
-                  >
-                    <BsFillSendFill />
-                  </button>
-                </div>
-              </form>
-            )}
+            </div>
           </div>
         )}
       </div>
-      {/* /* <div className="w-full justify-center items-center flex text-red-500 font-poppins">
-                {connects.map((connect) => (
-                  <div>
-                    {connect?.people?.id === decodedToken?.id ? (
-                      <p className="">Unblock the user to chat</p>
-                    ) : (
-                      <p>You cannot message to this user</p>
-                    )}
-                    <p></p>
-                  </div> */}
 
       {profile && (
         <div className="pt-32 mr-64">
@@ -662,7 +591,7 @@ const MessageUser = () => {
                 {senders === connect.id ? (
                   <div
                     key={senders}
-                    className="flex flex-col justify-start items-center gap-6  h-[40rem] w-72 rounded  text-black"
+                    className="flex flex-col justify-start items-center gap-6  h-[17rem] w-72 rounded  text-black"
                   >
                     {connect?.profile?.path ? (
                       <img
@@ -711,17 +640,83 @@ const MessageUser = () => {
                       {block?.blocked_by.id === decodedToken?.id ? (
                         <button
                           className="bg-red-200 p-3 rounded-lg text-red-500 w-32 hover:bg-red-300 hover:text-red-600"
-                          onClick={() => blockUser(connect.id)}
+                          onClick={handleDeleteClick}
                         >
                           {isBlocked ? 'Block' : 'Unblock'}
                         </button>
                       ) : (
                         <button
                           className="bg-red-200 p-3 rounded-lg text-red-500 w-32 hover:bg-red-300 hover:text-red-600"
-                          onClick={() => blockUser(connect.id)}
+                          onClick={handleDeleteClick}
                         >
                           Block
                         </button>
+                      )}
+                    </div>
+                    <div>
+                      {toBlock && (
+                        <div>
+                          {block?.blocked_by.id === decodedToken?.id &&
+                          block?.blocked_to.id === senders ? (
+                            <div className="fixed inset-0 w-[100%] flex items-center justify-center font-poppins bg-black bg-opacity-50 z-50">
+                              <div className={`p-6 bg-white rounded shadow-lg w-96`}>
+                                <div className="flex justify-between items-center mb-4">
+                                  <button onClick={handleCloseBlock} className="text-gray-500">
+                                    <RxCross2 />
+                                  </button>
+                                </div>
+                                <p className="mb-4">Are You sure you want to unblock this user?</p>
+                                <div className="flex justify-end gap-4">
+                                  <button
+                                    name="Cancel"
+                                    type="button"
+                                    onClick={handleCloseBlock}
+                                    className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                                  >
+                                    Cancel
+                                  </button>
+                                  <button
+                                    name="Confirm"
+                                    type="button"
+                                    onClick={() => blockUser(connect.id)}
+                                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                  >
+                                    unblock
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="fixed inset-0 w-[100%] flex items-center justify-center font-poppins bg-black bg-opacity-50 z-50">
+                              <div className={`p-6 bg-white rounded shadow-lg w-96`}>
+                                <div className="flex justify-between items-center mb-4">
+                                  <button onClick={handleCloseBlock} className="text-gray-500">
+                                    <RxCross2 />
+                                  </button>
+                                </div>
+                                <p className="mb-4">Are You sure you want to block this user?</p>
+                                <div className="flex justify-end gap-4">
+                                  <button
+                                    name="Cancel"
+                                    type="button"
+                                    onClick={handleCloseBlock}
+                                    className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                                  >
+                                    Cancel
+                                  </button>
+                                  <button
+                                    name="Confirm"
+                                    type="button"
+                                    onClick={() => blockUser(connect.id)}
+                                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                  >
+                                    Block
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       )}
                     </div>
                   </div>
